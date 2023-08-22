@@ -522,8 +522,8 @@ ELSE
 
 
 * Read in GDP and Population from Drivers Workbook
-*  execute 'gdxxrw.exe i=Drivers.xlsm o=drivers.gdx index=index_E2G!a6';
-*  execute_load "drivers.gdx" GVA_FS POP YHE TFHPOP MFHHT QD_FS;
+  execute 'gdxxrw.exe i=Drivers.xlsm o=drivers.gdx index=index_E2G!a6';
+  execute_load "drivers.gdx" GVA_FS POP YHE TFHPOP MFHHT QD_FS;
 
 
   if(SIM_SATIM(RUN) eq 1,
@@ -580,7 +580,7 @@ $offtext
 
 * Get Energy Model Results
 $include includes\2TIMESReport.inc
-*REPORT(PRC,'ACTGRP',TC,RUN,'GVA') = SUM(FS$MPRCFS2(PRC,FS),GVA_FS(FS,TC));
+REPORT(PRC,'ACTGRP',TC,RUN,'GVA') = SUM(FS$MPRCFS2(PRC,FS),GVA_FS(FS,TC));
 
 
 );
@@ -590,13 +590,13 @@ $include includes\2TIMESReport.inc
 $include includes\2TIMESSubAnnualReport.inc
 
 
-*GDP_RUN(TC) = SUM(FSGDP,GVA_FS(FSGDP,TC));
+GDP_RUN(TC) = SUM(FSGDP,GVA_FS(FSGDP,TC));
 
 *$ontext
-*$include SATIM\includes\GHGEnergyReport.inc
+$include includes\GHGEnergyReport.inc
 
 *Get Process Emissions
-*$include SATIM\includes\GHGProcessReport.inc
+$include includes\GHGProcessReport.inc
 
 if(SIM_WASTE(RUN) eq 1,
 * Run Waste Model
