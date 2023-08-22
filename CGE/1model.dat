@@ -1,0 +1,430 @@
+$onempty
+
+$call "gdxxrw i=%modeldata% o=modeldata.gdx index=index!a12 checkdate"
+$gdxin modeldata.gdx
+
+$load AC
+$loaddc A ARD C CA F FA FLAB FCAP FLND INS INSD INSDNG EN H CTD CTE CTM ATAX DTAX ETAX FTAX MTAX STAX VTAX RD RW IT ACES2 ACET2 AFLEO ACO2 CCO2
+
+*-----------------------------------------------------------------------------
+*1. Model calibration and SAM restructuring sets
+*-----------------------------------------------------------------------------
+
+PARAMETER
+ scale           scaling parameter for SAM (multiplier)            / 1 /
+* scale           scaling parameter for SAM (multiplier)            / 0.001 /
+ natdrate        national annual capital depreciation rate         / 0.050 /
+ accrate         annual capital accumulation rate                  / 0.040 /
+ capoutrat       capital output ratio                              / 2.000 /
+ regcutoff       smallest permissable foreign trade share          / 0.010 /
+ agriprod        use agricultural prod data (0 no)                 / 1 /
+ koption         use ACOR (1) or targeted K stock growth rate (2)  / 2 /
+;
+
+SET
+ REMEXP(C)       remove exports with small shares
+ / cafee, casug, cgsrv/
+
+ REMIMP(C)       remove imports with small shares
+ / ccoal-low, catub, casug, cgsrv, cpgm /
+
+ REEXPORT(C)     remove imports with re-export problem
+ /           /
+
+ CERES(C)        Commodities with perfect substitution for exports
+ / /
+
+ CMRES(C)        Commodities with perfect substitution for imports
+ / /
+
+ CEFIX(C)    Commodities with fixed exports (should be subset of CERES)
+ CMFIX(C)    Commodities with fixed imports (should be subset of CMRES)
+
+;
+ CEFIX(C)=NO;
+ CMFIX(C)=NO;
+
+*-----------------------------------------------------------------------------
+*2. Calibration set definitions
+*-----------------------------------------------------------------------------
+
+ALIAS
+ (AC,ACP), (ACNT,ACNTP), (ARD,ARDP)
+ (A,AP,APP,APPP)
+ (C,CP,CPP), (CE,CEP), (CM,CMP)
+ (CTE,CTEP), (CTM,CTMP), (CTD,CTDP)
+ (F,FP,FPP,FPPP), (FLAB,FLABP), (FCAP,FCAPP), (FLND,FLNDP)
+ (INS,INSP), (INSD,INSDP), (INSDNG,INSDNGP), (H,HP)
+ (RD,RDP), (RW,RWP)
+;
+
+ ACNT(AC)               = YES;
+ ACNT('TOTAL')          = NO;
+
+SET
+ AELAS           aggregate elasticities     / SIGMAQ, SIGMAT, OUTAGG, OUTDIS, REGACT /
+ DELAS           disaggregate elasticities  / PRODE, PRODE2 /
+ FELAS           factor elasticities        / FLS /
+ FDATAAC                                    /DATA, ADJUST /
+ TX              taxes in the model         / INSTAX, FACTAX, IMPTAX, EXPTAX, VATAX, ACTTAX, COMTAX /
+ FNEST(F,F)      nested structure of factors
+ FTREE(F,F,F)    nested structure of factors
+ MFA1(F,A,RD)    factor F (agg or disagg) is used by A at top of nest
+ MFA2(F,F,A,RD)  factor FP is aggregated to factor F for activity A
+;
+
+PARAMETER
+*Elasticities
+ AELASTAB(AC,AELAS)      armington and CET elasticities by commodity
+ DELASTAB(AC,DELAS)      elas of substit bt. factors - bottom of technology nest
+ FELASTAB(F,FELAS)       factor supply elasticities (0 if not active)
+ YELASTAB(C,H)           LES expenditure elasticities for commodities
+ FNESTELAS(F,A,RD)       elasticity of substitution for higher layer factors
+ FRISCH(H)               Frisch parameter for household LES demand
+ HELAS(A,H)              expenditure e elasticity of home demand by activity and household
+ ELASCA(A)               CET output elasticity
+ SHRHOME(A,H)            value share for activity a in home cons of hhd h from act a
+*Factor nesting structure
+ NEST(F,FP)              nested structure of factors in the model
+ TREE(F,FP)              direct and indirect factor mapping in nested factor structure
+*Factor employment quantities
+ WAGEAVG(F)              average wage used when a sector data is missing
+ FDATATYPE(F,FDATAAC)    calibration switches
+ EMPTAB(AC,F)            external factor employment data
+ EMPCHK(A,F)             employment check (to target employment levels from survey - see 1model.xlsx)
+ WAGETAB(AC,F)           external factor wage data
+ QFSBASE(AC)             total employment data
+ QFBASE(F,AC)            sectoral employment
+ QF2BASE(F,AC)           sectoral employment
+*Population numbers
+ POPTAB(H,*)             household population numbers in base year
+*Tax parameter
+ TAXPAR(TX,AC)           payment by account ac to tax account tx
+*International regional trade
+ REGIMP(C,RW)            regional imports values
+ REGTAR(C,RW)            regional tariff values
+ REGEXP(C,RW)            regional imports values
+ REGETX(C,RW)            regional tariff values
+*Recompute margins
+ EXPX(C), IMPX(C), DOMX(C), TRSHR(C)
+;
+
+$loaddc SAM AELASTAB DELASTAB FELASTAB YELASTAB EMPTAB WAGETAB MARD REGIMP REGTAR REGEXP REGETX POPTAB
+$load NEST FDATATYPE
+
+*RSA: Not sure why this is here (from SAM BUILDER)
+ SAM('S-I','DSTK') = 0;
+
+*----------------------------------------------------------------------------
+*3. Adjustments to the SAM (based on set definition above)
+*----------------------------------------------------------------------------
+
+*Move exports to changes in inventories
+ SAM(REMEXP,'DSTK') = SAM(REMEXP,'DSTK') + SAM(REMEXP,'ROW');
+ SAM('DSTK','S-I')  = SAM('DSTK','S-I') + SUM(REMEXP, SAM(REMEXP,'ROW'));
+ SAM('S-I','ROW')   = SAM('S-I','ROW') + SUM(REMEXP, SAM(REMEXP,'ROW'));
+ SAM(REMEXP,'ROW')  = 0;
+
+*Move imports to changes in inventories
+ SAM('ROW',REMIMP)  = SAM('ROW',REMIMP) + sum(MTAX, SAM(MTAX,REMIMP));
+ SAM(MTAX,REMIMP)   = 0;
+ SAM(REMIMP,'DSTK') = SAM(REMIMP,'DSTK') - SAM('ROW',REMIMP);
+ SAM('DSTK','S-I')  = SAM('DSTK','S-I') - SUM(REMIMP, SAM('ROW',REMIMP));
+ SAM('S-I','ROW')   = SAM('S-I','ROW') - SUM(REMIMP, SAM('ROW',REMIMP));
+ SAM('ROW',REMIMP)  = 0;
+ SAM('GOV',MTAX)    = SUM(C, SAM(MTAX,C));
+ SAM('ROW','GOV')   = 0;
+ SAM('ROW','GOV')   = SUM(ACNT, SAM(ACNT,'ROW') - SAM('ROW',ACNT));
+
+*Move trade transactions costs to domestic costs
+ SAM(CTD,REMEXP)    = SAM(CTD,REMEXP) + SUM(CTE, SAM(CTE,REMEXP));
+ SAM(CTD,REMIMP)    = SAM(CTD,REMIMP) + SUM(CTM, SAM(CTM,REMIMP));
+ SAM(CTE,REMEXP)    = 0;
+ SAM(CTM,REMIMP)    = 0;
+ SAM(C,CTM)$SUM(CP, SAM(CP,CTM)) = SAM(C,CTM)/SUM(CP, SAM(CP,CTM)) * SUM(ACNT, SAM(CTM,ACNT));
+ SAM(C,CTD)$SUM(CP, SAM(CP,CTD)) = SAM(C,CTD)/SUM(CP, SAM(CP,CTD)) * SUM(ACNT, SAM(CTD,ACNT));
+ SAM(C,CTE)$SUM(CP, SAM(CP,CTE)) = SAM(C,CTE)/SUM(CP, SAM(CP,CTE)) * SUM(ACNT, SAM(CTE,ACNT));
+
+*Move import tariffs to sales taxes
+ SAM(STAX,REMIMP)   = SAM(STAX,REMIMP) + SUM(MTAX, SAM(MTAX,REMIMP));
+ SAM(MTAX,REMIMP)   = 0;
+ SAM('GOV',STAX)    = SUM(ACNT, SAM(STAX,ACNT));
+ SAM('GOV',DTAX)    = SUM(ACNT, SAM(DTAX,ACNT));
+
+*Remove any small imbalances that remain
+ SAM(C,'DSTK')      = SUM(ACNT, SAM(ACNT,C) - SAM(C,ACNT)) + SAM(C,'DSTK');
+ SAM('DSTK','S-I')  = SUM(ACNT, SAM(ACNT,'DSTK'));
+ SAM('S-I','ROW')   = SAM('S-I','ROW') + SUM(ACNT, SAM(ACNT,'S-I') - SAM('S-I',ACNT));
+
+*Compute margins
+ EXPX(C) = SAM(C,'ROW');
+ IMPX(C) = SAM('ROW',C) + SUM(MTAX, SAM(MTAX,C));
+ DOMX(C) = SUM(ARD, SAM(ARD,C)) - SAM(C,'ROW');
+ TRSHR(C)$SUM(CP, SAM(CP,'TRC')) = SAM(C,'TRC')/SUM(CP, SAM(CP,'TRC'));
+
+ SAM(CTE,C)$(EXPX(C) + IMPX(C) + DOMX(C)) = EXPX(C) / (EXPX(C) + IMPX(C) + DOMX(C)) * SAM('TRC',C);
+ SAM(CTM,C)$(EXPX(C) + IMPX(C) + DOMX(C)) = IMPX(C) / (EXPX(C) + IMPX(C) + DOMX(C)) * SAM('TRC',C);
+ SAM(CTD,C)$(EXPX(C) + IMPX(C) + DOMX(C)) = DOMX(C) / (EXPX(C) + IMPX(C) + DOMX(C)) * SAM('TRC',C);
+
+ SAM(C,CTE) = TRSHR(C) * SUM(CP, SAM(CTE,CP));
+ SAM(C,CTM) = TRSHR(C) * SUM(CP, SAM(CTM,CP));
+ SAM(C,CTD) = TRSHR(C) * SUM(CP, SAM(CTD,CP));
+
+ SAM('TRC',AC) = 0;
+ SAM(AC,'TRC') = 0;
+
+ SAM(C,'DSTK')$(ABS(SAM(C,'DSTK')) LT 1E-8) = 0;
+
+*Account totals are recomputed. Check for SAM balance.
+ SAM(AC,ACP) =  SAM(AC,ACP) * SCALE;
+
+ SAM('TOTAL',AC) = 0;
+ SAM(AC,'TOTAL') = 0;
+ SAM('TOTAL',AC) = SUM(ACNT, SAM(ACNT,AC));
+ SAM(AC,'TOTAL') = SUM(ACNT, SAM(AC,ACNT));
+ SAMBALCHK(AC)   = SAM('TOTAL',AC) - SAM(AC,'TOTAL');
+
+*bm/sr/fh calling 1sambal to cleanout small errors
+*$INCLUDE includes\1sambal.inc
+
+*Define mapping set MAC
+ MAC(A,C)        = NO;
+ MAC(A,C)$SUM((ARD,RD)$MARD(ARD,A,RD), SAM(ARD,C)) = YES;
+
+*If an activity feeds to only one commodity, set ACET2 to "no" and use the linear coefficient.
+ ACET2(A)$(SUM(C$MAC(A,C), 1) EQ 1) = NO;
+
+*-----------------------------------------------------------------------------
+*4. Elasticities
+*-----------------------------------------------------------------------------
+
+*Set default values for missing elasticities
+ AELASTAB(C,AELAS)$(NOT AELASTAB(C,AELAS)) = 3.0;
+ DELASTAB(ARD,DELAS)$(NOT DELASTAB(ARD,DELAS)) = 1.2;
+*fh 12/11/19: changing from LES to CD
+* YELASTAB(C,H)$(NOT YELASTAB(C,H)) = 1.0;
+ YELASTAB(C,H) = 1.0;
+
+*Other household consumption elasticities
+ HELAS(A,H) =  1.0;
+ FRISCH(H)  = -1.0;
+
+*If needed, manually define shrhome.
+ SHRHOME(A,H) = 0;
+
+*----------------------------------------------------------------------------
+*5. Nested factor demand
+*----------------------------------------------------------------------------
+
+*Calculate all direct and indirect nested factors beneath each aggregate factor
+ TREE(F,FA)$(SMAX(FP, NEST(F,FP)) GT SMAX(FP, NEST(FP,FA))) = 1;
+ TREE(F,FA)$(NEST(F,FA) EQ SMAX(FP, NEST(FP,FA))) = 1;
+
+*Assign disaggregated factors to existing factors set
+ FD(F)$SAM(F,'TOTAL') = YES;
+
+ FNEST(F,FP)$NEST(FP,F) = YES;
+ FTREE(F,FP,FPP)$(FD(FPP) AND TREE(FPP,FP) AND FNEST(F,FP)) = YES;
+ FTREE(F,FP,FP)$(FD(FP) AND FNEST(F,FP)) = YES;
+
+*set default to true if SAM is true
+ MFA1(F,A,RD)$SUM(ARD$MARD(ARD,A,RD), SAM(F,ARD)) = YES;
+*set all nested factors to false
+ MFA1(F,A,RD)$SUM(FA, TREE(F,FA)) = NO;
+*set active labor category for top layer
+ MFA1(FA,A,RD)$(SMAX(F, NEST(F,FA)) EQ 1) = YES;
+
+*1st lower VA level (from top)
+ MFA2(F,FP,A,RD)$(FNEST(F,FP) AND SUM((ARD,FPP)$(MARD(ARD,A,RD) AND FTREE(F,FP,FPP) AND NOT FA(FPP)), SAM(FPP,ARD))) = YES;
+
+*Prevent nested functions for non-active activities
+ MFA1(F,A,RD)$(NOT SUM(ARD$MARD(ARD,A,RD), SAM('TOTAL',ARD))) = NO;
+ MFA2(F,FP,A,RD)$(NOT SUM(ARD$MARD(ARD,A,RD), SAM('TOTAL',ARD))) = NO;
+ MFA1(FA,A,RD)$(NOT SUM(FP, MFA2(FA,FP,A,RD))) = NO;
+
+*Nested layer elasticities
+ FNESTELAS(F,A,RD)  = 0.5;
+ FNESTELAS(FA,A,RD) = 0.5;
+
+*----------------------------------------------------------------------------
+*6. Physical factor quantities
+*----------------------------------------------------------------------------
+
+$ontext
+Five factor data input options:
+1. Use SAM data to define employment numbers (WF and WFDIST set to 1)
+2. Use external sectoral employment data (WF and WFDIST may differ from 1)
+3. Use external total employment data (WF may differ from 1)
+4. Use external sectoral wage data (WF and WFDIST may differ from 1)
+5. Use external national average wage data (WF may differ from 1)
+$offtext
+
+*If missing or out of bounds, set default data source to SAM data with no value adjustment
+ FDATATYPE(FD,'DATA')$(FDATATYPE(FD,'DATA') LT 1 OR FDATATYPE(FD,'DATA') GT 5) = 1;
+ EMPTAB(AC,FD)$FDATATYPE(FD,'ADJUST') = EMPTAB(AC,FD) / FDATATYPE(FD,'ADJUST');
+
+
+LOOP (F$FD(F),
+
+  IF (FDATATYPE(F,'DATA') EQ 1,
+*Factor employment is equal to SAM value
+   QFBASE(F,ARD)$(NOT FCAP(F)) = SAM(F,ARD);
+   QFBASE(F,ARD)$FCAP(F) = SAM(F,ARD)*capoutrat;
+*bm/sr/fh - possible different approach for avoiding the use of alphainv
+*   QFBASE(F,ARD)$FCAP(F) = SAM(F,ARD)*capoutrat*2.078095;
+  );
+
+  IF (FDATATYPE(F,'DATA') EQ 2,
+*Remove external data if no entry in the SAM
+   EMPTAB(ARD,F)$(NOT SAM(F,ARD)) = 0;
+*Check whether employment data is missing when switch is set to 2
+   EMPTAB(ARD,F)$(SUM(ARDP, EMPTAB(ARDP,F)) EQ 0) = 1/0;
+*Factor employment is equal to external employment data
+   QFBASE(F,ARD)$SAM(F,ARD) = EMPTAB(ARD,F);
+*Calculate average wages based on sectors where external wage data is provided
+   WAGEAVG(F)$SUM(ARD, EMPTAB(ARD,F)) = SUM(ARD$EMPTAB(ARD,F), SAM(F,ARD)) / SUM(ARD$EMPTAB(ARD,F), EMPTAB(ARD,F));
+*If external wage is missing, then apply average wage
+   QFBASE(F,ARD)$(WAGEAVG(F) AND SAM(F,ARD) AND NOT EMPTAB(ARD,F)) = SAM(F,ARD) / WAGEAVG(F);
+  );
+
+  IF (FDATATYPE(F,'DATA') EQ 3,
+*Check whether total employment data is missing when switch is set to 3
+   EMPTAB('TOTAL',F)$(NOT EMPTAB('TOTAL',F)) = 1/0;
+*Factor employment is equal to external total employment data distributed proportionally by SAM values
+   QFBASE(F,ARD)$SUM(ARDP, SAM(F,ARDP)) = EMPTAB('TOTAL',F) * SAM(F,ARD) / SUM(ARDP, SAM(F,ARDP));
+  );
+
+  IF (FDATATYPE(F,'DATA') EQ 4,
+*Remove external data if no entry in the SAM
+   WAGETAB(ARD,F)$(NOT SAM(F,ARD)) = 0;
+*Check whether wage data is missing when switch is set to 4
+   WAGETAB(ARD,F)$(SUM(ARDP, WAGETAB(ARDP,F)) EQ 0) = 1/0;
+*Factor employment is based on external wage data
+   QFBASE(F,ARD)$WAGETAB(ARD,F) = SAM(F,ARD)/(WAGETAB(ARD,F)/FDATATYPE(F,'ADJUST'));
+*Calculate average wages based on sectors where external wage data is provided
+   WAGEAVG(F)$SUM(ARD, QFBASE(F,ARD)) = SUM(ARD$WAGETAB(ARD,F), SAM(F,ARD)) / SUM(ARD, QFBASE(F,ARD));
+*If external wage is missing, then apply average wage
+   QFBASE(F,ARD)$(WAGEAVG(F) AND SAM(F,ARD) AND NOT WAGETAB(ARD,F)) = SAM(F,ARD) / WAGEAVG(F);
+  );
+
+  IF (FDATATYPE(F,'DATA') EQ 5,
+*Check whether wage data is missing when switch is set to 5
+   WAGETAB('TOTAL',F)$(WAGETAB('TOTAL',F) EQ 0) = 1/0;
+*Factor employment is based on external wage data
+   QFBASE(F,ARD)$WAGETAB('TOTAL',F) = SAM(F,ARD)/(WAGETAB('TOTAL',F)/FDATATYPE(F,'ADJUST'));
+  );
+
+);
+
+ QFSBASE(F) = SUM(ARD, QFBASE(F,ARD));
+
+ EMPCHK(A,F) = SUM((ARD,RD)$MARD(ARD,A,RD), QFBASE(F,ARD));
+
+*Upward-sloping labor supply curves
+*Active only if FLS is non-zero
+ FLS(F)$(FELASTAB(F,'FLS') NE 0) = YES;
+
+*-----------------------------------------------------------------------------
+*7. Taxes
+*-----------------------------------------------------------------------------
+
+ TAXPAR('INSTAX',INSD)  = SUM(DTAX, SAM(DTAX,INSD));
+ TAXPAR('FACTAX',F)     = SUM(FTAX, SAM(FTAX,F));
+ TAXPAR('IMPTAX',C)     = SUM(MTAX, SAM(MTAX,C));
+ TAXPAR('EXPTAX',C)     = SUM(ETAX, SAM(ETAX,C));
+ TAXPAR('VATAX',ARD)    = SUM(VTAX, SAM(VTAX,ARD));
+ TAXPAR('ACTTAX',ARD)   = SUM(ATAX, SAM(ATAX,ARD));
+ TAXPAR('COMTAX',C)     = SUM(STAX, SAM(STAX,C));
+
+*-----------------------------------------------------------------------------
+*8. International trade regions
+*-----------------------------------------------------------------------------
+
+*Remove regional imports and exports if no national values in SAM
+ REGIMP(C,RW)$(NOT SAM('ROW',C)) = 0;
+ REGEXP(C,RW)$(NOT SAM(C,'ROW')) = 0;
+
+*If no tariff or tax data then split by trade values
+ REGTAR(C,RW)$(NOT SUM(RWP, REGTAR(C,RWP))) = REGIMP(C,RW);
+ REGETX(C,RW)$(NOT SUM(RWP, REGETX(C,RWP))) = REGEXP(C,RW);
+
+*Remove small trade shares
+ REGIMP(C,RW)$SUM(RWP, REGIMP(C,RWP)) = REGIMP(C,RW) / SUM(RWP, REGIMP(C,RWP));
+ REGIMP(C,RW)$(REGIMP(C,RW) LT REGCUTOFF) = 0;
+ REGEXP(C,RW)$SUM(RWP, REGEXP(C,RWP)) = REGEXP(C,RW) / SUM(RWP, REGEXP(C,RWP));
+ REGEXP(C,RW)$(REGEXP(C,RW) LT REGCUTOFF) = 0;
+
+*Remove regional tariffs and taxes if no regional trade
+ REGTAR(C,RW)$(NOT REGIMP(C,RW))  = 0;
+ REGETX(C,RW)$(NOT REGEXP(C,RW))  = 0;
+
+*If no regional trade data then assign to ROW
+ REGIMP(C,'ROW')$(NOT SUM(RW, REGIMP(C,RW))) = 100;
+ REGTAR(C,'ROW')$((NOT SUM(RW, REGTAR(C,RW))) AND SUM(RW, REGIMP(C,RW))) = 100;
+ REGEXP(C,'ROW')$(NOT SUM(RW, REGEXP(C,RW))) = 100;
+ REGETX(C,'ROW')$((NOT SUM(RW, REGETX(C,RW))) AND SUM(RW, REGEXP(C,RW))) = 100;
+
+*Recalculate shares
+ REGIMP(C,RW)$SUM(RWP, REGIMP(C,RWP)) = REGIMP(C,RW) / SUM(RWP, REGIMP(C,RWP));
+ REGTAR(C,RW)$SUM(RWP, REGTAR(C,RWP)) = REGTAR(C,RW) / SUM(RWP, REGTAR(C,RWP));
+ REGEXP(C,RW)$SUM(RWP, REGEXP(C,RWP)) = REGEXP(C,RW) / SUM(RWP, REGEXP(C,RWP));
+ REGETX(C,RW)$SUM(RWP, REGETX(C,RWP)) = REGETX(C,RW) / SUM(RWP, REGETX(C,RWP));
+
+*-----------------------------------------------------------------------------
+*9. Household populations
+*-----------------------------------------------------------------------------
+
+PARAMETER
+ hpop0(H)                household populations
+;
+
+ hpop0(H) = POPTAB(H,'SURVEY');
+
+
+*-----------------------------------------------------------------------------
+*10. Energy sector calibration
+*-----------------------------------------------------------------------------
+
+SET
+ ECAL / PRODUCT, IMPORT, EXPORT /
+* COIL(A)         crude oil activity     / acoil /
+ COAL(A)         raw coal activity      / acoal /
+;
+
+PARAMETER
+ OILCOAL(C,*,ECAL) production and trade data for coal and oil commodities
+ QPROD(AC,RD)      production quantities
+*FH
+ QPROD2(ARD,C)
+ QTRAD(C,*)        trade quantities
+ ESUMTAB(*,*,A)    summary table
+ CALIB(AC,*)       production and emissions calibration data
+* SHR(ARD,C)
+;
+
+$LOAD CALIB
+$gdxin
+
+*Primary fuel production quantities (PJ)
+ QPROD('CCOAL-LOW','NAT') = CALIB('CCOAL-LOW','QA');
+ QPROD('CCOAL-HGH','NAT') = CALIB('CCOAL-HGH','QA');
+*fh
+* QPROD('ACOAL','NAT')     = QPROD('CCOAL-LOW','NAT') + QPROD('CCOAL-HGH','NAT');
+ QPROD('ACOAL','NAT')     = QPROD('CCOAL-LOW','NAT') + QPROD('CCOAL-HGH','NAT')+SAM('ACOAL','CMORE')+SAM('ACOAL','CMINE');
+ QPROD('ANGAS','NAT')     = CALIB('CNGAS','QA');
+* QPROD('ACOIL','NAT')     = CALIB('CCOIL','QA');
+*FH 19032019
+ QPROD('AHYDR','NAT')     = CALIB('CHYDR','QA');
+
+*Petroleum production quantities (PJ)
+ QPROD('CPETR-P','NAT') = CALIB('CPETR-P','QA');
+ QPROD('CPETR-D','NAT') = CALIB('CPETR-D','QA');
+ QPROD('CPETR-H','NAT') = CALIB('CPETR-H','QA');
+ QPROD('CPETR-L','NAT') = CALIB('CPETR-L','QA');
+ QPROD('CPETR-K','NAT') = CALIB('CPETR-K','QA');
+ QPROD('APETR','NAT') = QPROD('CPETR-P','NAT') + QPROD('CPETR-D','NAT') + QPROD('CPETR-H','NAT')+ QPROD('CPETR-L','NAT')+ QPROD('CPETR-K','NAT');
+
+*Electricity generation quantities (PJ)
+ QPROD('AELEC','NAT') = CALIB('AELEC','QA');
+
+*display '*#* SAM at bottom of 1model.dat', SAM;

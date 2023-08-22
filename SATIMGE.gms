@@ -5,10 +5,10 @@
 *restart file should be set as follows: r=cge\model.
 
 *1.Set directories*-------------------------------------------------------------
-$SETGLOBAL workingfolder C:\Models\SATIM-EL\
+$SETGLOBAL workingfolder C:\Models\SATIMGE_Veda\
 * TIMES GDX output folder
-$SETGLOBAL TIMESfolder Gams_WrkTIMES\Run00
-$SETGLOBAL gdxfolder %workingfolder%\%TIMESfolder%\Gamssave\
+$SETGLOBAL TIMESfolder Gams_WrkTIMES
+$SETGLOBAL gdxfolder %workingfolder%\%TIMESfolder%
 * Subset of TIMES GDX output folder
 $SETGLOBAL GDXoutfolder %workingfolder%GDXout\
 
@@ -157,15 +157,15 @@ SETS
   PamsSector                     PAMS sectors
 
 * mapping sets
-*  MFHH(FH,H)              mapping SAGE and SATIM households
-*  MFSA(FS,A)              mapping SAGE and SATIM sectors
+  MFHH(FH,H)              mapping SAGE and SATIM households
+  MFSA(FS,A)              mapping SAGE and SATIM sectors
   MPRCFS(PRC,FSATIM)          mapping SATIM PRCs to SATIM sectors (temporarily until sectors are reaggregated in the same way in both models)
   MPRCFS2(PRC,FSATIM)          mapping SATIM PRCs to SATIM sectors (used to pass CGE aggregates to SATIM sectors)
-*  mCOMC(COM,C)            mapping SAGE and SATIM fuels
-*  mCOMF(COM,F)            mapping SAGE factors and SATIM factor commodities
+  mCOMC(COM,C)            mapping SAGE and SATIM fuels
+  mCOMF(COM,F)            mapping SAGE factors and SATIM factor commodities
 
-*  MHPRCH(PRC,H)           mapping SAGE households to reporting households
-*  MCTCG(C,TCG)            mapping SAGE trade commodities to aggregate trade commodity groups
+  MHPRCH(PRC,H)           mapping SAGE households to reporting households
+  MCTCG(C,TCG)            mapping SAGE trade commodities to aggregate trade commodity groups
 
 
   MFSP(FSATIM,PRC)           mapping of technologies used for each sector to track process emissions
@@ -176,12 +176,12 @@ SETS
  SUPELE(PRC)  power sector technologies in SATIM
  COALSUP(PRC) detailed coal supply techs for power sector
 
-* CCOAL(C)              coal commodities in eSAGE / ccoal-low, ccoal-hgh /
-* RTC(C)                commodities attracting retaliatory taxes
+ CCOAL(C)              coal commodities in eSAGE / ccoal-low, ccoal-hgh /
+ RTC(C)                commodities attracting retaliatory taxes
 
 * sets used for reverse mapping of households
 *FH*----------------------------------------------------------------------------
-* MFHHT(FH,H,AY) reverse mapping (TIMES to CGE) for households
+ MFHHT(FH,H,AY) reverse mapping (TIMES to CGE) for households
 
   Indicators SATIM indicators /Activity, Capacity, NewCapacity, CapFac, FlowIn, FlowOut, AnnInvCost, FOM, VOM, FuelCosts, Marginals, Levies, ExternalityCosts, CO2Tax, CO2, CO2C, CH4, N2O, CF4, C2F6, CO2eq, FlowInMt, Investment,Price, GVA, Population, Consumption, Employment-p, Employment-m,Employment-s,Employment-t,PalmaRatio,20-20Ratio,TradeDeficit,Imports,Exports,pkm, tkm/
   Emiss(Indicators) / CO2, CH4, N2O, CF4, C2F6, CO2eq/
@@ -272,7 +272,6 @@ PARAMETERS
   CoalCV(COM)                    Coal CV in GJ
 
 * TIMES Results Initial Aggregation
-*  VAR_ACT(ALLYEAR,PRC)           Activity [PJ except for demand techs where unit will be aligned to particular demand e.g. VKM for road vehicles]
   CAPACT(PRC)                    Capacity to activity
 
   FLO_IN(ALLYEAR,PRC,COM)        Aggregated level of process commodity flow in
@@ -293,9 +292,9 @@ PARAMETERS
   CST_FIX(AY,PRC)           Annual fixed costs
 
 * Commodity Levels
-*  COMBAL(ALLYEAR,C,RUN)          Commodity level
+  COMBAL(ALLYEAR,C,RUN)          Commodity level
   COMBALExt(ALLYEAR,Externalities,RUN) Emissions level
-*  FuelCOMBAL(ALLYEAR,C,RUN)      Fuels marginals
+  FuelCOMBAL(ALLYEAR,C,RUN)      Fuels marginals
 
 * Coal specific activities
   VARACTC(ALLYEAR,PRC,RUN)       Coal production from all coal mines
@@ -420,10 +419,8 @@ LOOP(TS_HOURLY,
 * Import sets and parameters from SetsAndMaps -------------------------------
 $call   "gdxxrw i=SetsAndMaps\SetsAndMaps.xlsm o=SetsAndMaps\SetsMaps index=index!a6 checkdate"
 $gdxin  SetsAndMaps\SetsMaps.gdx
-$loaddc PRC COM S TS_DAYNITE TS_WEEKLY TS_SEASON DEM1 UC_N FSATIM COALSUP PRCH TCG
-* FS FH
-$load  MPRCFS MPRCFS2 Sector SubSector SubSubSector MPRCSector MPRCSubSector MPRCSubSubSector COMEXT
-* MHPRCH MCTCG mCOMC MFSA MFHH mCOMF
+$loaddc PRC COM S TS_DAYNITE TS_WEEKLY TS_SEASON DEM1 UC_N FSATIM COALSUP PRCH TCG FS FH
+$load  MPRCFS MPRCFS2 Sector SubSector SubSubSector MPRCSector MPRCSubSector MPRCSubSubSector COMEXT MHPRCH MCTCG mCOMC MFSA MFHH mCOMF
 $load PassengerOccupancy  FreightLoad CoalCV
 
 
@@ -443,23 +440,22 @@ PRCBulkPower(PRC)$MPRCSubSector(PRC,'Power','AutoGen-EnergySupply') = no;
 PRCBulkPower(PRC)$MPRCSubSubSector(PRC,'Power','EBattery','Ebattery_Dist') = no;
 PRCBulkPower(PRC)$MPRCSubSubSector(PRC,'Power','EPV','EPV_Dist') = no;
 
-*FSGDP(FS) = yes;
-*FSGDP('fa') = no;
-*FSGDP('al') = no;
+FSGDP(FS) = yes;
+FSGDP('fa') = no;
+FSGDP('al') = no;
 
-*execute 'gdxxrw.exe i=Drivers.xlsm o=driverspop.gdx index=index_E2G!a6';
-*execute_load "driverspop.gdx" POP_GR;
+execute 'gdxxrw.exe i=Drivers.xlsm o=driverspop.gdx index=index_E2G!a6';
+execute_load "driverspop.gdx" POP_GR;
 
 alias (TC,TCP);
 T1(TC)$(ORD(TC) EQ SMIN(TCP, ORD(TCP))) = YES;
 
-$include Includes\2energyinit.inc
 
 * CGE: Parameter and set declaration-------------------------------------------
-*$batinclude cge\includes\2simulation.inc
+$batinclude cge\includes\2simulation.inc
 
 $gdxin  SetsAndMaps\SetsMaps.gdx
-*$load FHMM
+$load FHMM
 
 MY_FIL2('2050') = 0.1;
 MY_FYEAR = 2012;
@@ -473,7 +469,7 @@ $load EmisFactor
 EmisFactor(COM,'CO2eq') = 0;
 
 
-*$include cge\includes\2energychecksinit.inc
+$include cge\includes\2energychecksinit.inc
 
 
 *$include KLEM\KLEM_init.inc
