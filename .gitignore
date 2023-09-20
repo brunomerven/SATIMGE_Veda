@@ -183,3 +183,5 @@ AppData/
 Industry checks.twb
 
 Exported_files/
+
+*.twbr
