@@ -30,7 +30,7 @@ SETS
   REG                            TIMES regions    /REGION1/
   ALLYEAR                        All Years /1850*2200, 0/
   T(ALLYEAR)                     Time periods /2005*2070/
-  DATAYEAR(ALLYEAR)              Years for which data is provided /2011*2050,2060,2070/
+  DATAYEAR(ALLYEAR)              Years for which data is provided /2017*2050,2060,2070/
   MILESTONYR(ALLYEAR)            TIMES Milestone years
   V(ALLYEAR)                     Vintage years
 
@@ -42,8 +42,8 @@ SETS
   TS_SEASON(S)                   seasonal timeslices
   TS_DAYNITE(S)                  day-night(block) timeslices
   TS_WEEKLY(S)                   day-type timeslices
-*  TS_HOURLY                      Hours in a day /1*24/
-  TS_HOURLY                     Hours in a week /1*168/
+  TS_HOURLY                      Hours in a day /1*24/
+*  TS_HOURLY                     Hours in a week /1*168/
   TS_MAP2(TS_WEEKLY,TS_DAYNITE,TS_HOURLY)  maps day-types and blocks to 24 hour sequence
   PRC                            TIMES Processes
   PRC_TSL(REG,PRC,TSLVL)         Timeslice level for a process
@@ -600,12 +600,12 @@ $include includes\GHGProcessReport.inc
 
 if(SIM_WASTE(RUN) eq 1,
 * Run Waste Model
-*$include Waste\includes\GHGWasteReport.inc
+$include Waste\includes\GHGWasteReport.inc
 );
 
 if(SIM_AFOLU(RUN) eq 1,
 * Run AFOLU Model
-*$include AFOLU\includes\GHGAfoluReport.inc
+$include AFOLU\includes\GHGAfoluReport.inc
 *$offtext
 
 );
