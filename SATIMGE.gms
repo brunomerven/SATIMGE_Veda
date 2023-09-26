@@ -57,7 +57,7 @@ SETS
   PRCH(PRC)                      Households groupings in eSAGE
 
   COM                            TIMES Commodities
-  COM_NRGELC(REG,COM)            Elc Commodities
+  NRGELC(REG,COM)            Elc Commodities
   COM_NRGELCR(COM)               Elc Commodities
   TCG(COM)                       Trade commodity groups
   DEM(REG,COM)                   TIMES Demand Commodities
