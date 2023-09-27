@@ -185,3 +185,7 @@ Industry checks.twb
 Exported_files/
 
 *.twbr
+
+GAMS_WrkTIMES/Reference/tee.exe
+
+GAMS_WrkTIMES/RefDebug/
