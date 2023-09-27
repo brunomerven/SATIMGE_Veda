@@ -25,37 +25,37 @@ RESID(REG,MILESTONYR,PRC) = PRC_RESID(REG,MILESTONYR,PRC);
 * perform interpolation
 *$BATINCLUDE interpolate PRC_RESID 'REG' 'PRC' ",'0','0','0','0','0'" TC 'RTP(REG,TC,PRC)'
 
-$ontext
-$BATINCLUDE SATIM\Includes\interpolate.inc RESID 'REG' 'PRC' ",'0','0','0','0','0'" TC 'RTP(REG,TC,PRC)'
+*$ontext
+$BATINCLUDE Includes\interpolate.inc RESID 'REG' 'PRC' ",'0','0','0','0','0'" TC 'RTP(REG,TC,PRC)'
 
-$BATINCLUDE SATIM\Includes\interpolate.inc PAR_CAPL 'REG' 'PRC' ",'0','0','0','0','0'" TC 'PAR_CAPL(REG,TC,PRC)'
+$BATINCLUDE Includes\interpolate.inc PAR_CAPL 'REG' 'PRC' ",'0','0','0','0','0'" TC 'PAR_CAPL(REG,TC,PRC)'
 
 *$BATINCLUDE interpolate PAR_RCAPL 'REG' 'PRC' ",'0','0','0','0','0'" TC 'PAR_RCAPL(REG,TC,PRC)'
 
-$BATINCLUDE SATIM\Includes\interpolate.inc VARACT 'REG' 'PRC' ",'0','0','0','0','0'" TC 'VARACT(REG,TC,PRC)'
+$BATINCLUDE Includes\interpolate.inc VARACT 'REG' 'PRC' ",'0','0','0','0','0'" TC 'VARACT(REG,TC,PRC)'
 
- NCAP_ILED(REG,TC,PRC) = NCAP_ILED(REG,'2012',PRC);
+ NCAP_ILED(REG,TC,PRC) = NCAP_ILED(REG,'2017',PRC);
 
  OBICOST(REG,TC,PRC) = OB_ICOST(REG,PRC,'CUR',TC);
-$BATINCLUDE SATIM\Includes\interpolate.inc OBICOST 'REG' 'PRC' ",'0','0','0','0','0'" TC 'RTP(REG,TC,PRC)'
+$BATINCLUDE Includes\interpolate.inc OBICOST 'REG' 'PRC' ",'0','0','0','0','0'" TC 'RTP(REG,TC,PRC)'
 
  OBACT(REG,TC,PRC) = OB_ACT(REG,PRC,'CUR',TC);
-$BATINCLUDE SATIM\Includes\interpolate.inc OBACT 'REG' 'PRC' ",'0','0','0','0','0'" TC 'RTP(REG,TC,PRC)'
+$BATINCLUDE Includes\interpolate.inc OBACT 'REG' 'PRC' ",'0','0','0','0','0'" TC 'RTP(REG,TC,PRC)'
 
  TVFLOWIN(COM,TC,PRC) = SUM((V,S), F_IN('REGION1',V,TC,PRC,COM,S));
-$BATINCLUDE SATIM\Includes\interpolate.inc TVFLOWIN 'COM' 'PRC' ",'0','0','0','0','0'" TC 'TVFLOWIN(COM,TC,PRC)'
+$BATINCLUDE Includes\interpolate.inc TVFLOWIN 'COM' 'PRC' ",'0','0','0','0','0'" TC 'TVFLOWIN(COM,TC,PRC)'
 
  TVFLOWOUT(COM,TC,PRC) = SUM((V,S), F_OUT('REGION1',V,TC,PRC,COM,S));
-$BATINCLUDE SATIM\Includes\interpolate.inc TVFLOWOUT 'COM' 'PRC' ",'0','0','0','0','0'" TC 'TVFLOWOUT(COM,TC,PRC)'
+$BATINCLUDE Includes\interpolate.inc TVFLOWOUT 'COM' 'PRC' ",'0','0','0','0','0'" TC 'TVFLOWOUT(COM,TC,PRC)'
 
  TCST_INVC(REG,TC,PRC)= sum(V,CST_INVC(REG,V,TC,PRC,'INV'));
-$BATINCLUDE SATIM\Includes\interpolate.inc TCST_INVC 'REG' 'PRC' ",'0','0','0','0','0'" TC 'TCST_INVC(REG,TC,PRC)'
+$BATINCLUDE Includes\interpolate.inc TCST_INVC 'REG' 'PRC' ",'0','0','0','0','0'" TC 'TCST_INVC(REG,TC,PRC)'
 
  TCST_ACTC(REG,TC,PRC)= sum(V,CST_ACTC(REG,V,TC,PRC,'-'));
-$BATINCLUDE SATIM\Includes\interpolate.inc TCST_ACTC 'REG' 'PRC' ",'0','0','0','0','0'" TC 'TCST_ACTC(REG,TC,PRC)'
+$BATINCLUDE Includes\interpolate.inc TCST_ACTC 'REG' 'PRC' ",'0','0','0','0','0'" TC 'TCST_ACTC(REG,TC,PRC)'
 
  TCST_FIXC(REG,TC,PRC)= sum(V,CST_FIXC(REG,V,TC,PRC));
-$BATINCLUDE SATIM\Includes\interpolate.inc TCST_FIXC 'REG' 'PRC' ",'0','0','0','0','0'" TC 'TCST_FIXC(REG,TC,PRC)'
+$BATINCLUDE Includes\interpolate.inc TCST_FIXC 'REG' 'PRC' ",'0','0','0','0','0'" TC 'TCST_FIXC(REG,TC,PRC)'
 
  COM_CSTCO2('REGION1',TC,'CO2EQST')= COM_CSTNET('REGION1',TC,'CO2EQST','ANNUAL','CUR');
 *$BATINCLUDE SATIM\Includes\interpolate.inc COM_CSTCO2 'REG' 'COM' ",'0','0','0','0','0'" TC 'COM_CSTCO2(REG,TC,COM)'
@@ -65,16 +65,17 @@ $BATINCLUDE SATIM\Includes\interpolate.inc TCST_FIXC 'REG' 'PRC' ",'0','0','0','
  T_COMBALEM(REG,TC,COM) = PAR_COMBALEM(REG,TC,COM,'ANNUAL');
 *Special calc for hydrogen for power
  T_COMBALEM('REGION1',TC,'PWRHGN')$SUM((V,S),F_OUT('REGION1',V,TC,'XPWRHGN','PWRHGN',S)) = SUM(S,PAR_COMBALEM('REGION1',TC,'PWRHGN',S)*SUM(V,F_OUT('REGION1',V,TC,'XPWRHGN','PWRHGN',S)))/SUM((V,S),F_OUT('REGION1',V,TC,'XPWRHGN','PWRHGN',S));
-$BATINCLUDE SATIM\Includes\interpolate.inc T_COMBALEM 'REG' 'COM' ",'0','0','0','0','0'" TC 'T_COMBALEM(REG,TC,COM)'
+$BATINCLUDE Includes\interpolate.inc T_COMBALEM 'REG' 'COM' ",'0','0','0','0','0'" TC 'T_COMBALEM(REG,TC,COM)'
 
-$BATINCLUDE SATIM\Includes\interpolate.inc COM_PROJ 'REG' 'COM' ",'0','0','0','0','0'" TC 'COM_PROJ(REG,TC,COM)'
+$BATINCLUDE Includes\interpolate.inc COM_PROJ 'REG' 'COM' ",'0','0','0','0','0'" TC 'COM_PROJ(REG,TC,COM)'
 
 
 * Attempt at putting parameter for results equal to variable:
  PAR_VCAPL(REG,TC,PRC) = VAR_CAP.L(REG,TC,PRC);
-$BATINCLUDE SATIM\Includes\interpolate.inc PAR_VCAPL 'REG' 'PRC' ",'0','0','0','0','0'" TC 'PAR_VCAPL(REG,TC,PRC)'
+$BATINCLUDE Includes\interpolate.inc PAR_VCAPL 'REG' 'PRC' ",'0','0','0','0','0'" TC 'PAR_VCAPL(REG,TC,PRC)'
 
-$offtext
+*$offtext
+
 PAR_VCAPL(REG,TC,PRC) = VAR_CAP.L(REG,TC,PRC);
 NCAP_ILED(REG,TC,PRC) = NCAP_ILED(REG,'2017',PRC);
 OBICOST(REG,TC,PRC) = OB_ICOST(REG,PRC,'CUR',TC);
@@ -180,18 +181,18 @@ $ontext
  Calculation: Keep track of vintages (TP)
 $offtext
 
-NCAP_ILED('REGION1','2012',PRC)$(NCAP_ILED('REGION1','2012',PRC) EQ eps)= -1;
+NCAP_ILED('REGION1','2017',PRC)$(NCAP_ILED('REGION1','2017',PRC) EQ eps)= -1;
 
 
-LOOP((PRC,TC)$(TVNCAP(TC,PRC) AND NCAP_ILED('REGION1','2012',PRC) GT 0),
- LOOP(TCP$((ORD(TCP) GE ORD(TC)) AND (ORD(TCP) LT (ORD(TC)+NCAP_ILED('REGION1','2012',PRC)))),
-  BPINV(RUN,TC,TCP,PRC)$NCAP_ILED('REGION1','2012',PRC) = TVNCAP(TC,PRC)/NCAP_ILED('REGION1','2012',PRC) * OBICOST('REGION1',TC,PRC);
+LOOP((PRC,TC)$(TVNCAP(TC,PRC) AND NCAP_ILED('REGION1','2017',PRC) GT 0),
+ LOOP(TCP$((ORD(TCP) GE ORD(TC)) AND (ORD(TCP) LT (ORD(TC)+NCAP_ILED('REGION1','2017',PRC)))),
+  BPINV(RUN,TC,TCP,PRC)$NCAP_ILED('REGION1','2017',PRC) = TVNCAP(TC,PRC)/NCAP_ILED('REGION1','2017',PRC) * OBICOST('REGION1',TC,PRC);
  );
 );
 * investment cost with negative NCAP_ILED
-LOOP((PRC,TC)$(TVNCAP(TC,PRC) AND NCAP_ILED('REGION1','2012',PRC) LT 0),
- LOOP(TCP$((ORD(TCP) LT ORD(TC)) AND (ORD(TCP) GE (ORD(TC)+NCAP_ILED('REGION1','2012',PRC)))),
-  BPINV(RUN,TC,TCP,PRC)$NCAP_ILED('REGION1','2012',PRC) = TVNCAP(TC,PRC)/(-1*NCAP_ILED('REGION1','2012',PRC)) * OBICOST('REGION1',TC,PRC);
+LOOP((PRC,TC)$(TVNCAP(TC,PRC) AND NCAP_ILED('REGION1','2017',PRC) LT 0),
+ LOOP(TCP$((ORD(TCP) LT ORD(TC)) AND (ORD(TCP) GE (ORD(TC)+NCAP_ILED('REGION1','2017',PRC)))),
+  BPINV(RUN,TC,TCP,PRC)$NCAP_ILED('REGION1','2017',PRC) = TVNCAP(TC,PRC)/(-1*NCAP_ILED('REGION1','2017',PRC)) * OBICOST('REGION1',TC,PRC);
  );
 );
 
@@ -204,7 +205,7 @@ LOOP((PRC,TC)$(TVNCAP(TC,PRC) AND NCAP_ILED('REGION1','2012',PRC) LT 0),
 * 0.852;
 
 * fixing end effect until we run past 2050
- EINVCOST(RUN,'2050') = EINVCOST(RUN,'2049');
+ EINVCOST(RUN,'2070') = EINVCOST(RUN,'2069');
 
 * EFLOW('NAT',XC,TC,TT) = SUM(SUPELE, TVACT(TC,SUPELE))/3.6;
 * !!EFLOW now calculated from flow through transmission. When we include distributed generation we also need to include them in the calc

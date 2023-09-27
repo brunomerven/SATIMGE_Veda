@@ -30,7 +30,7 @@ SETS
   REG                            TIMES regions    /REGION1/
   ALLYEAR                        All Years /1850*2200, 0/
   T(ALLYEAR)                     Time periods /2005*2070/
-  DATAYEAR(ALLYEAR)              Years for which data is provided /2017*2050,2060,2070/
+  DATAYEAR(ALLYEAR)              Years for which data is provided /2017*2055,2058,2063,2065,2068/
   MILESTONYR(ALLYEAR)            TIMES Milestone years
   V(ALLYEAR)                     Vintage years
 
