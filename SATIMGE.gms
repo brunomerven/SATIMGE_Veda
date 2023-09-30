@@ -63,6 +63,10 @@ SETS
   DEM(REG,COM)                   TIMES Demand Commodities
   DEM1(COM)                      TIMES Demand Commodities for REGION1
 
+  CUR    Currencies /MZAR2022/
+*  RPM    plus minus /-, +/
+  SYSUC  COST ACT etc /INV/
+
   UC_N                           List of names of all manual constraints
   SIDE                           LHS and RHS of an equation /LHS, RHS/
 
@@ -230,20 +234,20 @@ PARAMETERS
   PAR_NCAPL(REG,AY,PRC)          New Capacity
   PAR_COMBALEM(REG,AY,COM,S)     Commodity marginal
   NCAP_ILED(REG,AY,PRC)          TIMES lead time
-  CST_INVC(REG,AY,AY,PRC,XXX)     TIMES calculated annual investment costs
-  CST_ACTC(REG,AY,AY,PRC,XXX)     TIMES calculated annual activity costs
+  CST_INVC(REG,AY,AY,PRC,SYSUC)     TIMES calculated annual investment costs
+  CST_ACTC(REG,AY,AY,PRC,*)     TIMES calculated annual activity costs
   CST_FIXC(REG,AY,AY,PRC)         TIMES calculated annual fixed costs
-  COM_CSTNET(REG,AY,COM,S,XXX)  TIMES specified commodity taxes
+  COM_CSTNET(REG,AY,COM,S,CUR)  TIMES specified commodity taxes
   COM_PROJ(REG,AY,COM)           TIMES Demand baseline projection
 
   UC_CAP(UC_N,SIDE,REG,AY,PRC)   TIMES multiplier of capacity variables
 
   G_YRFR(REG,S)                  TIMES seasonal fraction of the year
 
-  OB_ICOST(REG,PRC,XXX,AY)       Interpolated investment cost from TIMES run
+  OB_ICOST(REG,PRC,CUR,AY)       Interpolated investment cost from TIMES run
   OBICOST(REG,AY,PRC)            TIMES investment cost restructured for interpolation
 
-  OB_ACT(REG,PRC,XXX,AY)       Interpolated variable unit cost from TIMES run R per kW or GJ-a
+  OB_ACT(REG,PRC,CUR,AY)       Interpolated variable unit cost from TIMES run R per kW or GJ-a
   OBACT(REG,AY,PRC)            TIMES variable unit cost restructured for interpolation R per GJ
 
 
