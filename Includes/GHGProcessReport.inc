@@ -27,11 +27,11 @@ REPORT('I2C3','ACTGRP',TC,RUN,'C2F6') = sum(PRC$MPRCSubSector(PRC,'Industry','Al
 REPORT('I2C5','ACTGRP',TC,RUN,'CO2') = 21.74*GVA_FS('nf',TC)/GVA_FS('nf','2019');
 REPORT('I2C6','ACTGRP',TC,RUN,'CO2') = 46.32*GVA_FS('nf',TC)/GVA_FS('nf','2019');
 
-* CO2 capture accounted for under CO2C
-REPORT('I2A1','ACTGRP',TC,RUN,'CO2C') = sum(PRC$MPRCSector(PRC,'CO2Capture&Storage'),REPORT(PRC,'CO2SPCEM',TC,RUN,'FlowOut'));
-REPORT('I2A2','ACTGRP',TC,RUN,'CO2C') = sum(PRC$MPRCSector(PRC,'CO2Capture&Storage'),REPORT(PRC,'CO2SPLIM',TC,RUN,'FlowOut'));
+* CO2 capture accounted for under CO2CAPT
+REPORT('I2A1','ACTGRP',TC,RUN,'CO2CAPT') = sum(PRC$MPRCSector(PRC,'CO2Capture&Storage'),REPORT(PRC,'CO2SPCEM',TC,RUN,'FlowOut'));
+REPORT('I2A2','ACTGRP',TC,RUN,'CO2CAPT') = sum(PRC$MPRCSector(PRC,'CO2Capture&Storage'),REPORT(PRC,'CO2SPLIM',TC,RUN,'FlowOut'));
 
-REPORT('I2C2','ACTGRP',TC,RUN,'CO2C') = sum(PRC$MPRCSector(PRC,'CO2Capture&Storage'),REPORT(PRC,'CO2SPIFC',TC,RUN,'FlowOut'))+sum(PRC$MPRCSector(PRC,'CO2Capture&Storage'),REPORT(PRC,'CO2SPIFM',TC,RUN,'FlowOut'));
+REPORT('I2C2','ACTGRP',TC,RUN,'CO2CAPT') = sum(PRC$MPRCSector(PRC,'CO2Capture&Storage'),REPORT(PRC,'CO2SPIFC',TC,RUN,'FlowOut'))+sum(PRC$MPRCSector(PRC,'CO2Capture&Storage'),REPORT(PRC,'CO2SPIFM',TC,RUN,'FlowOut'));
 
 * still need to add others if needed
 
