@@ -14,6 +14,8 @@ execute_load "Land.gdx" LandEmissions;
 
 REPORT(PRC,'ACTGRP',TC,RUN,Emiss)$LandEmissions(PRC,Emiss,TC) = LandEmissions(PRC,Emiss,TC);
 
+REPORT(PRC,'ACTGRP',ENDYEARS,RUN,Emiss)$LandEmissions(PRC,Emiss,'2050') = LandEmissions(PRC,Emiss,'2050');
+
 
 * Write Drivers to Spreadsheet
 execute_unload "DriversAGRI.gdx" GVA_FS POP PAMS_RUN

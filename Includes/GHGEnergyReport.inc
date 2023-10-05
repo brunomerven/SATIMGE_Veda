@@ -1,12 +1,15 @@
 * this module is run at the end to compile energy sector emissions
 
+* we can drop most of this going forward since the Veda model is now tracking emissions where they occur already.
+
 REPORT(PRC,COM,TC,RUN,Emiss)$EmisFactorCor(Com,Emiss,TC,RUN) = REPORT(PRC,COM,TC,RUN,'FlowIn')*EmisFactorCor(Com,Emiss,TC,RUN);
 REPORT(PRC,COM,TC,RUN,Emiss)$(Not EmisFactorCor(Com,Emiss,TC,RUN)) = REPORT(PRC,COM,TC,RUN,'FlowIn')*EmisFactor(Com,Emiss);
 
 * Exception for International Jet Kerosene
 REPORT(PRC,COM,TC,RUN,Emiss)$MPRCSubSector(PRC,'Transport','Aviation-International') = 0;
 
-
+* Exception for CCS
+*REPORT('ETGICCC-CCS-N','ACTGRP',TC,RUN,'CO2') = REPORT('ETGICCC-CCS-N','CO2C',TC,RUN,'FlowOut');
 
 * convert energy flows to TJ to match inventory and DOE energy balances
 *REPORT(PRC,COM,TC,RUN,'Flowin') = REPORT(PRC,COM,TC,RUN,'FlowIn')*1000;

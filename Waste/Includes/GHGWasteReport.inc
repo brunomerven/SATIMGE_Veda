@@ -14,3 +14,5 @@ execute_load "Waste.gdx" WasteEmissions;
 
 
 REPORT(PRC,'ACTGRP',TC,RUN,Emiss)$WasteEmissions(PRC,Emiss,TC) = WasteEmissions(PRC,Emiss,TC);
+
+REPORT(PRC,'ACTGRP',ENDYEARS,RUN,Emiss)$WasteEmissions(PRC,Emiss,'2050') = WasteEmissions(PRC,Emiss,'2050');

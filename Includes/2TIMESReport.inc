@@ -4,6 +4,8 @@
 
 loop(MRUNCASE(RUN,SATIMCASES),
 
+* put_utilities SATIM_Scen 'gdxin' / "%GDXfolder%" "\Gamssave\" SATIMCASES.TL:100;
+
  put_utilities SATIM_Scen 'gdxin' / "%GDXfolder%\" SATIMCASES.TL:0 "\Gamssave\" SATIMCASES.TL:100;
 * put_utilities SATIM_Scen 'gdxin' / "%GDXfolder%\TestBY\Gamssave\",SATIMCASES.TL:50;
  execute_load MILESTONYR ELE NRGELC RTP B E V TS_MAP PRC_RCAP PRC_TSL TS_GROUP
