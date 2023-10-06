@@ -27,3 +27,4 @@ execute_load "Agri.gdx" AgriEmissions;
 
 
 REPORT(PRC,'ACTGRP',TC,RUN,Emiss)$AgriEmissions(PRC,Emiss,TC) = AgriEmissions(PRC,Emiss,TC);
+REPORT(PRC,'ACTGRP',ENDYEARS,RUN,Emiss)$AgriEmissions(PRC,Emiss,'2050') = AgriEmissions(PRC,Emiss,'2050');
