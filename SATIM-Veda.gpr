@@ -1316,28 +1316,6 @@ PlaneRownr=-1
 [RP:CALC_AVERAGE]
 1=gdx = testavg
 
-[RP:SATIMGE]
-1=gdx = test2
-2=r=cge\model, gdx = growthConTest
-3=r=cge\model, gdx = 75Gton3IterTest
-4=r=cge\model, gdx = 9Gton3IterTest
-5=r=cge\model, gdx = 9GtonTestAfx
-6=r=cge\model, gdx = 9GtonTestTraAdj
-7=r=cge\model, gdx = 9GtonTest
-8=r=cge\model, gdx = EBFix4
-9=r=cge\model, gdx = EBFix4, FW = 1
-10=r=cge\model, gdx = EBFix3
-11=r=cge\model, gdx = EBFix2
-12=r=cge\model, gdx = EBFix
-13=r=cge\model, gdx = test_wH2_v4
-14=r=cge\model, gdx = test_wH2_v3
-15=r=cge\model, gdx = test_wH2_v2
-16=r=cge\model, gdx = test_wH2
-17=r=cge\model, gdx = test_preH2
-18=r=cge\model, gdx = testClean2
-19=r=cge\model, gdx = testClean
-20=r=cge\model, gdx = testClean\
-
 [GDXDISP: RUN Set 1]
 PlaneDim=0
 RowDim=1
@@ -1429,60 +1407,49 @@ PlaneFilter1=2021
 1=gdx = test
 2=
 
+[GDXDISP: INCLRUN Par 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+SqTrail0=0
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[RP:SATIMGE]
+1=r=cge\model
+2=gdx = test2
+3=r=cge\model, gdx = growthConTest
+4=r=cge\model, gdx = 75Gton3IterTest
+5=r=cge\model, gdx = 9Gton3IterTest
+6=r=cge\model, gdx = 9GtonTestAfx
+7=r=cge\model, gdx = 9GtonTestTraAdj
+8=r=cge\model, gdx = 9GtonTest
+9=r=cge\model, gdx = EBFix4
+10=r=cge\model, gdx = EBFix4, FW = 1
+11=r=cge\model, gdx = EBFix3
+12=r=cge\model, gdx = EBFix2
+13=r=cge\model, gdx = EBFix
+14=r=cge\model, gdx = test_wH2_v4
+15=r=cge\model, gdx = test_wH2_v3
+16=r=cge\model, gdx = test_wH2_v2
+17=r=cge\model, gdx = test_wH2
+18=r=cge\model, gdx = test_preH2
+19=r=cge\model, gdx = testClean2
+20=r=cge\model, gdx = testClean
+
 [MRUFILES]
-1=C:\Models\SATIM-EL\Untitled_1.gms
-2=C:\Models\SATIMGE\MergeRuns_H.gms
+1=C:\Models\SATIMGE_Veda\SATIMGE.log
+2=C:\Models\SATIM-EL\Untitled_1.gms
+3=C:\Models\SATIMGE\MergeRuns_H.gms
 
 [OPENWINDOW_1]
-FILE0=C:\Models\SATIM-EL\testDateIndex.gms
-FILE1=C:\Models\SATIM-EL\testDateIndex.lst
-FILE2=C:\Models\SATIM-EL\testDateIndex.gms
+FILE0=C:\Models\SATIMGE_Veda\SATIMGE.gdx
+FILE1=C:\Models\SATIMGE_Veda\SATIMGE.gms
+FILE2=C:\Models\SATIMGE_Veda\SATIMGE.lst
+FILE3=C:\Models\SATIMGE_Veda\SATIMGE.lst
 MAXIM=0
 TOP=289
 LEFT=729
 HEIGHT=880
 WIDTH=1115
-
-[OPENWINDOW_2]
-FILE0=C:\Models\SATIM-EL\MergeRuns_H.gms
-FILE1=C:\Models\SATIM-EL\MergeRuns_H.gms
-MAXIM=0
-TOP=104
-LEFT=104
-HEIGHT=880
-WIDTH=1144
-
-[OPENWINDOW_3]
-FILE0=C:\Models\SATIM-EL\calc_average.gms
-FILE1=C:\Models\SATIM-EL\calc_average.lst
-FILE2=C:\Models\SATIM-EL\Includes\2energyinit.inc
-FILE3=C:\Models\SATIM-EL\includes\2TIMESReport.inc
-FILE4=C:\Models\SATIM-EL\Includes\2TIMESSubAnnualReport.inc
-FILE5=C:\Models\SATIM-EL\MergeRuns_H.gms
-FILE6=C:\Models\SATIM-EL\MergeRuns_H.lst
-FILE7=C:\Models\SATIM-EL\REPORT.gdx
-FILE8=C:\Models\SATIM-EL\SATIMGE.gms
-FILE9=C:\Models\SATIM-EL\SATIMGE.lst
-FILE10=C:\Models\SATIM-EL\test.gdx
-FILE11=C:\Models\SATIM-EL\testavg.gdx
-FILE12=C:\Models\SATIM-EL\testDateIndex.gms
-FILE13=C:\Models\SATIM-EL\TS_MAP2_HiRes1.gdx
-FILE14=C:\Models\SATIMGE\SATIM\Gams_WrkTI\gamssave\8GC.gdx
-FILE15=C:\Models\SATIM-EL\MergeRuns_H.gms
-MAXIM=0
-TOP=18
-LEFT=1252
-HEIGHT=751
-WIDTH=1250
-
-[OPENWINDOW_4]
-FILE0=C:\Models\SATIM-EL\GAMS_WrkTIMES\Run00\GAMSSAVE\run00.gdx
-FILE1=C:\Models\SATIM-EL\HistoricalData\HistoricalData.gdx
-FILE2=C:\Models\SATIM-EL\test.gdx
-FILE3=C:\Models\SATIM-EL\test_hourly.gdx
-FILE4=C:\Models\SATIM-EL\test.gdx
-MAXIM=0
-TOP=29
-LEFT=17
-HEIGHT=1225
-WIDTH=1218
