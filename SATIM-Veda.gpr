@@ -1407,36 +1407,47 @@ PlaneFilter1=2021
 1=gdx = test
 2=
 
+[GDXDISP: INCLRUN Par 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+SqTrail0=0
+Order=1
+Decim=7
+PlaneRownr=-1
+
 [RP:SATIMGE]
-1=gdx = test2
-2=r=cge\model, gdx = growthConTest
-3=r=cge\model, gdx = 75Gton3IterTest
-4=r=cge\model, gdx = 9Gton3IterTest
-5=r=cge\model, gdx = 9GtonTestAfx
-6=r=cge\model, gdx = 9GtonTestTraAdj
-7=r=cge\model, gdx = 9GtonTest
-8=r=cge\model, gdx = EBFix4
-9=r=cge\model, gdx = EBFix4, FW = 1
-10=r=cge\model, gdx = EBFix3
-11=r=cge\model, gdx = EBFix2
-12=r=cge\model, gdx = EBFix
-13=r=cge\model, gdx = test_wH2_v4
-14=r=cge\model, gdx = test_wH2_v3
-15=r=cge\model, gdx = test_wH2_v2
-16=r=cge\model, gdx = test_wH2
-17=r=cge\model, gdx = test_preH2
-18=r=cge\model, gdx = testClean2
-19=r=cge\model, gdx = testClean
-20=r=cge\model, gdx = testClean\
+1=r=cge\model
+2=gdx = test2
+3=r=cge\model, gdx = growthConTest
+4=r=cge\model, gdx = 75Gton3IterTest
+5=r=cge\model, gdx = 9Gton3IterTest
+6=r=cge\model, gdx = 9GtonTestAfx
+7=r=cge\model, gdx = 9GtonTestTraAdj
+8=r=cge\model, gdx = 9GtonTest
+9=r=cge\model, gdx = EBFix4
+10=r=cge\model, gdx = EBFix4, FW = 1
+11=r=cge\model, gdx = EBFix3
+12=r=cge\model, gdx = EBFix2
+13=r=cge\model, gdx = EBFix
+14=r=cge\model, gdx = test_wH2_v4
+15=r=cge\model, gdx = test_wH2_v3
+16=r=cge\model, gdx = test_wH2_v2
+17=r=cge\model, gdx = test_wH2
+18=r=cge\model, gdx = test_preH2
+19=r=cge\model, gdx = testClean2
+20=r=cge\model, gdx = testClean
 
 [MRUFILES]
-1=C:\Models\SATIM-EL\Untitled_1.gms
-2=C:\Models\SATIMGE\MergeRuns_H.gms
+1=C:\Models\SATIMGE_Veda\SATIMGE.log
+2=C:\Models\SATIM-EL\Untitled_1.gms
+3=C:\Models\SATIMGE\MergeRuns_H.gms
 
 [OPENWINDOW_1]
-FILE0=C:\Models\SATIMGE_Veda\SATIMGE.gms
-FILE1=C:\Models\SATIMGE_Veda\SATIMGE.lst
+FILE0=C:\Models\SATIMGE_Veda\SATIMGE.gdx
+FILE1=C:\Models\SATIMGE_Veda\SATIMGE.gms
 FILE2=C:\Models\SATIMGE_Veda\SATIMGE.lst
+FILE3=C:\Models\SATIMGE_Veda\SATIMGE.lst
 MAXIM=0
 TOP=289
 LEFT=729
