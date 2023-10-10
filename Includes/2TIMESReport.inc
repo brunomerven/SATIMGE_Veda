@@ -124,37 +124,37 @@ T_COMBALEM('REGION1',TC,'PWRHGN')$SUM((V,S),F_OUT('REGION1',V,TC,'XPWRHGN','PWRH
 
 
 *bm methane rich gas is currently a product of sasol which is accounted for in SATIM, but not in eSAGE so making this zero
-* FLOW_OUT_FSFuels('petr','cngas',TC) = 0;
+ FLOW_OUT_FSFuels('petr','cngas',TC) = 0;
 *bm correcting for elc autogeneration which should be excluded from elc demand
-* FLOW_IN_FSFuels('petr','celec',TC) = max(0,FLOW_IN_FSFuels('petr','celec',TC)-FLOW_OUT_FSFuels('petr','celec',TC));
-* FLOW_OUT_FSFuels('petr','celec',TC) = 0;
+ FLOW_IN_FSFuels('petr','celec',TC) = max(0,FLOW_IN_FSFuels('petr','celec',TC)-FLOW_OUT_FSFuels('petr','celec',TC));
+ FLOW_OUT_FSFuels('petr','celec',TC) = 0;
 
 
 *Correction made for Pulp and paper own gen, this may have to be done to more sectors as own gen becomes more prevalent
-* FLOW_IN_FSFuels('pp','celec',TC) = FLOW_IN_FSFuels('pp','celec',TC) - FLOW_OUT_FSFuels('pp','celec',TC);
+ FLOW_IN_FSFuels('pp','celec',TC) = FLOW_IN_FSFuels('pp','celec',TC) - FLOW_OUT_FSFuels('pp','celec',TC);
 
 *Correction made for power sector gas. New energy balance implies all gas consumed in chemical sector. Old EB had some gas going to power.
 * Sasol autoproducers are no longer included in power.
-* FLOW_IN_FSFuels('elec','cngas',TC) = max(FLOW_IN_FSFuels('elec','cngas',TC),3);
+ FLOW_IN_FSFuels('elec','cngas',TC) = max(FLOW_IN_FSFuels('elec','cngas',TC),3);
 
 
 *UCONV_C_T2C(C);
 
 *bm calc oil flow   !!! note that TVACT includes some non-energy commodities that are currently not part of the output of apetr in the CGE. These should ideally also be included there.
 * OIL_FLOW(RUN,TC) = SUM(PRC$MPRCFS(PRC,'petr'), TVACT(TC,PRC));
-* OIL_FLOW(RUN,TC) = sum(C,FLOW_OUT_FSFuels('petr',C,TC));
+ OIL_FLOW(RUN,TC) = sum(C,FLOW_OUT_FSFuels('petr',C,TC));
 
 *bm calc coal flow - putting in a minimum value to avoid problems with theta calcs in CGE
-* COAL_FLOW(RUN,TC,'ccoal-low') = max(30,sum(FSATIM,FLOW_IN_FSFuels(FSATIM,'ccoal-low',TC)));
-* COAL_FLOW(RUN,TC,'ccoal-hgh') = max(30,sum(FSATIM,FLOW_IN_FSFuels(FSATIM,'ccoal-hgh',TC)));
+ COAL_FLOW(RUN,TC,'ccoal-low') = max(30,sum(FSATIM,FLOW_IN_FSFuels(FSATIM,'ccoal-low',TC)));
+ COAL_FLOW(RUN,TC,'ccoal-hgh') = max(30,sum(FSATIM,FLOW_IN_FSFuels(FSATIM,'ccoal-hgh',TC)));
 
 * EIntensityQA_FS(FS,C,TC)$(QA_FS(FS,TC) GT 0.1) = FLOW_IN_FSFuels(FS,C,TC)/QA_FS(FS,TC);
 
-* EIntensity_FS(FS,C,TC)$(GVA_FS(FS,TC) GT 0.1) = FLOW_IN_FSFuels(FS,C,TC)/GVA_FS(FS,TC);
+ EIntensity_FS(FS,C,TC)$(GVA_FS(FS,TC) GT 0.1) = FLOW_IN_FSFuels(FS,C,TC)/GVA_FS(FS,TC);
 * EIntensity_FS(FS,C,TC)$(QA_FS(FS,TC) GT 0.1) = FLOW_IN_FSFuels(FS,C,TC)/QA_FS(FS,TC);
 
 *bm calculating coal mining capacity based on consumption+exports)
-* COALMINCAP(TC) = sum(FSATIM,FLOW_IN_FSFuels(FSATIM,'ccoal-hgh',TC))+sum(FSATIM,FLOW_IN_FSFuels(FSATIM,'ccoal-low',TC));
+ COALMINCAP(TC) = sum(FSATIM,FLOW_IN_FSFuels(FSATIM,'ccoal-hgh',TC))+sum(FSATIM,FLOW_IN_FSFuels(FSATIM,'ccoal-low',TC));
 
 * For households on transport
 * multiply by share of pkm by household to allocate consumption to different hh
@@ -208,6 +208,9 @@ LOOP((PRC,TC)$(TVNCAP(TC,PRC) AND NCAP_ILED('REGION1','2017',PRC) LT 0),
 
 * fixing end effect until we run past 2050
  EINVCOST(RUN,'2070') = EINVCOST(RUN,'2069');
+ EINVQINV(XC,T1,TT) = EINVCOST(RUN,'2020');
+
+
 
 * EFLOW('NAT',XC,TC,TT) = SUM(SUPELE, TVACT(TC,SUPELE))/3.6;
 * !!EFLOW now calculated from flow through transmission. When we include distributed generation we also need to include them in the calc
@@ -217,28 +220,28 @@ LOOP((PRC,TC)$(TVNCAP(TC,PRC) AND NCAP_ILED('REGION1','2017',PRC) LT 0),
 * ELC_FLOW(RUN,TC) = TVACT(TC,'ELCDEM');
 
 * recalculate intensity for energy sectors, where GVA not suitable
-* EIntensity_FS('elec',C,TC) = FLOW_IN_FSFuels('elec',C,TC)/ELC_FLOW(RUN,TC);
-* EIntensity_FS('elec','ccoal-low',TC) = max(0.01,EIntensity_FS('elec','ccoal-low',TC));
+ EIntensity_FS('elec',C,TC) = FLOW_IN_FSFuels('elec',C,TC)/ELC_FLOW(RUN,TC);
+ EIntensity_FS('elec','ccoal-low',TC) = max(0.01,EIntensity_FS('elec','ccoal-low',TC));
 
-* EIntensity_FS(FS,'ccoal-hgh',TC) = max(0.0001,EIntensity_FS(FS,'ccoal-hgh',TC));
+ EIntensity_FS(FS,'ccoal-hgh',TC) = max(0.0001,EIntensity_FS(FS,'ccoal-hgh',TC));
 
-* EIntensity_FS('hydr',C,TC)$(FLOW_OUT_FSFuels('hydr','chydr',TC) GT .001) = FLOW_IN_FSFuels('hydr',C,TC)/FLOW_OUT_FSFuels('hydr','chydr',TC);
-* EIntensity_FS('petr',C,TC)$OIL_FLOW(RUN,TC) = FLOW_IN_FSFuels('petr',C,TC)/OIL_FLOW(RUN,TC);
+ EIntensity_FS('hydr',C,TC)$(FLOW_OUT_FSFuels('hydr','chydr',TC) GT .001) = FLOW_IN_FSFuels('hydr',C,TC)/FLOW_OUT_FSFuels('hydr','chydr',TC);
+ EIntensity_FS('petr',C,TC)$OIL_FLOW(RUN,TC) = FLOW_IN_FSFuels('petr',C,TC)/OIL_FLOW(RUN,TC);
 
-* EIntensity_FS('petr','ccoal-low',TC) = max(0.01,EIntensity_FS('petr','ccoal-low',TC));
+ EIntensity_FS('petr','ccoal-low',TC) = max(0.01,EIntensity_FS('petr','ccoal-low',TC));
 
-* EIntensity_FS('am',C,TC)$FLOW_OUT_FSFuels('am','cammo',TC) = FLOW_IN_FSFuels('am',C,TC)/FLOW_OUT_FSFuels('am','cammo',TC);
-* EIntensity_FS('is',C,TC) = FLOW_IN_FSFuels('is',C,TC)/(FLOW_OUT_FS('is','IISCRS',TC)+VARACT('REGION1',TC,'PEXGDRI'));
+ EIntensity_FS('am',C,TC)$FLOW_OUT_FSFuels('am','cammo',TC) = FLOW_IN_FSFuels('am',C,TC)/FLOW_OUT_FSFuels('am','cammo',TC);
+ EIntensity_FS('is',C,TC) = FLOW_IN_FSFuels('is',C,TC)/(FLOW_OUT_FS('is','IISCRS',TC)+VARACT('REGION1',TC,'PEXGDRI'));
 
 * BM!!! need to create QA_FSStart
 * EIntensityQA_FS(FS,'chydr',TC)$FLOW_IN_FSFuels(FS,'chydr',TC) = FLOW_IN_FSFuels(FS,'chydr',TC)/QA_FS(FS,TC);
 
 
 *BM+FH 201218: SETTING STARTING POINT FOR HYDROGEN
-* ICAFSGR(C,FS,T)$(EIntensity_FS(FS,C,T-1) GT 0.00001) = EIntensity_FS(FS,C,T)/EIntensity_FS(FS,C,T-1);
+ ICAFSGR(C,FS,T)$(EIntensity_FS(FS,C,T-1) GT 0.00001) = EIntensity_FS(FS,C,T)/EIntensity_FS(FS,C,T-1);
 
 
-* ICAFSGR(C,'nf',T) = min(1,ICAFSGR(C,'nf',T));
+ ICAFSGR(C,'nf',T) = min(1,ICAFSGR(C,'nf',T));
 
 * ICAFSGR('cpetr_d','tranlp',T,TT) = 0.8;
 

@@ -98,7 +98,7 @@ PARAMETERS
 
 *  GDP_SIMPLE(FS,AY,RUN)          GDP for shorter runs
 
-*  CCONX(AC,T)                  carbon content of final demand historical
+  CCONX(AC,T)                  carbon content of final demand historical
 
 ;
 
@@ -411,10 +411,10 @@ LOOP(TS_HOURLY,
 
 * File declarations------------------------------------------------------------
 *INCLUDE NOTES!!!What are these files for?
- FILE SIM_DEM_FILE /".\satim\%TIMESfolder%\DMD_ALL+REGION1.dds"/;
- FILE SIM_OTHPAR_FILE /".\satim\%TIMESfolder%\sim_othpar+REGION1.dds"/;
- FILE RUNTIMES2 /".\satim\%TIMESfolder%\RUNTIMES2.CMD"/;
- FILE ShowRunNumber /".\satim\%TIMESfolder%\ShowRunNumber.CMD"/;
+* FILE SIM_DEM_FILE /"%GDXfolder%\" SATIMCASES.TL:0 "\dmd_prj.dd"/;
+ FILE SIM_DEM_FILE /"%GDXfolder%\dmd_prj.dd"/;
+* FILE SIM_OTHPAR_FILE /".\satim\%TIMESfolder%\sim_othpar+REGION1.dds"/;
+ FILE RUNTIMES /"%GDXfolder%\RUNTIMES.CMD"/;
  FILE SATIM_Scen;
  FILE CGE_Scen;
  FILE Scen;
@@ -521,7 +521,7 @@ $offtext
 
 if(SIM_ESAGE(RUN) eq 1,
 
-*$batinclude cge\includes\2simulation_loop.inc
+$batinclude cge\includes\2simulation_loop.inc
 
 ELSE
 
