@@ -189,5 +189,10 @@ GAMS_WrkTIMES/Reference/tee.exe
 GAMS_WrkTIMES/RefDebug/
 
 *.zip
+<<<<<<< HEAD
 
 AppData/
+=======
+
+GAMS_WrkTIMES/
+>>>>>>> main

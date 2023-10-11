@@ -21,9 +21,9 @@ $include cge\includes\2varinit.inc
     if(SIM_SATIM(RUN) eq 1,
 
 * Write Drivers to DMD_PROJ workbook
-         execute 'gdxxrw.exe i=drivers.gdx o=.\SATIM\DataSpreadsheets\DMD_PRJ.xlsx index=index_G2E!a6';
+         execute 'gdxxrw.exe i=drivers.gdx o=.\suppxls\DMD_PRJ.xlsx index=index_G2E!a6';
 * Read resulting Demand from DMD_PROJ workbook
-         execute 'gdxxrw.exe i=.\SATIM\DataSpreadsheets\DMD_PRJ.xlsx o=EnergyDemand.gdx index=index_E2G!a6';
+         execute 'gdxxrw.exe i=.\suppxls\DMD_PRJ.xlsx o=EnergyDemand.gdx index=index_E2G!a6';
          execute_load "EnergyDemand.gdx" SIM_DEMX;
 * Need to Add Occupancy and Freight loading per vehicle category to calculate pkm and tkm
 
@@ -40,41 +40,41 @@ $include cge\includes\2varinit.inc
          SIM_DEM_FILE.nd = 13;
          SIM_DEM_FILE.ap = 0;
 
-         PUT 'PARAMETER ACOM_PROJ /' /;
+         PUT '$ONEMPTY' /;
+         PUT '$ONEPS' /;
+         PUT '$ONWARNING' /;
+*         PUT "SET RUN_NAME '" SATIMCASES.TL "'"  /;
+         PUT "$SET SCENARIO_NAME 'dmd_prj'" /;
+
+         PUT 'PARAMETER' /;
+         PUT "COM_PROJ ' '/" /;
 
          LOOP((DEM1,TTIMES),
                  EFVAL = SIM_DEMX(DEM1,TTIMES);
                  if(EFVAL,
-                         PUT "REGION1.", DEM1.TL, ".", TTIMES.TL, EFVAL /;
+                         PUT "REGION1." TTIMES.TL "." DEM1.TL, "." EFVAL /;
                  else
-                         PUT "REGION1.", DEM1.TL, ".", TTIMES.TL, "eps" /;
+                         PUT "REGION1." TTIMES.TL ".", DEM1.TL "eps" /;
 
                  );
          );
          PUT "/;"/;
 
 *Write Cumulative CO2 CAP bound
-         PUT 'PARAMETER ACOMCUMNET /' /;
-         EFVAL = SIM_CO2CUMUL(RUN)*1000000;
-         if(EFVAL,
-                 PUT "REGION1.CO2EQSB.2021.2050.'UP'  ", EFVAL /;
-         );
+*         PUT 'PARAMETER ACOMCUMNET /' /;
+*         EFVAL = SIM_CO2CUMUL(RUN)*1000000;
+*         if(EFVAL,
+*                 PUT "REGION1.CO2EQSB.2021.2050.'UP'  ", EFVAL /;
+*         );
          PUTCLOSE "/;";
 
-         PUT  ShowRunNumber;
-         RUNTIMES2.pc = 2;
-         RUNTIMES2.nd = 5;
-         RUNTIMES2.ap = 0;
-         PUTCLOSE "";
-
-
-$include SATIM\includes\2runTIMES.inc
+$include includes\2runTIMES.inc
   );
 * if(SIM_SATIM(RUN) eq 1,
 *$exit
 
 
-$include SATIM\includes\2TIMESReport.inc
+$include includes\2TIMESReport.inc
 
 * SIM_CO2Price assumed to be in the same units as SATIM: mR/ktonCO2
 * CGE requires bR and tracks ktonCO2 so dividing by 1000
@@ -476,7 +476,7 @@ $offtext
     AFXGR('ANGAS','NAT',XC,TC) = -.05;
 
 * chemicals set to partially track Secunda and jet fuel production
-    CTL_Weight(TC,RUN) = 0.7 * VARACT('REGION1',TC-1,'UCTLCLEIN-E')/VARACT('REGION1','2012','UCTLCLEIN-E');
+    CTL_Weight(TC,RUN) = 0.7 * VARACT('REGION1',TC-1,'UCTLCLEIN-E')/VARACT('REGION1','2017','UCTLCLEIN-E');
 
     AFX('ABCHM',RD) = YES;
     AFLEO('ABCHM') = YES;
@@ -496,7 +496,7 @@ $offtext
 *$offtext
 
 * Exogenous Exports can only be used in sectors that exist and active in the base year
-* the export level specification assumes a 1mton export in 2012 and that PEXGDRI is the green iron export in mtons
+* the export level specification assumes a 1mton export in 2017 and that PEXGDRI is the green iron export in mtons
     QE.FX('ciron','REST') = QE0('ciron','REST')*(1+VARACT('REGION1',TC,'PEXGDRI')*0.8);
 
 * ammonia
