@@ -15,7 +15,7 @@ loop(MRUNCASE(RUN,SATIMCASES),
 * VAR_RCAP;
 );
 
-VARACT('REGION1',TC,PRC) = SUM((V,S), VAR_ACT.L('REGION1',V,TC,PRC,S));
+VARACT('REGION1',TTIMES,PRC) = SUM((V,S), VAR_ACT.L('REGION1',V,TTIMES,PRC,S));
 
 TGAP(MILESTONYR) = E(MILESTONYR) - B(MILESTONYR)+1;
 
@@ -125,6 +125,11 @@ T_COMBALEM('REGION1',TC,'PWRHGN')$SUM((V,S),F_OUT('REGION1',V,TC,'XPWRHGN','PWRH
 
 *bm methane rich gas is currently a product of sasol which is accounted for in SATIM, but not in eSAGE so making this zero
  FLOW_OUT_FSFuels('petr','cngas',TC) = 0;
+*putting a small minimum to avoid division by zero when all refineries are shut
+ FLOW_OUT_FSFuels('petr', 'cpetr-p',TC) = max(0.0001,FLOW_OUT_FSFuels('petr', 'cpetr-p',TC));
+ FLOW_OUT_FSFuels('petr', 'cpetr-d',TC) = max(0.0001,FLOW_OUT_FSFuels('petr', 'cpetr-d',TC));
+
+
 *bm correcting for elc autogeneration which should be excluded from elc demand
  FLOW_IN_FSFuels('petr','celec',TC) = max(0,FLOW_IN_FSFuels('petr','celec',TC)-FLOW_OUT_FSFuels('petr','celec',TC));
  FLOW_OUT_FSFuels('petr','celec',TC) = 0;
@@ -204,10 +209,17 @@ LOOP((PRC,TC)$(TVNCAP(TC,PRC) AND NCAP_ILED('REGION1','2017',PRC) LT 0),
 *Sum across vintages to get total annual cost (billions of rands) and convert from 2015 to 2019 Rands for CGE
 * EINVCOST(XC,T,TT) = SUM((SUPELE AND SUPOIL), INVCOST(XC,T,TT,ELE));
  EINVCOST(RUN,TC) = SUM(PRCPower, INVCOST(RUN,TC,PRCPower))*1.22;
-* 0.852;
 
-* fixing end effect until we run past 2050
- EINVCOST(RUN,'2070') = EINVCOST(RUN,'2069');
+* EINVCOST(RUN,'2022') = EINVCOST(RUN,'2022')*0.8;
+* EINVCOST(RUN,'2023') = EINVCOST(RUN,'2023')*0.8;
+
+
+
+* fixing end effect until we run past 2055
+ EINVCOST(RUN,'2055') = EINVCOST(RUN,'2054');
+
+* setting starting value higher otherwise too much of a shock
+ EINVCOST(RUN,'2019') = EINVCOST(RUN,'2020');
  EINVQINV(XC,T1,TT) = EINVCOST(RUN,'2020');
 
 

@@ -4,16 +4,16 @@
 
 
 * Calculate Employment per SATIM sector
-REPORT(PRC,'ACTGRP',TC,RUN,'Employment-p') = sum(FS$MPRCFS2(PRC,FS),sum(A$MFSA(FS,A),QFX('flab-p',A,'nat',XC,TC,'2050')));
-REPORT(PRC,'ACTGRP',TC,RUN,'Employment-m') = sum(FS$MPRCFS2(PRC,FS),sum(A$MFSA(FS,A),QFX('flab-m',A,'nat',XC,TC,'2050')));
-REPORT(PRC,'ACTGRP',TC,RUN,'Employment-s') = sum(FS$MPRCFS2(PRC,FS),sum(A$MFSA(FS,A),QFX('flab-s',A,'nat',XC,TC,'2050')));
-REPORT(PRC,'ACTGRP',TC,RUN,'Employment-t') = sum(FS$MPRCFS2(PRC,FS),sum(A$MFSA(FS,A),QFX('flab-t',A,'nat',XC,TC,'2050')));
+REPORT(PRC,'ACTGRP',TC,RUN,'Employment-p') = sum(FS$MPRCFS2(PRC,FS),sum(A$MFSA(FS,A),QFX('flab-p',A,'nat',XC,TC,'2055')));
+REPORT(PRC,'ACTGRP',TC,RUN,'Employment-m') = sum(FS$MPRCFS2(PRC,FS),sum(A$MFSA(FS,A),QFX('flab-m',A,'nat',XC,TC,'2055')));
+REPORT(PRC,'ACTGRP',TC,RUN,'Employment-s') = sum(FS$MPRCFS2(PRC,FS),sum(A$MFSA(FS,A),QFX('flab-s',A,'nat',XC,TC,'2055')));
+REPORT(PRC,'ACTGRP',TC,RUN,'Employment-t') = sum(FS$MPRCFS2(PRC,FS),sum(A$MFSA(FS,A),QFX('flab-t',A,'nat',XC,TC,'2055')));
 
 * Overwrite Elc Sector with SATIM coeffs
- REPORT(PRC,'ACTGRP',TC,RUN,'Employment-p')$UC_CAP('UCPWR_FLAB-P','LHS','REGION1','2012',PRC) = UC_CAP('UCPWR_FLAB-P','LHS','REGION1',TC,PRC)*(-1)*TVCAP(TC,PRC);
- REPORT(PRC,'ACTGRP',TC,RUN,'Employment-m')$UC_CAP('UCPWR_FLAB-M','LHS','REGION1','2012',PRC) = UC_CAP('UCPWR_FLAB-M','LHS','REGION1',TC,PRC)*(-1)*TVCAP(TC,PRC);
- REPORT(PRC,'ACTGRP',TC,RUN,'Employment-s')$UC_CAP('UCPWR_FLAB-S','LHS','REGION1','2012',PRC) = UC_CAP('UCPWR_FLAB-S','LHS','REGION1',TC,PRC)*(-1)*TVCAP(TC,PRC);
- REPORT(PRC,'ACTGRP',TC,RUN,'Employment-t')$UC_CAP('UCPWR_FLAB-T','LHS','REGION1','2012',PRC) = UC_CAP('UCPWR_FLAB-T','LHS','REGION1',TC,PRC)*(-1)*TVCAP(TC,PRC);
+ REPORT(PRC,'ACTGRP',TC,RUN,'Employment-p')$UC_CAP('UCPWR_FLAB-P','LHS','REGION1','2019',PRC) = UC_CAP('UCPWR_FLAB-P','LHS','REGION1',TC,PRC)*(-1)*TVCAP(TC,PRC);
+ REPORT(PRC,'ACTGRP',TC,RUN,'Employment-m')$UC_CAP('UCPWR_FLAB-M','LHS','REGION1','2019',PRC) = UC_CAP('UCPWR_FLAB-M','LHS','REGION1',TC,PRC)*(-1)*TVCAP(TC,PRC);
+ REPORT(PRC,'ACTGRP',TC,RUN,'Employment-s')$UC_CAP('UCPWR_FLAB-S','LHS','REGION1','2019',PRC) = UC_CAP('UCPWR_FLAB-S','LHS','REGION1',TC,PRC)*(-1)*TVCAP(TC,PRC);
+ REPORT(PRC,'ACTGRP',TC,RUN,'Employment-t')$UC_CAP('UCPWR_FLAB-T','LHS','REGION1','2019',PRC) = UC_CAP('UCPWR_FLAB-T','LHS','REGION1',TC,PRC)*(-1)*TVCAP(TC,PRC);
 
 
 
@@ -21,8 +21,8 @@ REPORT(PRC,'ACTGRP',TC,RUN,'Employment-t') = sum(FS$MPRCFS2(PRC,FS),sum(A$MFSA(F
 
 
 *Calculate Consumption per CGE income decile (this could be done more elegantly)
-REPORT(PRCH,'ACTGRP',TC,RUN,'Consumption') = sum(H$MHPRCH(PRCH,H),EHX(H,XC,TC,'2050'));
-REPORT(PRCH,'ACTGRP',TC,RUN,'Population') = sum(H$MHPRCH(PRCH,H),HPOPX(H,XC,TC,'2050'));
+REPORT(PRCH,'ACTGRP',TC,RUN,'Consumption') = sum(H$MHPRCH(PRCH,H),EHX(H,XC,TC,'2055'));
+REPORT(PRCH,'ACTGRP',TC,RUN,'Population') = sum(H$MHPRCH(PRCH,H),HPOPX(H,XC,TC,'2055'));
 
 
 *Calculate Consumption per SATIM income group
@@ -30,13 +30,13 @@ REPORT(PRCH,'ACTGRP',TC,RUN,'Population') = sum(H$MHPRCH(PRCH,H),HPOPX(H,XC,TC,'
 
 *Calculate Real Trade Balance
 *REPORT('OtherEconIndicators',TCG,TC,RUN,'Imports') = sum(C$MCTCG(C,TCG),PM0(C,'rest')*QMX(C,'rest',XC,TC,'2050'));
-REPORT('OtherEconIndicators',TCG,TC,RUN,'Imports') = sum(C$MCTCG(C,TCG),PWM0(C,'rest')*QMX(C,'rest',XC,TC,'2050'));
+REPORT('OtherEconIndicators',TCG,TC,RUN,'Imports') = sum(C$MCTCG(C,TCG),PWM0(C,'rest')*QMX(C,'rest',XC,TC,'2055'));
 
 *REPORT('OtherEconIndicators',TCG,TC,RUN,'Exports') = sum(C$MCTCG(C,TCG),PE0(C,'rest')*QEX(C,'rest',XC,TC,'2050'));
-REPORT('OtherEconIndicators',TCG,TC,RUN,'Exports') = sum(C$MCTCG(C,TCG),PWE0(C,'rest')*QEX(C,'rest',XC,TC,'2050'));
+REPORT('OtherEconIndicators',TCG,TC,RUN,'Exports') = sum(C$MCTCG(C,TCG),PWE0(C,'rest')*QEX(C,'rest',XC,TC,'2055'));
 
 *REPORT('OtherEconIndicators','ACTGRP',TC,RUN,'TradeDeficit') = sum(C,PM0(C,'rest')*QMX(C,'rest',XC,TC,'2050')-PE0(C,'rest')*QEX(C,'rest',XC,TC,'2050'));
-REPORT('OtherEconIndicators','ACTGRP',TC,RUN,'TradeDeficit') = sum(C,PWM0(C,'rest')*QMX(C,'rest',XC,TC,'2050')-PWE0(C,'rest')*QEX(C,'rest',XC,TC,'2050'));
+REPORT('OtherEconIndicators','ACTGRP',TC,RUN,'TradeDeficit') = sum(C,PWM0(C,'rest')*QMX(C,'rest',XC,TC,'2055')-PWE0(C,'rest')*QEX(C,'rest',XC,TC,'2055'));
 
 *The Palma ratio is defined as the ratio of the richest 10% of the population's
 *share of gross national income divided by the poorest 40%'s share. It is
@@ -51,9 +51,9 @@ REPORT('OtherEconIndicators','ACTGRP',TC,RUN,'TradeDeficit') = sum(C,PWM0(C,'res
 *struggle between the rich and poor, and who the middle classes side with.
 
  Report('OtherEconIndicators','ACTGRP',TC,RUN,'PalmaRatio')
-         = (YIX('hhd-9',XC,TC,'2050'))
-          /(YIX('hhd-0',XC,TC,'2050')+YIX('hhd-1',XC,TC,'2050')
-           +YIX('hhd-2',XC,TC,'2050')+YIX('hhd-3',XC,TC,'2050'));
+         = (YIX('hhd-9',XC,TC,'2055'))
+          /(YIX('hhd-0',XC,TC,'2055')+YIX('hhd-1',XC,TC,'2055')
+           +YIX('hhd-2',XC,TC,'2055')+YIX('hhd-3',XC,TC,'2055'));
 
 *The 20:20 or 20/20 ratio compares how much richer the top 20% of populations
 *are to the bottom 20% of a given population. This can be more revealing of the
@@ -67,8 +67,8 @@ REPORT('OtherEconIndicators','ACTGRP',TC,RUN,'TradeDeficit') = sum(C,PWM0(C,'res
 *population in prison, physical health, mental health and many others.
 
  Report('OtherEconIndicators','ACTGRP',TC,RUN,'20-20Ratio')
-         = (YIX('hhd-9',XC,TC,'2050')+YIX('hhd-8',XC,TC,'2050'))
-          /(YIX('hhd-0',XC,TC,'2050')+YIX('hhd-1',XC,TC,'2050'));
+         = (YIX('hhd-9',XC,TC,'2055')+YIX('hhd-8',XC,TC,'2055'))
+          /(YIX('hhd-0',XC,TC,'2055')+YIX('hhd-1',XC,TC,'2055'));
 
 
 

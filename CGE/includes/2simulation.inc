@@ -208,7 +208,7 @@ Parameter
 SETS
  CEGY(C)                 energy commodities   / ccoal-low, ccoal-hgh, ccoil, cngas, celec, cpetr-p, cpetr-d, cpetr-h, cpetr-k, cpetr-l /
 *ccoal, ccoal-dis,
- RTTaxYears(T)           retaliatory tax years / 2027*2050/
+ RTTaxYears(T)           retaliatory tax years / 2027*2055/
 ;
 
 PARAMETER

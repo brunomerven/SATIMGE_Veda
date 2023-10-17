@@ -30,7 +30,7 @@ SETS
   REG                            TIMES regions    /REGION1/
   ALLYEAR                        All Years /1850*2200, 0/
   T(ALLYEAR)                     Time periods /2005*2070/
-  DATAYEAR(ALLYEAR)              Years for which data is provided /2017*2055,2058,2063,2065,2068/
+  DATAYEAR(ALLYEAR)              Years for which data is provided /2017*2055,2058,2063,2068/
   ENDYEARS(ALLYEAR)              Years after 2050 for Waste and Agri Model /2051*2055,2058,2063,2068/
 
   MILESTONYR(ALLYEAR)            TIMES Milestone years
@@ -463,8 +463,8 @@ $batinclude cge\includes\2simulation.inc
 $gdxin  SetsAndMaps\SetsMaps.gdx
 $load FHMM
 
-MY_FIL2('2050') = 0.1;
-MY_FYEAR = 2012;
+MY_FIL2('2070') = 0.1;
+MY_FYEAR = 2019;
 YEARVALT(ALLYEAR) = 1849+ORD(ALLYEAR);
 *setup emissions
 $call   "gdxxrw i=EmissionFactors.xlsx o=EmisFac index=Index!a6 checkdate"
@@ -566,7 +566,7 @@ $ontext
          PUT 'PARAMETER ACOMCUMNET /' /;
          EFVAL = SIM_CO2CUMUL(RUN)*1000000;
          if(EFVAL,
-                 PUT "REGION1.CO2EQSB.2021.2050.'UP'  ", EFVAL /;
+                 PUT "REGION1.CO2EQSB.2021.2055.'UP'  ", EFVAL /;
          );
 
          PUTCLOSE "/;";
@@ -593,7 +593,7 @@ REPORT(PRC,'ACTGRP',TC,RUN,'GVA') = SUM(FS$MPRCFS2(PRC,FS),GVA_FS(FS,TC));
 *if(SIM_ESAGE(RUN) eq 1,
 
 * Sub-annual results
-$include includes\2TIMESSubAnnualReport.inc
+*$include includes\2TIMESSubAnnualReport.inc
 
 
 GDP_RUN(TC) = SUM(FSGDP,GVA_FS(FSGDP,TC));

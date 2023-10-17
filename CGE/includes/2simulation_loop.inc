@@ -123,13 +123,25 @@ $offtext
  ICAGR(CXEP,A,TC) = SUM(FSXEP$MFSA(FSXEP,A),ICAFSGR(CXEP,FSXEP,TC));
 
 * Improvements across all intermediate inputs to match learning in SATIM.
-*# ICAGR(C,'afcel',TC) = 0.971;
-*# ICAGR(C,'aelct',TC) = 0.957;
+ ICAGR(C,'afcel',TC) = 0.971;
+ ICAGR(C,'aelct',TC) = 0.957;
 
  IFAGR(F,A,TC) = SUM(FS$MFSA(FS,A),IFAFSGR(F,FS,TC));
 
 *BM correction on power sector from freight demand for moving coal
  ICAGR('cftrp-l','aelec',TC) = ICAGR('ccoal-low','aelec',TC);
+
+$ontext
+* help solver with 2022-2023 flip flop in refineries
+* this was added for debug but is not causing problems
+ ICAGR('ccoal-low','apetr','2022') = 1;
+ ICAGR('ccoil','apetr','2022') = 1;
+
+ ICAGR('ccoal-low','apetr','2023') = 1.169;
+ ICAGR('ccoil','apetr','2023') = 0.898;
+
+ OIL_FLOW(RUN,'2022') = OIL_FLOW(RUN,'2023');
+$offtext
 
 *tmp fix until EB is improved
 *# ica('celec','apgm','NAT') = 0.5*ica0('celec','apgm','NAT');
@@ -144,6 +156,8 @@ $offtext
 *fh 71218
 *bm+fh 201118 removed - already in 2runtimes.inc
 *  PAFXCAP(XC,TC,TT)$(EFX(TT,TC) AND ifa('FCAP','APETR','nat')) = ifa('FCAP','APETR','nat')*iva('APETR','nat')*sum(C,FLOW_OUT_FSFuels('petr',C,TC));
+
+
   PAFXCAP(XC,TC,TT)$(EFX(TT,TC) AND ifa('FCAP','APETR','nat')) = ifa('FCAP','APETR','nat')*iva('APETR','nat')*OIL_FLOW(RUN,TC);
 
   IF(NOT T1(TC),
@@ -377,7 +391,7 @@ $offtext
 * Electrolyser sector - supply of electrolysers is linked to electrolyser exports and PEM electrolyser capacity in SATIM (ELCTCAP)
     AFX('AELCT',RD) = YES;
     AFLEO('AELCT')$(ELCTCAP(TC,RUN) GT 0.015) = YES;
-    AFXGR('AELCT','NAT',XC,TC)$(ELCTCAP(TC-1,RUN) GT 0.015) = (ELCTCAP(TC,RUN)/ELCTCAP(TC-1,RUN)-1);
+    AFXGR('AELCT','NAT',XC,TC)$(ELCTCAP(TC-1,RUN) GT 0.015) = max(-0.5,(ELCTCAP(TC,RUN)/ELCTCAP(TC-1,RUN)-1));
 
 * this is done to catch sudden increase in electrolyser activity/demand from h2 sector
 * 19 is base year price of electrolyser. Future cost decreases are captured by TFP growth and EE in intermediates (via ica decrease)
@@ -388,7 +402,7 @@ $offtext
 * fuelcell sector - supply of fuel cells is linked to fuel cell export and fuel cell capacity in trucks (ELCTCAP)
     AFLEO('AFCEL')$(FCELLCAP(TC,RUN) GT 0.015) = YES;
     AFX('AFCEL',RD) = YES;
-    AFXGR('AFCEL','NAT',XC,TC)$(FCELLCAP(TC-1,RUN) GT 0.015) = (FCELLCAP(TC,RUN)/FCELLCAP(TC-1,RUN)-1);
+    AFXGR('AFCEL','NAT',XC,TC)$(FCELLCAP(TC-1,RUN) GT 0.015) = max(-0.5,(FCELLCAP(TC,RUN)/FCELLCAP(TC-1,RUN)-1));
 
 * this is done to catch sudden increase in fuelcell activity/demand from freight/vehicle sector
 * 3.3 is base year price of fuel cell. Future cost decreases are captured by TFP growth and EE in intermediates
@@ -417,7 +431,8 @@ $offtext
     AFX('APETR',RD) = NO;
     AFX('APETR',RD)$EFX(TT,TC) = YES;
 
-    AFXGR('APETR','NAT',XC,TC)$EFX(TT,TC) = PAFXCAP(XC,TC,TT)/PAFXCAP(XC,TC-1,TT)- 1;
+    AFXGR('APETR','NAT',XC,TC)$EFX(TT,TC) = max(-0.5,PAFXCAP(XC,TC,TT)/PAFXCAP(XC,TC-1,TT)- 1);
+
 
 *@
     theta('apetr','cpetr-h') = max(0.001,FLOW_OUT_FSFuels('petr','cpetr-h',TC)/sum(C,FLOW_OUT_FSFuels('petr',C,TC)));
@@ -431,6 +446,7 @@ $offtext
     QINT.L(c,'apetr')$AFXGR('APETR','NAT',XC,TC) = QINT.L(c,'apetr')*(1+AFXGR('APETR','NAT',XC,TC));
     QVA.L('apetr','nat')$AFXGR('APETR','NAT',XC,TC) = QVA.L('apetr','nat')*(1+AFXGR('APETR','NAT',XC,TC));
     QF.L(FLAB,'APETR',RD)$AFXGR('APETR','NAT',XC,TC) = QF.L(FLAB,'APETR',RD)*(1+AFXGR('APETR','NAT',XC,TC));
+
 
 
 * Oil Sector
@@ -476,6 +492,7 @@ $offtext
     AFXGR('ANGAS','NAT',XC,TC) = -.05;
 
 * chemicals set to partially track Secunda and jet fuel production
+$Ontext
     CTL_Weight(TC,RUN) = 0.7 * VARACT('REGION1',TC-1,'UCTLCLEIN-E')/VARACT('REGION1','2017','UCTLCLEIN-E');
 
     AFX('ABCHM',RD) = YES;
@@ -483,9 +500,6 @@ $offtext
     AFX('AOCHM',RD) = YES;
     AFLEO('AOCHM') = YES;
 
-*@
-*$ontext
-*@
     AFXGR('ABCHM','NAT',XC,TC)$QINTCBCHM(TC-2,RUN) =
                          (1 - CTL_Weight(TC,RUN)) * (QINTCBCHM(TC-1,RUN)/QINTCBCHM(TC-2,RUN)) +
                          CTL_Weight(TC,RUN) * VARACT('REGION1',TC,'UCTLCLEIN-E')/(VARACT('REGION1',TC-1,'UCTLCLEIN-E')+0.00001) - 1;
@@ -493,7 +507,7 @@ $offtext
     AFXGR('AOCHM','NAT',XC,TC)$QINTCOCHM(TC-2,RUN) =
                          (1 - CTL_Weight(TC,RUN)) * (QINTCOCHM(TC-1,RUN)/QINTCOCHM(TC-2,RUN)) +
                          CTL_Weight(TC,RUN) * VARACT('REGION1',TC,'UCTLCLEIN-E')/(VARACT('REGION1',TC-1,'UCTLCLEIN-E')+0.00001) - 1;
-*$offtext
+$offtext
 
 * Exogenous Exports can only be used in sectors that exist and active in the base year
 * the export level specification assumes a 1mton export in 2017 and that PEXGDRI is the green iron export in mtons
