@@ -21,9 +21,9 @@ $include cge\includes\2varinit.inc
     if(SIM_SATIM(RUN) eq 1,
 
 * Write Drivers to DMD_PROJ workbook
-         execute 'gdxxrw.exe i=drivers.gdx o=.\suppxls\DMD_PRJ.xlsx index=index_G2E!a6';
+         execute 'gdxxrw.exe i=drivers.gdx o=.\suppxls\Scen_DMD_PRJ.xlsx index=index_G2E!a6';
 * Read resulting Demand from DMD_PROJ workbook
-         execute 'gdxxrw.exe i=.\suppxls\DMD_PRJ.xlsx o=EnergyDemand.gdx index=index_E2G!a6';
+         execute 'gdxxrw.exe i=.\suppxls\Scen_DMD_PRJ.xlsx o=EnergyDemand.gdx index=index_E2G!a6';
          execute_load "EnergyDemand.gdx" SIM_DEMX;
 * Need to Add Occupancy and Freight loading per vehicle category to calculate pkm and tkm
 
@@ -49,12 +49,12 @@ $include cge\includes\2varinit.inc
          PUT 'PARAMETER' /;
          PUT "COM_PROJ ' '/" /;
 
-         LOOP((DEM1,TTIMES),
-                 EFVAL = SIM_DEMX(DEM1,TTIMES);
+         LOOP((DEM1,TDEM),
+                 EFVAL = SIM_DEMX(DEM1,TDEM);
                  if(EFVAL,
-                         PUT "REGION1." TTIMES.TL "." DEM1.TL, "." EFVAL /;
-                 else
-                         PUT "REGION1." TTIMES.TL ".", DEM1.TL "eps" /;
+                         PUT "'REGION1'." TDEM.TL "." DEM1.TL, EFVAL /;
+*                 else
+*                         PUT "REGION1." TTIMES.TL ".", DEM1.TL "eps" /;
 
                  );
          );
@@ -66,7 +66,7 @@ $include cge\includes\2varinit.inc
 *         if(EFVAL,
 *                 PUT "REGION1.CO2EQSB.2021.2050.'UP'  ", EFVAL /;
 *         );
-         PUTCLOSE "/;";
+         PUTCLOSE "";
 
 $include includes\2runTIMES.inc
   );

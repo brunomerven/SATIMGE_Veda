@@ -8,7 +8,7 @@
 $SETGLOBAL workingfolder C:\Models\SATIMGE_Veda\
 * TIMES GDX output folder
 $SETGLOBAL TIMESfolder Gams_WrkTIMES
-$SETGLOBAL gdxfolder %workingfolder%\%TIMESfolder%
+$SETGLOBAL gdxfolder %workingfolder%%TIMESfolder%
 * Subset of TIMES GDX output folder
 $SETGLOBAL GDXoutfolder %workingfolder%GDXout\
 
@@ -75,7 +75,8 @@ SETS
 * eSAGE sets
   TC(T)                   eSAGE active time periods
   TT(T)                   SATIM-eSAGE Iterations
-  TTIMES(T)               SATIM years (for demand)
+  TTIMES(T)               SATIM milestone years
+  TDEM(T)                 SATIM demand years
   T1(T)                   first year of simulation
 ;
 
@@ -106,7 +107,7 @@ PARAMETERS
 * Import sets and parameters and data from control spreadsheet-------------------------------
 $call   "gdxxrw i=SATIMGE.xlsm o=SATIMGE index=index!a6 checkdate"
 $gdxin  SATIMGE.gdx
-$load RUN SATIMCASES X XC INCLRUN SIM_SATIM SIM_ESAGE SIM_WASTE SIM_AFOLU MRUNCASE MRUNX TC TT TTIMES PAMS SIM_CO2CUMUL
+$load RUN SATIMCASES X XC INCLRUN SIM_SATIM SIM_ESAGE SIM_WASTE SIM_AFOLU MRUNCASE MRUNX TC TT TTIMES TDEM PAMS SIM_CO2CUMUL
 
 
 XNB(XC) = YES;
@@ -534,34 +535,41 @@ ELSE
 
   if(SIM_SATIM(RUN) eq 1,
 * Write Drivers to DMD_PROJ workbook
-*         execute_unload "drivers.gdx" GVA_FS POP YHE TFHPOP MFHHT QD_FS PAMS_RUN;
-*         execute 'gdxxrw.exe i=drivers.gdx o=.\SATIM\DataSpreadsheets\DMD_PRJ.xlsx index=index_G2E!a6';
+         execute_unload "drivers.gdx" GVA_FS POP YHE TFHPOP MFHHT QD_FS PAMS_RUN;
+         execute 'gdxxrw.exe i=drivers.gdx o=.\suppxls\Scen_DMD_PRJ.xlsx index=index_G2E!a6';
 
 * Read resulting Demand from DMD_PROJ workbook
-*         execute 'gdxxrw.exe i=.\SATIM\DataSpreadsheets\DMD_PRJ.xlsx o=EnergyDemand.gdx index=index_E2G!a6';
-*         execute_load "EnergyDemand.gdx" SIM_DEMX;
+         execute 'gdxxrw.exe i=.\suppxls\Scen_DMD_PRJ.xlsx o=EnergyDemand.gdx index=index_E2G!a6';
+         execute_load "EnergyDemand.gdx" SIM_DEMX;
 
 
 * Write Demand DDS File
-$ontext
+
          PUT  SIM_DEM_FILE;
          SIM_DEM_FILE.pc = 2;
          SIM_DEM_FILE.nd = 13;
          SIM_DEM_FILE.ap = 0;
 
-         PUT 'PARAMETER ACOM_PROJ /' /;
+         PUT '$ONEMPTY' /;
+         PUT '$ONEPS' /;
+         PUT '$ONWARNING' /;
+*         PUT "SET RUN_NAME '" SATIMCASES.TL "'"  /;
+         PUT "$SET SCENARIO_NAME 'dmd_prj'" /;
 
-         LOOP((DEM1,TTIMES),
-                 EFVAL = SIM_DEMX(DEM1,TTIMES);
+         PUT 'PARAMETER' /;
+         PUT "COM_PROJ ' '/" /;
+
+         LOOP((DEM1,TDEM),
+                 EFVAL = SIM_DEMX(DEM1,TDEM);
                  if(EFVAL,
-                         PUT "REGION1.", DEM1.TL, ".", TTIMES.TL, EFVAL /;
-                 else
-                         PUT "REGION1.", DEM1.TL, ".", TTIMES.TL, "eps" /;
+                         PUT "'REGION1'.", TDEM.TL, ".",DEM1.TL , EFVAL /;
+*                 else
+*                         PUT "'REGION1'.", TTIMES.TL, ".", DEM1.TL, "eps" /;
                  );
          );
 
          PUT "/;"/;
-
+$ontext
 *Write Cumulative CO2 CAP bound
          PUT 'PARAMETER ACOMCUMNET /' /;
          EFVAL = SIM_CO2CUMUL(RUN)*1000000;
@@ -575,10 +583,11 @@ $ontext
          RUNTIMES2.pc = 2;
          RUNTIMES2.nd = 5;
          RUNTIMES2.ap = 0;
+$offtext
+
          PUTCLOSE "";
 
-$offtext
-*$include SATIM\includes\2runTIMES.inc
+$include includes\2runTIMES.inc
 
   );
 * if(SIM_SATIM(RUN) eq 1

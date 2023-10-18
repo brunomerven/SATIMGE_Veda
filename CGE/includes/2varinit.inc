@@ -147,8 +147,8 @@
  CERES('celct')=YES;
 *@* QE.FX('celct','REST') = QE0('celct','REST') ;
 *@
- CERES('cbchm') = YES;
- CERES('cochm') = YES;
+* CERES('cbchm') = YES;
+* CERES('cochm') = YES;
 *@
 *@
  CERES('ciron') = YES;
@@ -294,6 +294,11 @@ betaca(A,C)=1;
 
  INVCOST(RUN,TC,PRC) = 0;
  BPINV(RUN,TC,TCP,PRC) = 0;
+
+* QINV.LO(C,'s-e') =-INF;
+* QINV.UP(C,'s-e') =+INF;
+ QINV.FX(C,'s-e') = QINV0(C,'s-e');
+
 
  HCAP(X,TC,TT) = 0;
 

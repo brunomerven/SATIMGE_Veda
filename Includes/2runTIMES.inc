@@ -10,8 +10,10 @@
 
   loop(MRUNCASE(RUN,SATIMCASES),
 
-  put "copy %GDXfolder%\dmd_prj.dd %GDXfolder%\" SATIMCASES.TL:0 "\dmd_prj.dd"
-  put "%GDXfolder%\" SATIMCASES.TL:0 "\vtrun.cmd");
+  put "copy %GDXfolder%\dmd_prj.dd %GDXfolder%\" SATIMCASES.TL:0 "\dmd_prj.dd" /;
+  put "cd %GDXfolder%\" SATIMCASES.TL:0 /;
+  put "CALL vtrun.cmd" /;
+);
 
   PUTCLOSE "";
 
