@@ -236,7 +236,7 @@ PARAMETERS
   PAR_RCAPL(REG,AY,PRC)          Early retirement of capacity results
   PAR_NCAPL(REG,AY,PRC)          New Capacity
   PAR_COMBALEM(REG,AY,COM,S)     Commodity marginal
-  NCAP_ILED(REG,AY,PRC)          TIMES lead time
+  COEF_ILED(REG,AY,PRC)          TIMES lead time
   CST_INVC(REG,AY,AY,PRC,SYSUC)     TIMES calculated annual investment costs
   CST_ACTC(REG,AY,AY,PRC,*)     TIMES calculated annual activity costs
   CST_FIXC(REG,AY,AY,PRC)         TIMES calculated annual fixed costs
