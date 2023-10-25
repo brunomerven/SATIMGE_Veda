@@ -1,0 +1,8 @@
+$ONEMPTY
+$ONEPS
+$ONWARNING
+$SET RUN_NAME 'NZ_NDCUP'
+$SET SCENARIO_NAME 'uc_elc-otherinputs'
+
+
+
