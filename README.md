@@ -1,2 +1,2 @@
-# SATIM-EL
-South Africa TIMES model - Power Sector only
+# SATIMGE
+South Africa linked TIMES CGE model
