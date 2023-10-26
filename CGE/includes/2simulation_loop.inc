@@ -131,6 +131,8 @@ $offtext
 *BM correction on power sector from freight demand for moving coal
  ICAGR('cftrp-l','aelec',TC) = ICAGR('ccoal-low','aelec',TC);
 
+
+
 $ontext
 * help solver with 2022-2023 flip flop in refineries
 * this was added for debug but is not causing problems
@@ -305,8 +307,9 @@ $offtext
 *$ontext
 
 * adjustments to hydrogen (set empirically)
-    ica('chydr','airon','NAT')$(EIntensity_FS('is','chydr',TC) gt 0.001) = EIntensity_FS('is','chydr',TC)*.028;
+    ica('chydr','airon','NAT')$(EIntensity_FS('is','chydr',TC) gt 0.001) = EIntensity_FS('is','chydr',TC)*.039;
 *.018;
+    ica('chydr','anmet','NAT')$(EIntensity_FS('nm','chydr',TC) gt 0.001) = EIntensity_FS('nm','chydr',TC)*0.48;
 
     ica('chydr','apetr','NAT')$(EIntensity_FS('petr','chydr',TC) gt 0.001) = EIntensity_FS('petr','chydr',TC);
 
@@ -471,7 +474,7 @@ $offtext
 
 *@
 
-    QF.L(F,'AHYDR','NAT')$(HCAP(XC,TC,TT) GT 0.2 and HCAP(XC,TC-1,TT) le 0.2) = ifa(F,'AHYDR','NAT')*iva('AHYDR','NAT')*FLOW_OUT_FSFuels('hydr','chydr',TC)*1.5;
+    QF.L(F,'AHYDR','NAT')$(HCAP(XC,TC,TT) GT 0.2 and HCAP(XC,TC-1,TT) le 0.2) = ifa(F,'AHYDR','NAT')*iva('AHYDR','NAT')*FLOW_OUT_FSFuels('hydr','chydr',TC);
     AFXGR('AHYDR','NAT',XC,TC)$(HCAP(XC,TC-1,TT) GT 0.2) = FLOW_OUT_FSFuels('hydr','chydr',TC)/FLOW_OUT_FSFuels('hydr','chydr',TC-1)-1;
 * set reasonable starting value for QVA otherwise wfdist goes -ve.
     QVA.L('AHYDR','NAT')$(HCAP(XC,TC,TT) GT 0.2) = sum(F,QF.L(F,'AHYDR','NAT'));
