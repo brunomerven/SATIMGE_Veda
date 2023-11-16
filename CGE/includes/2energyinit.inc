@@ -192,11 +192,11 @@ PARAMETER
 
  BPINV(RUN,AY,TCP,PRC)       Annual expenditure on construction by PRC for each new Cap year
  EINVCOST(RUN,AY)        Total annual expenditure on construction
- EINVCOSTSubSector(RUN,AY,Sector,SubSector)        Total annual expenditure on construction by subsector
+
  NCAPSubSector(RUN,AY,Sector,SubSector)        New Capacity by subsector
 
  INVCOST(RUN,AY,PRC)     Annual expenditure on construction by PRC
-
+ INVCOSTSubSector(RUN,AY,Sector,SubSector)        Total annual expenditure on construction by TIMES subsector
 *Electricity price from TIMES
  TVCOMBAL(AY,COM)         Fuel Marginals from TIMES
  ETPRICE(AY)              Regulated Elc Price Calculated in SATIM
