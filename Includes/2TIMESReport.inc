@@ -202,9 +202,11 @@ LOOP((PRC,TC)$TVNCAP(TC,PRC),
  );
 );
 
-* expenditure schedule in billions (2007 from 2010)
+* expenditure schedule in billions
  INVCOST(RUN,TC,PRC) = SUM(TCP, BPINV(RUN,TCP,TC,PRC))/1000;
-
+ Loop(Sector,
+         INVCOSTSubSector(RUN,TC,Sector,SubSector) = SUM(PRC$MPRCSubSector(Sector,SubSector),INVCOST(RUN,TC));
+ );
 *Sum across vintages to get total annual cost (billions of rands) and convert from 2022 to 2019 Rands for CGE
 * EINVCOST(XC,T,TT) = SUM((SUPELE AND SUPOIL), INVCOST(XC,T,TT,ELE));
  EINVCOST(RUN,TC) = SUM(PRCPower, INVCOST(RUN,TC,PRCPower))*0.868;
