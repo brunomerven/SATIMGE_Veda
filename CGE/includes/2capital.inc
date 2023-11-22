@@ -32,6 +32,8 @@ IF (KOPTION EQ 2,
 *bm filtering is added to smoothen steep shocks coming from EINVCOST
                  EINVQINV(XC,TC,TT) = (0.5*EINVCOST(RUN,TC)+0.5*EINVQINV(XC,TC-1,TT))/SUM(C$PQ0(C), iwts(C,'S-e')*PQ.L(C)/PQ0(C));
 
+                 iwts(C,'s-e') = 0.5*iwts(C,'s-e')+(1-0.5)*IWTSX(C,'s-e',XC,TC,TT);
+
                  QINV.FX(C,'s-e') = iwts(C,'s-e')*EINVQINV(XC,TC,TT);
 *bm with s-e active investment in energy is totally separate from NGFCF
 *bm                 NGFCF = NGFCF -  EINVQINV(XC,TC,TT);

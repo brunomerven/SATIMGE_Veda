@@ -134,6 +134,10 @@ SETS
   MPRCSubsubSector(PRC,Sector,SubSector,SubSubSector)  Map for PRC to subsubsectors
   PRCPower(PRC)                  Technology set used to compute elc price
   PRCBulkPower(PRC)              Technology set used to compute bulk elc price (up to ETRANS)
+
+* Investment and Materials
+  COMI(C)                Investment commodities (SAGE)
+
 * Emissions sets
   CO2SET(COM)                    Sectoral emissions
 
@@ -170,6 +174,7 @@ SETS
   MPRCFS2(PRC,FSATIM)          mapping SATIM PRCs to SATIM sectors (used to pass CGE aggregates to SATIM sectors)
   mCOMC(COM,C)            mapping SAGE and SATIM fuels
   mCOMF(COM,F)            mapping SAGE factors and SATIM factor commodities
+  mCOMI(COM,C)            investment commodities
 
   MHPRCH(PRC,H)           mapping SAGE households to reporting households
   MCTCG(C,TCG)            mapping SAGE trade commodities to aggregate trade commodity groups
@@ -426,8 +431,8 @@ LOOP(TS_HOURLY,
 * Import sets and parameters from SetsAndMaps -------------------------------
 $call   "gdxxrw i=SetsAndMaps\SetsAndMaps.xlsm o=SetsAndMaps\SetsMaps index=index!a6 checkdate"
 $gdxin  SetsAndMaps\SetsMaps.gdx
-$loaddc PRC COM S TS_DAYNITE TS_WEEKLY TS_SEASON DEM1 UC_N FSATIM COALSUP PRCH TCG FS FH
-$load  MPRCFS MPRCFS2 Sector SubSector SubSubSector MPRCSector MPRCSubSector MPRCSubSubSector COMEXT MHPRCH MCTCG mCOMC MFSA MFHH mCOMF
+$loaddc PRC COM S TS_DAYNITE TS_WEEKLY TS_SEASON DEM1 UC_N FSATIM COALSUP PRCH TCG FS FH COMI
+$load  MPRCFS MPRCFS2 Sector SubSector SubSubSector MPRCSector MPRCSubSector MPRCSubSubSector COMEXT MHPRCH MCTCG mCOMC MFSA MFHH mCOMF mCOMI
 $load PassengerOccupancy  FreightLoad CoalCV
 
 
@@ -523,6 +528,7 @@ $offtext
 if(SIM_ESAGE(RUN) eq 1,
 
 $batinclude cge\includes\2simulation_loop.inc
+
 
 ELSE
 

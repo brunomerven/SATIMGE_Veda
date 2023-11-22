@@ -15,6 +15,7 @@ PARAMETER
  GSAVX(X,T,TT)                    government savings
  HPOPX(H,X,AY,TT)                  household populations
  IADJX(IT,X,T,TT)                 investment scaling factor (for fixed capital formation)
+ IWTSX(C,IT,X,T,TT)                investment commodity demand weight
  INVSHRX(X,T,TT)                  investment share of absorption
  MPSX(INS,X,T,TT)                 marginal propensity to save for dom non-gov inst ins
  MPSADJX(X,T,TT)                  savings rate scaling factor
