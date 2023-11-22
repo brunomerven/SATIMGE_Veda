@@ -328,7 +328,7 @@ $offtext
 * setting electrolyser input (empirically) - this could be made more elegant later
 *@    ica('celct','ahydr','NAT')$(ord(TC) gt 5) = max(0.04,ica('celct','ahydr','NAT') *0.1);
 * 19 is the base year price of electrolysers
-    ica('celct','ahydr','NAT') = ica0('celct','ahydr','NAT')*0.4;
+    ica('celct','ahydr','NAT') = ica0('celct','ahydr','NAT')*0.3;
 
 
 
@@ -398,7 +398,7 @@ $offtext
 
 * this is done to catch sudden increase in electrolyser activity/demand from h2 sector
 * 19 is base year price of electrolyser. Future cost decreases are captured by TFP growth and EE in intermediates (via ica decrease)
-    QF.L(F,'AELCT','NAT')$(ELCTCAP(TC,RUN) GT 0.015 and ELCTCAP(TC-1,RUN) LT 0.015) = ifa(F,'AELCT','NAT')*iva('AELCT','NAT')*ELCTCAP(TC,RUN)*19;
+    QF.L(F,'AELCT','NAT')$(ELCTCAP(TC,RUN) GT 0.015 and ELCTCAP(TC-1,RUN) LT 0.015) = ifa(F,'AELCT','NAT')*iva('AELCT','NAT')*ELCTCAP(TC,RUN)*6;
 * QE is not fixed this just helps the MCP by setting a starting point (hopefully) close to the solution
     QE.L('CELCT','REST')$(TVACT(TC,'PEXHETP') GT 0.015 and TVACT(TC-1,'PEXHETP') lt 0.015) = TVACT(TC,'PEXHETP')*19;
 
