@@ -512,6 +512,13 @@ $Ontext
                          CTL_Weight(TC,RUN) * VARACT('REGION1',TC,'UCTLCLEIN-E')/(VARACT('REGION1',TC-1,'UCTLCLEIN-E')+0.00001) - 1;
 $offtext
 
+* Updating investment vector
+* currently only for power sector, but this could be extended to other sectors
+ IWTST(TC) = sum(C,FLOW_IN_FSInvestment('elec',C,TC));
+ IWTSX(C,'s-e',XC,TC,TT)$iwts(C,'s-e') = FLOW_IN_FSInvestment('elec',C,TC)/IWTST(TC);
+
+
+
 * Exogenous Exports can only be used in sectors that exist and active in the base year
 * the export level specification assumes a 1mton export in 2017 and that PEXGDRI is the green iron export in mtons
     QE.FX('ciron','REST') = QE0('ciron','REST')*(1+VARACT('REGION1',TC,'PEXGDRI')*0.8);

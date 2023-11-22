@@ -174,6 +174,11 @@
  CERES('cmore') = YES;
  CMRES('cmore')= YES;
  QM.FX('cmore','REST') = QM0('cmore','REST') ;
+
+
+ CMRES('cmach_e') = YES;
+ QM.FX('cmach_e','REST') = QM0('cmach_e','REST');
+
 *@
 *@
 *@
@@ -289,7 +294,7 @@ betaca(A,C)=1;
 * AFLOW_INFuels('APETR','CCOIL',TC,TT) = QINT0('CCOIL','APETR');
  EPRICE(TC,TT)=PQ0('CELEC');
  EINVCOST(RUN,TC) = 0;
- EINVCOSTSubSector(RUN,TC,Sector,SubSector) = 0;
+ INVCOSTSubSector(RUN,TC,Sector,SubSector) = 0;
  NCAPSubSector(RUN,TC,Sector,SubSector) = 0;
 
  INVCOST(RUN,TC,PRC) = 0;

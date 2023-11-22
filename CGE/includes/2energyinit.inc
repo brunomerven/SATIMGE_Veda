@@ -228,9 +228,14 @@ PARAMETER
  FLOW_IN_FS(FSATIM,COM,AY) Consumption of SATIM commodity COM for SATIM sector FS
  FLOW_IN_FSFuels(FSATIM,C,AY) Consumption of CGE commodity C for SATIM sector FS
 
+ FLOW_IN_FSFactors(FSATIM,F,AY) Consumption of CGE Factor F for SATIM sector FS
+ FLOW_IN_FSInvestment(FSATIM,C,AY) Consumption of CGE Investment Commodities for SATIM sector FS
+ IWTST(AY) Total investment used to update IWTS('s-e')
+
+
  FLOW_OUT_FS(FSATIM,COM,AY) Production of SATIM commodity COM for SATIM sector FS
  FLOW_OUT_FSFuels(FSATIM,C,AY) Production of CGE commodity C for SATIM sector FS
- FLOW_OUT_FSFactors(FSATIM,F,AY) Production of CGE Factor F for SATIM sector FS
+
 
  FLOW_IN_FHFuelsGR(FSATIM,C,AY) Change-Growth in Consumption of CGE commodity C for household sector FH
 

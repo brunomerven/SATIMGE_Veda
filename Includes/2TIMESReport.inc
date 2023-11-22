@@ -117,7 +117,11 @@ T_COMBALEM('REGION1',TC,'PWRHGN')$SUM((V,S),F_OUT('REGION1',V,TC,'XPWRHGN','PWRH
  FLOW_IN_FSFuels(FSATIM,C,TC) = SUM(COM$MCOMC(COM,C),FLOW_IN_FS(FSATIM,COM,TC));
  FLOW_OUT_FSFuels(FSATIM,C,TC) = SUM(COM$MCOMC(COM,C),FLOW_OUT_FS(FSATIM,COM,TC));
 
- FLOW_OUT_FSFactors(FS,F,TC) = SUM(COM$MCOMF(COM,F),FLOW_OUT_FS(FS,COM,TC));
+* Factor inputs
+ FLOW_IN_FSFactors(FS,F,TC) = SUM(COM$MCOMF(COM,F),FLOW_IN_FS(FS,COM,TC));
+
+* Investment inputs
+ FLOW_IN_FSInvestment(FS,C,TC) = SUM(COM$MCOMI(COM,C),FLOW_IN_FS(FS,COM,TC));
 
 
 *bm methane rich gas is currently a product of sasol which is accounted for in SATIM, but not in eSAGE so making this zero
@@ -205,7 +209,7 @@ LOOP((PRC,TC)$TVNCAP(TC,PRC),
 * expenditure schedule in billions
  INVCOST(RUN,TC,PRC) = SUM(TCP, BPINV(RUN,TCP,TC,PRC))/1000;
  Loop(Sector,
-         INVCOSTSubSector(RUN,TC,Sector,SubSector) = SUM(PRC$MPRCSubSector(Sector,SubSector),INVCOST(RUN,TC));
+         INVCOSTSubSector(RUN,TC,Sector,SubSector) = SUM(PRC$MPRCSubSector(PRC,Sector,SubSector),INVCOST(RUN,TC,PRC));
  );
 *Sum across vintages to get total annual cost (billions of rands) and convert from 2022 to 2019 Rands for CGE
 * EINVCOST(XC,T,TT) = SUM((SUPELE AND SUPOIL), INVCOST(XC,T,TT,ELE));
@@ -301,10 +305,10 @@ LOOP((PRC,TC)$TVNCAP(TC,PRC),
  TCST_ELE_INV(RUN,TC) = Sum(PRCPower,REPORT(PRCPower,'ACTGRP',TC,RUN,'AnnInvCost'));
  QFEGY_GR(RUN,TC)$TCST_ELE_INV(RUN,TC-1) = TCST_ELE_INV(RUN,TC)/TCST_ELE_INV(RUN,TC-1);
 
-* FIntensity_FS('elec','fegy',TC) = TCST_ELE_INV(RUN,TC)/ELC_FLOW(RUN,TC);
-* FIntensity_FS('elec',FLAB,TC) = FLOW_OUT_FSFactors('elec',FLAB,TC)/ELC_FLOW(RUN,TC);
+ FIntensity_FS('elec','fegy',TC) = TCST_ELE_INV(RUN,TC)/ELC_FLOW(RUN,TC);
+ FIntensity_FS('elec',FLAB,TC) = FLOW_IN_FSFactors('elec',FLAB,TC)/ELC_FLOW(RUN,TC);
 
-* IFAFSGR(F,FS,TC)$FIntensity_FS(FS,F,TC-1) = FIntensity_FS(FS,F,TC)/FIntensity_FS(FS,F,TC-1);
+ IFAFSGR(F,FS,TC)$FIntensity_FS(FS,F,TC-1) = FIntensity_FS(FS,F,TC)/FIntensity_FS(FS,F,TC-1);
 
 
 * Electrolyser sector - supply of electrolysers is linked to electrolyser exports and PEM electrolyser capacity in SATIM
