@@ -326,9 +326,7 @@ $offtext
 
 
 * setting electrolyser input (empirically) - this could be made more elegant later
-*@    ica('celct','ahydr','NAT')$(ord(TC) gt 5) = max(0.04,ica('celct','ahydr','NAT') *0.1);
-* 19 is the base year price of electrolysers
-    ica('celct','ahydr','NAT') = ica0('celct','ahydr','NAT')*0.4;
+    ica('celct','ahydr','NAT') = ica0('celct','ahydr','NAT')*0.3;
 
 
 
@@ -394,11 +392,11 @@ $offtext
 * Electrolyser sector - supply of electrolysers is linked to electrolyser exports and PEM electrolyser capacity in SATIM (ELCTCAP)
     AFX('AELCT',RD) = YES;
     AFLEO('AELCT')$(ELCTCAP(TC,RUN) GT 0.015) = YES;
-    AFXGR('AELCT','NAT',XC,TC)$(ELCTCAP(TC-1,RUN) GT 0.015) = max(-0.5,(ELCTCAP(TC,RUN)/ELCTCAP(TC-1,RUN)-1));
+    AFXGR('AELCT','NAT',XC,TC)$(ELCTCAPF(TC-1,RUN) GT 0.015) = max(-0.9,ELCTCAPF(TC,RUN)/ELCTCAPF(TC-1,RUN)-1);
 
 * this is done to catch sudden increase in electrolyser activity/demand from h2 sector
 * 19 is base year price of electrolyser. Future cost decreases are captured by TFP growth and EE in intermediates (via ica decrease)
-    QF.L(F,'AELCT','NAT')$(ELCTCAP(TC,RUN) GT 0.015 and ELCTCAP(TC-1,RUN) LT 0.015) = ifa(F,'AELCT','NAT')*iva('AELCT','NAT')*ELCTCAP(TC,RUN)*19;
+    QF.L(F,'AELCT','NAT')$(ELCTCAPF(TC,RUN) GT 0.015 and ELCTCAPF(TC-1,RUN) LT 0.015) = ifa(F,'AELCT','NAT')*iva('AELCT','NAT')*ELCTCAPF(TC,RUN);
 * QE is not fixed this just helps the MCP by setting a starting point (hopefully) close to the solution
     QE.L('CELCT','REST')$(TVACT(TC,'PEXHETP') GT 0.015 and TVACT(TC-1,'PEXHETP') lt 0.015) = TVACT(TC,'PEXHETP')*19;
 
