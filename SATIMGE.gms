@@ -372,7 +372,8 @@ PARAMETERS
   QD_FS(FS,AY)            domestic demand to drive energy model
 
 * Electrolysers and Fuel Cells
-  ELCTCAP(AY,RUN)            Electrolyser capacity in SATIM
+  ELCTCAP(AY,RUN)            Investment in Electrolysers in SATIM
+  ELCTCAPF(AY,RUN)           Filtered Investment in Electrolysers in SATIM
   FCELLCAP(AY,RUN)            Fuelcell capacity in SATIM
 
 * SubAnnual Analysis parameters

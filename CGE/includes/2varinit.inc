@@ -300,12 +300,17 @@ betaca(A,C)=1;
  INVCOST(RUN,TC,PRC) = 0;
  BPINV(RUN,TC,TCP,PRC) = 0;
 
+ IWTSX(C,IT,XC,TC,TT) = 0;
 * QINV.LO(C,'s-e') =-INF;
 * QINV.UP(C,'s-e') =+INF;
  QINV.FX(C,'s-e') = QINV0(C,'s-e');
 
 
  HCAP(X,TC,TT) = 0;
+ ELCTCAP(TC,RUN) = 0;
+ ELCTCAPF(TC,RUN) = 0;
+
+
 
  ICAGR(C,A,TC) = 1;
  ICAFSGR(C,FS,TC) = 1;

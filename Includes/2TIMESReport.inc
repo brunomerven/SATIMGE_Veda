@@ -312,8 +312,9 @@ LOOP((PRC,TC)$TVNCAP(TC,PRC),
 
 
 * Electrolyser sector - supply of electrolysers is linked to electrolyser exports and PEM electrolyser capacity in SATIM
- ELCTCAP(TC,RUN) = TVNCAP(TC,'UELEP1HGN')+TVNCAP(TC,'IISHALKHGNO')+TVNCAP(TC,'UELEA1HGN')+TVACT(TC,'PEXHETP')*0.4;
-*0.5;
+ ELCTCAP(TC,RUN) = sum(SubSector,INVCOSTSubSector(RUN,TC,'Hydrogen',SubSector))+TVACT(TC,'PEXHETP')*0.4;
+* filtering new capacity to smooth things a bit
+ ELCTCAPF(TC,RUN) = 0.3*ELCTCAP(TC,RUN)+(1-0.3)*ELCTCAPF(TC-1,RUN);
 
 * fuelcell sector - supply of fuel cells is linked to fuel cell export and fuel cell capacity in trucks - !!! still need to add fcell to mining 5%?
 * it works out in the CGE that with 0.24, 3 times value of trucks goes to export, which is what is intented in SATIM
