@@ -432,7 +432,7 @@ $offtext
     AFX('APETR',RD) = NO;
     AFX('APETR',RD)$EFX(TT,TC) = YES;
 
-    AFXGR('APETR','NAT',XC,TC)$EFX(TT,TC) = max(-0.5,PAFXCAP(XC,TC,TT)/PAFXCAP(XC,TC-1,TT)- 1);
+    AFXGR('APETR','NAT',XC,TC)$EFX(TT,TC) = max(-0.9,PAFXCAP(XC,TC,TT)/PAFXCAP(XC,TC-1,TT)- 1);
 
 
 *@
