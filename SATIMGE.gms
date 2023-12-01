@@ -195,7 +195,7 @@ SETS
 *FH*----------------------------------------------------------------------------
  MFHHT(FH,H,AY) reverse mapping (TIMES to CGE) for households
 
-  Indicators SATIM indicators /Activity, Capacity, NewCapacity, CapFac, FlowIn, FlowOut, AnnInvCost, FOM, VOM, FuelCosts, Marginals, Levies, ExternalityCosts, CO2Tax, CO2, CO2CAPT, CH4, N2O, CF4, C2F6, CO2eq, FlowInMt, Investment,Price, GVA, Population, Consumption, Employment-p, Employment-m,Employment-s,Employment-t,PalmaRatio,20-20Ratio,TradeDeficit,Imports,Exports,pkm, tkm/
+  Indicators SATIM indicators /Activity, Capacity, NewCapacity, CapFac, FlowIn, FlowOut, AnnInvCost, FOM, VOM, OM, FuelCosts, Marginals, Levies, ExternalityCosts, CO2Tax, CO2, CO2CAPT, CH4, N2O, CF4, C2F6, CO2eq, FlowInMt, Investment,Price, pkm, tkm, GVA, EconIndicator, PopulationSATIM, GVASATIM, EmploymentSATIM/
   Emiss(Indicators) / CO2, CH4, N2O, CF4, C2F6, CO2eq/
   IndicatorsH SATIM Sub-annual indicators /FlowIn, FlowOut, Marginal, Price, Demand/
 
@@ -222,6 +222,8 @@ VARIABLES
 PARAMETERS
   REPORT(PRC,COM,AY,RUN,Indicators) REPORT of indicators by run and process and commodity
   REPORT_RUN(PRC,COM,AY,Indicators) REPORT of indicators by run and process and commodity for each run
+
+  Report2(*,*,*,AY,RUN)          More detailed reports from cge
 
   REPORTH(PRC,COM,AY,TS_WEEKLY,TS_HOURLY,RUN,IndicatorsH) REPORT of indicators by daytype and each hour- run and process and commodity
   REPORTH_RUN(PRC,COM,AY,TS_WEEKLY,TS_HOURLY,IndicatorsH) REPORT of indicators by daytype and each hour- run and process and commodity
@@ -268,6 +270,7 @@ PARAMETERS
   GVA_FS_Start(FS,AY)            SATIM Sector GVA used to first iteration of linked model
   QA_FS(FS,AY)                   SATIM Sector QA (used for setting absolute levels for ica for new sectors)
   POP(AY)                        Population Projection to be read from drivers workbook
+  POPActive(AY)                  Active Population Projection to be read from drivers workbook
   STFHPOP(AY)                    sum of population CGE
   POP_GR(AY)                     Population growth to be read from drivers workbook
   GDP_RUN(AY)                    GDP projection for RUN
@@ -367,6 +370,13 @@ PARAMETERS
   QINTCBCHM(AY,RUN)             stored value for sum(a.QINT(CBCHM.a)
   QINTCOCHM(AY,RUN)             stored value for sum(a.QINT(COCHM.a)
   QINTCIRON(AY,RUN)             stored value for sum(a.QINT(CIRON.a)
+
+* Imports/Exports
+QExptP(C,AY)  Exports (Positive)
+QExptN(C,AY)  Exports (Negative)
+QImpt(C,AY)  Imports
+
+TotalInvestmentFixed(AY,RUN) Total fixed investment in CGE
 
 * domestic demand to drive energy model (i.e. excluding exports)
   QD_FS(FS,AY)            domestic demand to drive energy model
@@ -537,7 +547,7 @@ ELSE
 
 * Read in GDP and Population from Drivers Workbook
   execute 'gdxxrw.exe i=Drivers.xlsm o=drivers.gdx index=index_E2G!a6';
-  execute_load "drivers.gdx" GVA_FS POP YHE TFHPOP MFHHT QD_FS;
+  execute_load "drivers.gdx" GVA_FS POP POPActive YHE TFHPOP MFHHT QD_FS;
 
 
   if(SIM_SATIM(RUN) eq 1,

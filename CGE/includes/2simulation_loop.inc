@@ -2,8 +2,8 @@
 *Loop over simulations
 LOOP(XC$MRUNX(RUN,XC),
 
-execute_load "dem_start.gdx" GVA_FS POP YHE TFHPOP MFHHT QA_FS QD_FS;
-execute_unload "drivers.gdx" GVA_FS POP YHE TFHPOP MFHHT PAMS_RUN QA_FS QD_FS;
+execute_load "dem_start.gdx" GVA_FS POP POPActive YHE TFHPOP MFHHT QA_FS QD_FS;
+execute_unload "drivers.gdx" GVA_FS POP POPActive YHE TFHPOP MFHHT PAMS_RUN QA_FS QD_FS;
 
 * Loop over TIMES model solve periods
   LOOP(TT$(NOT fail),
@@ -654,12 +654,12 @@ $include cge\includes\2energychecks.inc
 * generate demand projection, fuel price projection and investment schedules for the next TIMES run
 $include cge\includes\2energyfcast.inc
 
+$include cge\includes\CGE_Report.inc
 
 
 );
 *end TT loop
 
-$batinclude cge\includes\eSAGE_Report.inc
 
 
 );
