@@ -58,7 +58,11 @@ SETS
                           altrp-p, altrp-f, aotrp-p, aotrp-f/
 
   energy(c)       energy commodities     / ccoal-low, ccoal-hgh, ccoil, cngas, cpetr-p, cpetr-d, cpetr-h, cpetr-k, cpetr-l, celec, chydr /
+  nonenergy(c)    non-energy commodities
 ;
+
+nonenergy(c)=YES;
+nonenergy(energy)=NO;
 
 PARAMETERS
 *Macroeconomic and factor market closures

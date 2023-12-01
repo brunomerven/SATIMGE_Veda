@@ -5,7 +5,7 @@
 * Previous: SFORE(FS,XC,T) = SUM((A,RD)$MFSA(FS,A), PVA0(A,RD)*QVAX(A,RD,XC,T,TT));
 *
  GVA_FS(FS,TC) = SUM(A$MFSA(FS,A), QVAX(A,'nat',XC,TC,TT));
- REPORT(PRC,'ACTGRP',TC,RUN,'GVA') = SUM(FS$MPRCFS2(PRC,FS),GVA_FS(FS,TC));
+ REPORT(PRC,'ACTGRP',TC,RUN,'GVASATIM') = SUM(FS$MPRCFS2(PRC,FS),GVA_FS(FS,TC));
 
 * Another possible approach is to link to QA but QA has different units in different activities and doesn't add up to GDP
  QA_FS(FS,T) = SUM(A$MFSA(FS,A), QAX(A,XC,T,TT));
