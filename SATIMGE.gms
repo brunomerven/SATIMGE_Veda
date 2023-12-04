@@ -260,6 +260,8 @@ PARAMETERS
   OB_ACT(REG,PRC,CUR,AY)       Interpolated variable unit cost from TIMES run R per kW or GJ-a
   OBACT(REG,AY,PRC)            TIMES variable unit cost restructured for interpolation R per GJ
 
+  OB_FOM(REG,PRC,CUR,AY)       Interpolated fom unit costs from TIMES R per kW-yr or R per GJ-yr
+  
 
 * Data from Demand Model (spreadsheet-based at this stage)
   SIM_DEMX(COM,AY)               Demand extracted from excel

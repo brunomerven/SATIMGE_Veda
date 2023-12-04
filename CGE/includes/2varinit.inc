@@ -175,6 +175,8 @@
  CMRES('cmore')= YES;
  QM.FX('cmore','REST') = QM0('cmore','REST') ;
 
+*!! CERES('cvehi') = YES;
+*!! QE.FX('cvehi','REST') = QE0('cvehi','REST');
 
 *!! CMRES('cmach_e') = YES;
 *!! QM.FX('cmach_e','REST') = QM0('cmach_e','REST');
