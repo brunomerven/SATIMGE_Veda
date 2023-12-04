@@ -68,7 +68,6 @@ SETS
   CUR    Currencies /MZAR2022/
 *  RPM    plus minus /-, +/
   SYSUC  COST ACT etc /INV/
-
   UC_N                           List of names of all manual constraints
   SIDE                           LHS and RHS of an equation /LHS, RHS/
 
@@ -238,6 +237,7 @@ PARAMETERS
   PRC_RESID(REG,AY,PRC)          Existing Capacity
   RESID(REG,AY,PRC)              Existing Capacity milestone years
 
+  PAR_PASTI(REG,AY,PRC,*)        Existing Capacity
   PAR_CAPL(REG,AY,PRC)           Capacity excluding existing capacity
   PAR_VCAPL(REG,AY,PRC)          Variable VAR_CAPL results as parameter
   PAR_RCAPL(REG,AY,PRC)          Early retirement of capacity results
@@ -261,7 +261,7 @@ PARAMETERS
   OBACT(REG,AY,PRC)            TIMES variable unit cost restructured for interpolation R per GJ
 
   OB_FOM(REG,PRC,CUR,AY)       Interpolated fom unit costs from TIMES R per kW-yr or R per GJ-yr
-  
+
 
 * Data from Demand Model (spreadsheet-based at this stage)
   SIM_DEMX(COM,AY)               Demand extracted from excel
