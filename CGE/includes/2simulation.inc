@@ -165,30 +165,31 @@ $include cge\includes\2projection.inc
 *cbchm - fertiliser
 
 Sets
+*CBAM
 EUTAX(C)
-* /ciron, cnfrm, cnmet, cbchm/
-TFSAV(T) /2024*2040/;
+*  /ciron, ccmnt, celec, cbchm, cochm, chydr/
 
-EUTAX(C)=yes;
-*EUTAX(C)=no;
-*EUTAX('ciron')=yes;
-*EUTAX('cnfrm')=yes;
-*EUTAX('cnmet')=yes;
-*EUTAX('cbchm')=yes;
+TFSAV(T) /2024*2055/;
+
+**CBAM EUTAX(C)=yes;
 
 Parameter
+ FSHOCK(X,T,TT)
  FSAVGRSHK(X,T)
  LABGRSHK(F,X,T)
+ DUMMY(T)
  EUshr(C)
  co2e2(C,RW)
 ;
 
  FSAVGRSHK(X,T)=0;
  LABGRSHK(F,X,T)=0;
+ DUMMY(T)=0;
+ DUMMY(TFSAV)=1;
 
 *BM_Scen increasing FSAV to 3.4% or by 2 times base value - to make up for GVA losses by 2040.
 *!! FSAVGRSHK('base',TFSAV)=0.034;
-
+$ontext
  FSAVGRSHK('SIM1','2024')=0.5/100;
  FSAVGRSHK('SIM1','2025')=2.5/100;
  FSAVGRSHK('SIM1','2026')=2.5/100;
@@ -196,18 +197,37 @@ Parameter
  FSAVGRSHK('SIM1','2028')=2.5/100;
  FSAVGRSHK('SIM1','2029')=2.5/100;
  FSAVGRSHK('SIM1','2030')=2.5/100;
+*bm $offtext
 
- LABGRSHK(F,X,T)=1;
+*FH
+$call   "gdxxrw i=cge\2simulation.xlsx o=fsavin.gdx index=index!a6 checkdate"
+$gdxin  fsavin.gdx
+$load FSHOCK
+ FSAVGRSHK(X,T)=FSHOCK(X,T,"2055");
+
 * LABGRSHK('FLAB-P','SIM1',TCF)=1.002;
 * LABGRSHK('FLAB-M','SIM1',TCF)=1.002;
 
- EUshr(C)=0.7;
+$offtext
+
+ LABGRSHK(F,X,T)=1;
+
+
+*fh EUshr(C)=0.7;
 ** EUshr(C)=0.6;
 * EUshr(C)=1;
 * EUshr('ciron')=0.17;
 * EUshr('cnmet')=0.20;
 * EUshr('cnfrm')=0.23;
 * EUshr('cbchm')=0.01;
+
+*CBAM
+ EUshr(C)=1;
+***fh EUshr('ciron')=0.18;
+***fh EUshr('ccmnt')=0.16;
+***fh EUshr('cbchm')=0.15*0.01;
+***fh EUshr('cochm')=0.15*0.01;
+***fh EUshr('celec')=0;
 
 SETS
  CEGY(C)                 energy commodities   / ccoal-low, ccoal-hgh, ccoil, cngas, celec, cpetr-p, cpetr-d, cpetr-h, cpetr-k, cpetr-l /

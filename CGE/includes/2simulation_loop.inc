@@ -90,14 +90,15 @@ $ontext
 * RTCO2ESIM(XC,'2030') = 85/2*17/1000000;
 $offtext
 
+*CBAM
 * comment below to turn on retaliatory tax/CBAM
-$ontext
+*$ontext
  RTCO2ESIM(XC,RTTaxYears) = 85*17/1000000;
  RTCO2ESIM(XC,'2027') = 85/4*17/1000000;
  RTCO2ESIM(XC,'2028') = 85/2*17/1000000;
  RTCO2ESIM(XC,'2029') = 85*3/4*17/1000000;
 * RTCO2ESIM(XC,'2030') = 85/2*17/1000000;
-$offtext
+*$offtext
 
 
 
@@ -168,7 +169,8 @@ $offtext
 *##        tco2d = SIM_CO2PRICE(TC,RUN);
 
 *       ENERGY: Retaliatory carbon tax on RSA exports
-*rt    rtco2e = RTCO2ESIM(XC,TC);
+*CBAM main lever!!! uncomment line below to activate
+*!    rtco2e = RTCO2ESIM(XC,TC);
 
 *       ENERGY: Carbon content cofficient
 $include cge\includes\2carbon.inc
@@ -178,6 +180,10 @@ $include cge\includes\2carbon.inc
 *        co2m(C,RW) = CO2MSIM(C,RW,XC,TC);
 *        co2e(C,RW) = 0;
 *        co2m(C,RW) = 0;
+
+*CBAM
+***fh        co2e(C,RW)$EUTAX(C) = co2e(C,RW)*EUshr(C);
+***fh        co2e(C,RW)$(not EUTAX(C)) = 0;
 
 *FH
 *    tabar(CTA,'NAT')=tabar(CTA,'NAT')+CTA_EMRR(CTA);
@@ -519,12 +525,15 @@ $offtext
 
 * Exogenous Exports can only be used in sectors that exist and active in the base year
 * the export level specification assumes a 1mton export in 2017 and that PEXGDRI is the green iron export in mtons
+***fh
     QE.FX('ciron','REST') = QE0('ciron','REST')*(1+VARACT('REGION1',TC,'PEXGDRI')*0.8);
 
 * ammonia
+***fh
     QE.FX('cammo','REST')$(FLOW_IN_FSFuels('exp','cammo',TC-1)) = QE.L('cammo','REST')*FLOW_IN_FSFuels('exp','cammo',TC)/FLOW_IN_FSFuels('exp','cammo',TC-1);
 
 * PGM
+***fh
     QE.FX('cpgm','REST') = QE.L('cpgm','REST')*VARACT('REGION1',TC,'PEXPGM')/VARACT('REGION1',TC-1,'PEXPGM');
 
 * Coal
