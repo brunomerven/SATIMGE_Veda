@@ -7,7 +7,7 @@ SETS
   TC(T)                   eSAGE active time periods
   PRC                            TIMES Processes
   COM                            TIMES Commodities
-  Indicators SATIM indicators /Activity, Capacity, NewCapacity, CapFac, FlowIn, FlowOut, AnnInvCost, FOM, VOM, FuelCosts, Marginals, Levies, ExternalityCosts, CO2Tax, CO2, CO2CAPT, CH4, N2O, CF4, C2F6, CO2eq, FlowInMt, Investment,Price, pkm, tkm, EconIndicator/
+  Indicators SATIM indicators /Activity, Capacity, NewCapacity, CapFac, FlowIn, FlowOut, AnnInvCost, FOM, VOM, OM, FuelCosts, Marginals, Levies, ExternalityCosts, CO2Tax, CO2, CO2CAPT, CH4, N2O, CF4, C2F6, CO2eq, FlowInMt, Investment,Price, pkm, tkm, GVA, EconIndicator, PopulationSATIM, GVASATIM, EmploymentSATIM/
   Sector
   SubSector
 
