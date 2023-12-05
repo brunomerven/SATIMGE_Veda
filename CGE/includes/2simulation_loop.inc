@@ -170,7 +170,11 @@ $offtext
 
 *       ENERGY: Retaliatory carbon tax on RSA exports
 *CBAM main lever!!! uncomment line below to activate
-*!    rtco2e = RTCO2ESIM(XC,TC);
+  if(SIM_CBAM(RUN) eq 1,
+         rtco2e = RTCO2ESIM(XC,TC);
+  else
+         rtco2e = 0;
+);
 
 *       ENERGY: Carbon content cofficient
 $include cge\includes\2carbon.inc

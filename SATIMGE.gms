@@ -90,7 +90,7 @@ PARAMETERS
   SIM_WASTE(RUN)                   whether to run waste model or not
   SIM_AFOLU(RUN)                   whether to run AFOLU models or not
   SIM_CO2CUMUL(RUN)              Cumulative CO2 Constraint
-
+  SIM_CBAM(RUN)                  Border Tax Adjustment
 
 *  SIM_CO2PRICE(RUN,AY)           CO2 PRICE
   PAMS(RUN,PamsSector)       activated pams for each run
@@ -106,7 +106,7 @@ PARAMETERS
 * Import sets and parameters and data from control spreadsheet-------------------------------
 $call   "gdxxrw i=SATIMGE.xlsm o=SATIMGE index=index!a6 checkdate"
 $gdxin  SATIMGE.gdx
-$load RUN SATIMCASES X XC INCLRUN SIM_SATIM SIM_ESAGE SIM_WASTE SIM_AFOLU MRUNCASE MRUNX TC TT TTIMES TDEM PAMS SIM_CO2CUMUL
+$load RUN SATIMCASES X XC INCLRUN SIM_SATIM SIM_ESAGE SIM_WASTE SIM_AFOLU MRUNCASE MRUNX TC TT TTIMES TDEM PAMS SIM_CBAM SIM_CO2CUMUL
 
 
 XNB(XC) = YES;
