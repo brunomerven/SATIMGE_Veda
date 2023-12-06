@@ -195,6 +195,7 @@ SETS
  MFHHT(FH,H,AY) reverse mapping (TIMES to CGE) for households
 
   Indicators SATIM indicators /Activity, Capacity, NewCapacity, CapFac, FlowIn, FlowOut, AnnInvCost, FOM, VOM, OM, FuelCosts, Marginals, Levies, ExternalityCosts, CO2Tax, CO2, CO2CAPT, CH4, N2O, CF4, C2F6, CO2eq, FlowInMt, Investment,Price, pkm, tkm, GVA, EconIndicator, PopulationSATIM, GVASATIM, EmploymentSATIM/
+  IndicatorUnits Indicator Units /PJ, GW, PJa, kton, mR, bR, frac, bpkm, ptkm, RperGJ, 000person, 000veh, bRperPJ, RperTon, ktonperPJ, ktonperbR/
   Emiss(Indicators) / CO2, CH4, N2O, CF4, C2F6, CO2eq/
   IndicatorsH SATIM Sub-annual indicators /FlowIn, FlowOut, Marginal, Price, Demand/
 

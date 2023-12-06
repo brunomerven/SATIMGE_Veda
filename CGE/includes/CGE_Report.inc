@@ -34,6 +34,26 @@ Report('GovRevenue','ACTGRP',TC,RUN,'EconIndicator')            = YGX(XC,TC,TT) 
 Report('GovExpenditure','ACTGRP',TC,RUN,'EconIndicator')                = EGX(XC,TC,TT);
 Report('GovSaving','ACTGRP',TC,RUN,'EconIndicator')             = GSAVX(XC,TC,TT);
 
+************** Julia to Work Here
+$ontext
+PrivateConsumption/GDP
+GovConsumption/GDP
+Investment/GDP
+NetExports
+ExchangeRate
+FiscalRevenue/GDP
+FiscalExpenditure/GDP
+LabourIncomeShare
+CapitalIncomeShare
+PrimaryIndShare
+SecondaryIndShare
+TertiaryIndShare
+PalmaRatio
+20-20Ratio
+$offtext
+
+
+*************** End of Julia Section
 
 
 *** Energy Specific Indicators Aggregates
@@ -60,8 +80,8 @@ Report('GovSaving','ACTGRP',TC,RUN,'EconIndicator')             = GSAVX(XC,TC,TT
 Report2('GVA',A,'NA',TC,RUN)                  = PVA0(A,'nat')*(1-TVA0(A,'nat'))*QVAX(A,'nat',XC,TC,TT);
 
 * LABOUR
-Report2('Employment',A,FLAB,TC,RUN)               = QFX(FLAB,A,'NAT',XC,TC,TT)   ;
-Report2('Wage',A,FLAB,TC,RUN)              = WFX(FLAB,XC,TC,TT)*WFDISTX(FLAB,A,'nat',XC,TC,TT)  ;
+Report2('EmploymentbyActivitybyLabourType',A,FLAB,TC,RUN)               = QFX(FLAB,A,'NAT',XC,TC,TT)   ;
+Report2('WageRatebyLabourType',A,FLAB,TC,RUN)              = WFX(FLAB,XC,TC,TT)*WFDISTX(FLAB,A,'nat',XC,TC,TT)  ;
 Report2('WageBill',A,FLAB,TC,RUN)                 = WFX(FLAB,XC,TC,TT)*WFDISTX(FLAB,A,'nat',XC,TC,TT)*QFX(FLAB,A,'nat',XC,TC,TT)  ;
 
 *FACTOR INCOME
@@ -94,7 +114,6 @@ Report2('CommodityPrices',C,'NA',TC,RUN)           = PQX(C,XC,TC,TT) ;
 Report2('InvestmentDemandbyCommodity',C,'NA',TC,RUN)               = sum(IT,QINVX(C,IT,XC,TC,TT)*PQ0(C));
 
 
-
 * Capital formation or savings. INSDNG are households and enterprises.
 * Total CapitalFormation is the equal to TotalInvestment
 Report2('CapitalFormation','NA',INSDNG,TC,RUN) = MPSX(INSDNG,XC,TC,TT) * (1 - TINSX(INSDNG,XC,TC,TT)) * YIX(INSDNG,XC,TC,TT);
@@ -109,7 +128,8 @@ Report2('CapitalAlloc','aelec','NA',TC,RUN) = EINVQINV(XC,TC,TT);
 * aelec is part of AFX but not included in QFX('fcap'). INVSHR2 is share of ANFX sectors
 Report2('CapitalAlloc',A,'NA',TC,RUN)$ANFX(A,'nat') = INVSHR2X('fcap',A,'nat',XC,TC,TT)*(Report('TotalInvestEconomy','ACTGRP',TC,RUN,'EconIndicator')-TotalInvestmentFixed(TC,RUN));
 
-
+* Carbon Content and BTA indicators
+Report2('CarbonContentCommodities',C,'NA',TC,RUN) = CCONX(C,TC)*PXX(C,XC,TC,TT);
 
 
 execute_unload "Tableau.gdx" Report2;
