@@ -4,54 +4,65 @@
 * Indicator -> PRC needs to be added to setsandmaps.xlsx!mapPRC column A
 
 * GENERAL ECONOMY
-Report('Population','ACTGRP',TC,RUN,'EconIndicator')            =POP(TC);
-Report('PopulationActive','ACTGRP',TC,RUN,'EconIndicator')            =POPActive(TC);
+Report('Econ_Population','ACTGRP',TC,RUN,'EconIndicator')            =POP(TC);
+Report('Econ_PopulationActive','ACTGRP',TC,RUN,'EconIndicator')            =POPActive(TC);
 
-Report('GVA_NOM','ACTGRP',TC,RUN,'EconIndicator')               = SUM(A,PVAX(A,'nat',XC,TC,TT)*(1-TVAX(A,'nat',XC,TC,TT))*QVAX(A,'nat',XC,TC,TT));
+Report('Econ_GVA_NOM','ACTGRP',TC,RUN,'EconIndicator')               = SUM(A,PVAX(A,'nat',XC,TC,TT)*(1-TVAX(A,'nat',XC,TC,TT))*QVAX(A,'nat',XC,TC,TT));
 
 * GDP at factor costs is sum of GVA
-Report('GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator')                  = SUM(A,PVA0(A,'nat')*(1-TVA0(A,'nat'))*QVAX(A,'nat',XC,TC,TT));
-Report('GDPperCapita','ACTGRP',TC,RUN,'EconIndicator')          = Report('GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator')/POP(TC);
+Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator')                  = SUM(A,PVA0(A,'nat')*(1-TVA0(A,'nat'))*QVAX(A,'nat',XC,TC,TT));
+Report('Econ_GDPperCapita','ACTGRP',TC,RUN,'EconIndicator')          = Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator')/POP(TC);
 
 *INVESTMENT
-Report('TotalInvestEconomy','ACTGRP',TC,RUN,'EconIndicator') = sum((IT,C),QINVX(C,IT,XC,TC,TT)*PQ0(C));
-Report('TotalInvestEconomy_NOM','ACTGRP',TC,RUN,'EconIndicator') = sum((IT,C),QINVX(C,IT,XC,TC,TT)*PQX(C,XC,TC,TT));
+Report('Econ_TotalInvestEconomy','ACTGRP',TC,RUN,'EconIndicator') = sum((IT,C),QINVX(C,IT,XC,TC,TT)*PQ0(C));
+Report('Econ_TotalInvestEconomy_NOM','ACTGRP',TC,RUN,'EconIndicator') = sum((IT,C),QINVX(C,IT,XC,TC,TT)*PQX(C,XC,TC,TT));
 
-Report('EmploymentRate','ACTGRP',TC,RUN,'EconIndicator') = sum(FLAB,QFSX(FLAB,XC,TC,TT))/POPActive(TC);
-Report('UnemploymentRate','ACTGRP',TC,RUN,'EconIndicator') = 1-Report('EmploymentRate','ACTGRP',TC,RUN,'EconIndicator');
+
+Report('Econ_EmploymentRate','ACTGRP',TC,RUN,'EconIndicator') = sum(FLAB,QFSX(FLAB,XC,TC,TT))/POPActive(TC);
+Report('Econ_UnemploymentRate','ACTGRP',TC,RUN,'EconIndicator') = 1-Report('Econ_EmploymentRate','ACTGRP',TC,RUN,'EconIndicator');
 
 * Econ indicators for SATIM sectors
 REPORT(PRC,'ACTGRP',TC,RUN,'EmploymentSATIM') = sum(FLAB,sum(FS$MPRCFS2(PRC,FS),sum(A$MFSA(FS,A),QFX(FLAB,A,'nat',XC,TC,TT))));
 
-Report('ExchangeRate','ACTGRP',TC,RUN,'EconIndicator')          = EXRX(XC,TC,TT);
+Report('Econ_ExchangeRate','ACTGRP',TC,RUN,'EconIndicator')          = EXRX(XC,TC,TT);
 
 Report('hhd-le','ACTGRP',TC,RUN,'PopulationSATIM') = TFHPOP('hhd-le',TC)*POP(TC);
 Report('hhd-me','ACTGRP',TC,RUN,'PopulationSATIM') = TFHPOP('hhd-me',TC)*POP(TC);
 Report('hhd-he','ACTGRP',TC,RUN,'PopulationSATIM') = TFHPOP('hhd-he',TC)*POP(TC);
 
 * GOVERNMENT
-Report('GovRevenue','ACTGRP',TC,RUN,'EconIndicator')            = YGX(XC,TC,TT) ;
-Report('GovExpenditure','ACTGRP',TC,RUN,'EconIndicator')                = EGX(XC,TC,TT);
-Report('GovSaving','ACTGRP',TC,RUN,'EconIndicator')             = GSAVX(XC,TC,TT);
+Report('Econ_GovRevenue','ACTGRP',TC,RUN,'EconIndicator')            = YGX(XC,TC,TT) ;
+Report('Econ_GovExpenditure','ACTGRP',TC,RUN,'EconIndicator')        = EGX(XC,TC,TT);
+Report('Econ_GovSaving','ACTGRP',TC,RUN,'EconIndicator')             = GSAVX(XC,TC,TT);
+
+
+
 
 ************** Julia to Work Here
-$ontext
-PrivateConsumption/GDP
-GovConsumption/GDP
-Investment/GDP
-NetExports
-ExchangeRate
-FiscalRevenue/GDP
-FiscalExpenditure/GDP
-LabourIncomeShare
-CapitalIncomeShare
-PrimaryIndShare
-SecondaryIndShare
-TertiaryIndShare
-PalmaRatio
-20-20Ratio
-$offtext
+Report('Econ_GovExpendtoGDP',TC,RUN,'EconIndicator')            = EGX(XC,TC,TT)/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
+Report('Econ_GovRevtoGDP',TC,RUN,'EconIndicator')            = YGX(XC,TC,TT)/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
+Report('Econ_InvestmenttoGDP','ACTGRP',TC,RUN,'EconIndicator') = sum((IT,C),QINVX(C,IT,XC,TC,TT)*PQ0(C))/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
 
+* HOUSEHOLDS
+Report('Econ_PrivateConsumption','ACTGRP',TC,RUN,'EconIndicator')   = QHX(C,H,'BASE',T,'2055')*PQHX(C,H,'BASE',T,'2055');
+Report('Econ_PrivateConstoGDP','ACTGRP',TC,RUN,'EconIndicator')      = Report('Econ_PrivateConsumption','ACTGRP',TC,RUN,'EconIndicator')
+                                                                       /Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
+
+* TRADE
+Report('Econ_NetExports','ACTGRP',TC,RUN,'EconIndicator')         = Report2('Exports',C,'NA',T,RUN)-Report2('Imports',C,'NA',T,RUN);
+Report('Econ_ExchangeRate','ACTGRP',TC,RUN,'EconIndicator')       = EXRX('base',T,'2055');  
+
+Report('Econ_LabourIncomeShare','ACTGRP',TC,RUN,'EconIndicator')
+Report('Econ_CapitalIncomeShare','ACTGRP',TC,RUN,'EconIndicator')
+
+Report('Econ_PrimaryIndShare','ACTGRP',TC,RUN,'EconIndicator')
+Report('Econ_SecondaryIndShare','ACTGRP',TC,RUN,'EconIndicator')
+Report('Econ_TertiaryIndShare','ACTGRP',TC,RUN,'EconIndicator')
+
+Report('Econ_PalmaRatio','ACTGRP',TC,RUN,'EconIndicator')         = (YIX('hhd-9',XC,TC,'2050')+YIX('hhd-8',XC,TC,'2050'))
+                                                                         /(YIX('hhd-0',XC,TC,'2050')+YIX('hhd-1',XC,TC,'2050'));
+Report('Econ_20-20Ratio','ACTGRP',TC,RUN,'EconIndicator')         = (YIX('hhd-9',XC,TC,'2050'))/(YIX('hhd-0',XC,TC,'2050')+YIX('hhd-1',XC,TC,'2050')
+                                                                     +YIX('hhd-2',XC,TC,'2050')+YIX('hhd-3',XC,TC,'2050'));
 
 *************** End of Julia Section
 
