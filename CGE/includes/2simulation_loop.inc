@@ -215,6 +215,13 @@ $include cge\includes\2carbon.inc
 *#    PWGR('cfcel',RUN,TC)$(ord(TC) gt 9) = -0.0191;
 *#    PWGR('chydr',RUN,TC)$(ord(TC) gt 9) = -0.015;
 
+    PWGR(C,RUN,TC)$ImpPrice(C,TC-1) = ImpPrice(C,TC)/ImpPrice(C,TC-1)-1;
+
+*!    PWGR('ccoil',RUN,TC)$ImpPrice('ccoil',TC-1) = ImpPrice('ccoil',TC)/ImpPrice('ccoil',TC-1)-1;
+*!    PWGR('cpetr-d',RUN,TC)$ImpPrice('cpetr-d',TC-1) = ImpPrice('cpetr-d',TC)/ImpPrice('cpetr-d',TC-1)-1;
+*!    PWGR('cngas',RUN,TC)$ImpPrice('cngas',TC-1) = ImpPrice('cngas',TC)/ImpPrice('cngas',TC-1)-1;
+PWGR('cngas',RUN,TC) = 0;
+
 
     pwebar(C,RW) = pwebar(C,RW) * (1+PWGR(C,RUN,TC));
     pwmbar(C,RW) = pwmbar(C,RW) * (1+PWGR(C,RUN,TC));

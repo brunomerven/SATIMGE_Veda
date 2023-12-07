@@ -263,6 +263,8 @@ PARAMETERS
 
   OB_FOM(REG,PRC,CUR,AY)       Interpolated fom unit costs from TIMES R per kW-yr or R per GJ-yr
 
+  OBJ_IPRIC(REG,AY, PRC,COM,S,*,CUR) Interpolated import and export prices from TIMES
+  ImpPrice(C,AY)                 TIMES Import Price for cge equivalent commodities
 
 * Data from Demand Model (spreadsheet-based at this stage)
   SIM_DEMX(COM,AY)               Demand extracted from excel

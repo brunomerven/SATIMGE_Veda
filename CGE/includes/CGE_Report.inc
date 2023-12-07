@@ -129,7 +129,8 @@ Report2('CapitalAlloc','aelec','NA',TC,RUN) = EINVQINV(XC,TC,TT);
 Report2('CapitalAlloc',A,'NA',TC,RUN)$ANFX(A,'nat') = INVSHR2X('fcap',A,'nat',XC,TC,TT)*(Report('TotalInvestEconomy','ACTGRP',TC,RUN,'EconIndicator')-TotalInvestmentFixed(TC,RUN));
 
 * Carbon Content and BTA indicators
-Report2('CarbonContentCommodities',C,'NA',TC,RUN) = CCONX(C,TC)*PXX(C,XC,TC,TT);
+* PX0 is used because CCON is calculated using ASAM, which gets constructed using PQ0
+Report2('CarbonContentCommodities',C,'NA',TC,RUN) = CCONX(C,TC)*PX0(C);
 
 
 execute_unload "Tableau.gdx" Report2;
