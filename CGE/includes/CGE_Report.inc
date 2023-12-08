@@ -39,8 +39,9 @@ Report('Econ_GovSaving','ACTGRP',TC,RUN,'EconIndicator')             = GSAVX(XC,
 
 
 ************** Julia to Work Here
-
+$ontext
 Report('Econ_GovExpendtoGDP',TC,RUN,'EconIndicator')            = EGX(XC,TC,TT)/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
+
 Report('Econ_GovRevtoGDP',TC,RUN,'EconIndicator')            = YGX(XC,TC,TT)/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
 Report('Econ_InvestmenttoGDP','ACTGRP',TC,RUN,'EconIndicator') = sum((IT,C),QINVX(C,IT,XC,TC,TT)*PQ0(C))/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
 
@@ -64,7 +65,7 @@ Report('Econ_PalmaRatio','ACTGRP',TC,RUN,'EconIndicator')         = (YIX('hhd-9'
                                                                          /(YIX('hhd-0',XC,TC,TT)+YIX('hhd-1',XC,TC,TT));
 Report('Econ_20-20Ratio','ACTGRP',TC,RUN,'EconIndicator')         = (YIX('hhd-9',XC,TC,TT))/(YIX('hhd-0',XC,TC,TT)+YIX('hhd-1',XC,TC,TT)
                                                                      +YIX('hhd-2',XC,TC,TT)+YIX('hhd-3',XC,TC,TT));
-
+%offtext
 
 
 *************** End of Julia Section
