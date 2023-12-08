@@ -39,30 +39,33 @@ Report('Econ_GovSaving','ACTGRP',TC,RUN,'EconIndicator')             = GSAVX(XC,
 
 
 ************** Julia to Work Here
+
 Report('Econ_GovExpendtoGDP',TC,RUN,'EconIndicator')            = EGX(XC,TC,TT)/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
 Report('Econ_GovRevtoGDP',TC,RUN,'EconIndicator')            = YGX(XC,TC,TT)/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
 Report('Econ_InvestmenttoGDP','ACTGRP',TC,RUN,'EconIndicator') = sum((IT,C),QINVX(C,IT,XC,TC,TT)*PQ0(C))/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
 
 * HOUSEHOLDS
-Report('Econ_PrivateConsumption','ACTGRP',TC,RUN,'EconIndicator')   = QHX(C,H,'BASE',T,'2055')*PQHX(C,H,'BASE',T,'2055');
+Report('Econ_PrivateConsumption','ACTGRP',TC,RUN,'EconIndicator')   = QHX(C,H,'BASE',T,'2055')*PQHX(C,H,'BASE',T,TT);
 Report('Econ_PrivateConstoGDP','ACTGRP',TC,RUN,'EconIndicator')      = Report('Econ_PrivateConsumption','ACTGRP',TC,RUN,'EconIndicator')
                                                                        /Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
 
 * TRADE
 Report('Econ_NetExports','ACTGRP',TC,RUN,'EconIndicator')         = Report2('Exports',C,'NA',T,RUN)-Report2('Imports',C,'NA',T,RUN);
-Report('Econ_ExchangeRate','ACTGRP',TC,RUN,'EconIndicator')       = EXRX('base',T,'2055');  
+Report('Econ_ExchangeRate','ACTGRP',TC,RUN,'EconIndicator')       = EXRX('base',T,TT);
 
-Report('Econ_LabourIncomeShare','ACTGRP',TC,RUN,'EconIndicator')
-Report('Econ_CapitalIncomeShare','ACTGRP',TC,RUN,'EconIndicator')
+Report('Econ_LabourIncomeShare','ACTGRP',TC,RUN,'EconIndicator')  = sum((INS,FLAB),YIFX(INS,FLAB,'base',T,TT))/sum((INS,F),YIFX(INS,F,'base',T,TT));
+Report('Econ_CapitalIncomeShare','ACTGRP',TC,RUN,'EconIndicator') = sum((INS,FCAP),YIFX(INS,FCAP,'base',T,TT))/sum((INS,F),YIFX(INS,F,'base',T,TT));
 
-Report('Econ_PrimaryIndShare','ACTGRP',TC,RUN,'EconIndicator')
-Report('Econ_SecondaryIndShare','ACTGRP',TC,RUN,'EconIndicator')
-Report('Econ_TertiaryIndShare','ACTGRP',TC,RUN,'EconIndicator')
+* Report('Econ_PrimaryIndShare','ACTGRP',TC,RUN,'EconIndicator')    --> will generate just dont have a map of industry breakdown. Should I include a map to generate these sub parameters?
+* Report('Econ_SecondaryIndShare','ACTGRP',TC,RUN,'EconIndicator')
+* Report('Econ_TertiaryIndShare','ACTGRP',TC,RUN,'EconIndicator')
 
-Report('Econ_PalmaRatio','ACTGRP',TC,RUN,'EconIndicator')         = (YIX('hhd-9',XC,TC,'2050')+YIX('hhd-8',XC,TC,'2050'))
-                                                                         /(YIX('hhd-0',XC,TC,'2050')+YIX('hhd-1',XC,TC,'2050'));
-Report('Econ_20-20Ratio','ACTGRP',TC,RUN,'EconIndicator')         = (YIX('hhd-9',XC,TC,'2050'))/(YIX('hhd-0',XC,TC,'2050')+YIX('hhd-1',XC,TC,'2050')
-                                                                     +YIX('hhd-2',XC,TC,'2050')+YIX('hhd-3',XC,TC,'2050'));
+Report('Econ_PalmaRatio','ACTGRP',TC,RUN,'EconIndicator')         = (YIX('hhd-9',XC,TC,TT)+YIX('hhd-8',XC,TC,TT))
+                                                                         /(YIX('hhd-0',XC,TC,TT)+YIX('hhd-1',XC,TC,TT));
+Report('Econ_20-20Ratio','ACTGRP',TC,RUN,'EconIndicator')         = (YIX('hhd-9',XC,TC,TT))/(YIX('hhd-0',XC,TC,TT)+YIX('hhd-1',XC,TC,TT)
+                                                                     +YIX('hhd-2',XC,TC,TT)+YIX('hhd-3',XC,TC,TT));
+
+
 
 *************** End of Julia Section
 
