@@ -39,33 +39,38 @@ Report('Econ_GovSaving','ACTGRP',TC,RUN,'EconIndicator')             = GSAVX(XC,
 
 
 ************** Julia to Work Here
-$ontext
-Report('Econ_GovExpendtoGDP',TC,RUN,'EconIndicator')            = EGX(XC,TC,TT)/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
 
-Report('Econ_GovRevtoGDP',TC,RUN,'EconIndicator')            = YGX(XC,TC,TT)/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
+Report('Econ_GovExpendtoGDP','ACTGRP',TC,RUN,'EconIndicator')            = EGX(XC,TC,TT)/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
+
+
+Report('Econ_GovRevtoGDP','ACTGRP',TC,RUN,'EconIndicator')            = YGX(XC,TC,TT)/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
+
 Report('Econ_InvestmenttoGDP','ACTGRP',TC,RUN,'EconIndicator') = sum((IT,C),QINVX(C,IT,XC,TC,TT)*PQ0(C))/Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
 
 * HOUSEHOLDS
-Report('Econ_PrivateConsumption','ACTGRP',TC,RUN,'EconIndicator')   = QHX(C,H,'BASE',T,'2055')*PQHX(C,H,'BASE',T,TT);
+Report('Econ_PrivateConsumption','ACTGRP',TC,RUN,'EconIndicator')   = sum((C,H),QHX(C,H,'BASE',TC,TT)*PQHX(C,H,'BASE',TC,TT));
+
 Report('Econ_PrivateConstoGDP','ACTGRP',TC,RUN,'EconIndicator')      = Report('Econ_PrivateConsumption','ACTGRP',TC,RUN,'EconIndicator')
                                                                        /Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator');
 
 * TRADE
-Report('Econ_NetExports','ACTGRP',TC,RUN,'EconIndicator')         = Report2('Exports',C,'NA',T,RUN)-Report2('Imports',C,'NA',T,RUN);
-Report('Econ_ExchangeRate','ACTGRP',TC,RUN,'EconIndicator')       = EXRX('base',T,TT);
 
-Report('Econ_LabourIncomeShare','ACTGRP',TC,RUN,'EconIndicator')  = sum((INS,FLAB),YIFX(INS,FLAB,'base',T,TT))/sum((INS,F),YIFX(INS,F,'base',T,TT));
-Report('Econ_CapitalIncomeShare','ACTGRP',TC,RUN,'EconIndicator') = sum((INS,FCAP),YIFX(INS,FCAP,'base',T,TT))/sum((INS,F),YIFX(INS,F,'base',T,TT));
+Report('Econ_NetExports','ACTGRP',TC,RUN,'EconIndicator')         =  Sum(C,QEX(C,'rest','BASE',TC,TT)*PE0(C,'rest')-QMX(C,'rest','BASE',TC,TT)*PM0(C,'rest')) ;
+
+Report('Econ_ExchangeRate','ACTGRP',TC,RUN,'EconIndicator')       = EXRX('base',TC,TT);
+
+Report('Econ_LabourIncomeShare','ACTGRP',TC,RUN,'EconIndicator')  = sum((INS,FLAB),YIFX(INS,FLAB,'base',TC,TT))/sum((INS,F),YIFX(INS,F,'base',TC,TT));
+
+Report('Econ_CapitalIncomeShare','ACTGRP',TC,RUN,'EconIndicator') = sum((INS,FCAP),YIFX(INS,FCAP,'base',TC,TT))/sum((INS,F),YIFX(INS,F,'base',TC,TT));
 
 * Report('Econ_PrimaryIndShare','ACTGRP',TC,RUN,'EconIndicator')    --> will generate just dont have a map of industry breakdown. Should I include a map to generate these sub parameters?
 * Report('Econ_SecondaryIndShare','ACTGRP',TC,RUN,'EconIndicator')
 * Report('Econ_TertiaryIndShare','ACTGRP',TC,RUN,'EconIndicator')
 
 Report('Econ_PalmaRatio','ACTGRP',TC,RUN,'EconIndicator')         = (YIX('hhd-9',XC,TC,TT)+YIX('hhd-8',XC,TC,TT))
-                                                                         /(YIX('hhd-0',XC,TC,TT)+YIX('hhd-1',XC,TC,TT));
+                                                                          /(YIX('hhd-0',XC,TC,TT)+YIX('hhd-1',XC,TC,TT));
 Report('Econ_20-20Ratio','ACTGRP',TC,RUN,'EconIndicator')         = (YIX('hhd-9',XC,TC,TT))/(YIX('hhd-0',XC,TC,TT)+YIX('hhd-1',XC,TC,TT)
                                                                      +YIX('hhd-2',XC,TC,TT)+YIX('hhd-3',XC,TC,TT));
-%offtext
 
 
 *************** End of Julia Section
@@ -141,7 +146,7 @@ TotalInvestmentFixed(TC,RUN) = sum(A,Report2('CapitalAlloc',A,'NA',TC,RUN));
 
 Report2('CapitalAlloc','aelec','NA',TC,RUN) = EINVQINV(XC,TC,TT);
 * aelec is part of AFX but not included in QFX('fcap'). INVSHR2 is share of ANFX sectors
-Report2('CapitalAlloc',A,'NA',TC,RUN)$ANFX(A,'nat') = INVSHR2X('fcap',A,'nat',XC,TC,TT)*(Report('TotalInvestEconomy','ACTGRP',TC,RUN,'EconIndicator')-TotalInvestmentFixed(TC,RUN));
+Report2('CapitalAlloc',A,'NA',TC,RUN)$ANFX(A,'nat') = INVSHR2X('fcap',A,'nat',XC,TC,TT)*(Report('Econ_TotalInvestEconomy','ACTGRP',TC,RUN,'EconIndicator')-TotalInvestmentFixed(TC,RUN));
 
 * Carbon Content and BTA indicators
 * PX0 is used because CCON is calculated using ASAM, which gets constructed using PQ0
