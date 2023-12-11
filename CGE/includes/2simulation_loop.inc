@@ -549,10 +549,18 @@ $offtext
 
 * Coal
 
+* Localisation
+    CMRES('cmach_e') = YES;
+    QM.FX('cmach_e','REST') = TVACT(TC,'IMPcmach_e')/(TVACT(TC,'IMPcmach_e')+TVACT(TC,'MINcmach_e'))*(QM.L('cmach_e','REST')+QA.L('amach_e'));
+
+    CMRES('cemch_e') = YES;
+    QM.FX('cemch_e','REST') = TVACT(TC,'IMPcemch_e')/(TVACT(TC,'IMPcemch_e')+TVACT(TC,'MINcemch_e'))*(QM.L('cemch_e','REST')+QA.L('aemch_e'));
+
 
 * set ANFX
     ANFX(A,RD)=NO;
     ANFX(A,RD)$(NOT AFX(A,RD))=YES;
+
 
 
 

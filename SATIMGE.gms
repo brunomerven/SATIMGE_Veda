@@ -661,6 +661,8 @@ execute_unload REPORT_RUN
 execute_unload "REPORT.gdx" REPORT
 execute 'gdxdump REPORT.gdx output=REPORT_00.csv symb=REPORT format=csv header="Process,Commodity,Year,Scenario,Indicator,SATIMGE"';
 
+execute_unload "REPORT2.gdx" REPORT2
+execute 'gdxdump Tableau.gdx output=Report2_00.csv symb=Report2 format=csv header="Indicator,AC,AC,Year,Scenario,eSAGE"';
 
 
 *execute 'gdxdump REPORT.gdx output=REPORT.csv symb=REPORT format=csv header="Process,Commodity,Year,Scenario,Activity,Capacity,NewCapacity,FlowIn,FlowOut,CO2,CH4,N2O,HFC,PFC,CO2eq,Investment,GVA,Employment" cDim=y';
