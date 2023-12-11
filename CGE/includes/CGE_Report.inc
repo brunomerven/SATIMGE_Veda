@@ -99,6 +99,9 @@ Report('Econ_20-20Ratio','ACTGRP',TC,RUN,'EconIndicator')         = (YIX('hhd-9'
 *GVA
 Report2('GVA',A,'NA',TC,RUN)                  = PVA0(A,'nat')*(1-TVA0(A,'nat'))*QVAX(A,'nat',XC,TC,TT);
 
+*Output
+Report2('Output',A,C,TC,RUN) = QXACX(A,C,XC,TC,TT);
+
 * LABOUR
 Report2('EmploymentbyActivitybyLabourType',A,FLAB,TC,RUN)               = QFX(FLAB,A,'NAT',XC,TC,TT)   ;
 Report2('WageRatebyLabourType',A,FLAB,TC,RUN)              = WFX(FLAB,XC,TC,TT)*WFDISTX(FLAB,A,'nat',XC,TC,TT)  ;
@@ -153,8 +156,6 @@ Report2('CapitalAlloc',A,'NA',TC,RUN)$ANFX(A,'nat') = INVSHR2X('fcap',A,'nat',XC
 Report2('CarbonContentCommodities',C,'NA',TC,RUN) = CCONX(C,TC)*PX0(C);
 
 
-execute_unload "Tableau.gdx" Report2;
-execute 'gdxdump Tableau.gdx output=Report_00.csv symb=Report2 format=csv header="Indicator,AC,AC,Year,Scenario,SATIMGE"';
 
 
 
