@@ -178,8 +178,14 @@
 *!! CERES('cvehi') = YES;
 *!! QE.FX('cvehi','REST') = QE0('cvehi','REST');
 
-*!! CMRES('cmach_e') = YES;
-*!! QM.FX('cmach_e','REST') = QM0('cmach_e','REST');
+ CMRES('cmach_e') = No;
+ CMRES('cemch_e') = No;
+
+ QM.LO('cmach_e','REST') = -inf;
+ QM.UP('cmach_e','REST') = +inf;
+
+ QM.LO('cemch_e','REST') = -inf;
+ QM.UP('cemch_e','REST') = +inf;
 
 *@
 *@
@@ -207,12 +213,6 @@
 *@* QE.FX('cpetr_o','REST') = QE0('cpetr_o','REST') ;
 *@
 *@*$offtext
-
-* CMRES('cmach_e') = yes;
-* CMRES('cemch_e') = yes;
-
-* QM.FX('cmach_e','REST') = QM0('cmach_e','REST');
-* QM.FX('cemch_e','REST') = QM0('cemch_e','REST');
 
 
 
