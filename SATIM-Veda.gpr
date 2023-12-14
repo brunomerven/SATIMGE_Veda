@@ -2813,28 +2813,6 @@ PlaneRownr=-1
 [RP:2ENERGYCHECKS]
 1=
 
-[RP:SATIMGE]
-1=r=cge\model, gdx = gdxdump\testLocal
-2=r=cge\model, gdx = gdxdump\fixaelct5
-3=r=cge\model, gdx = gdxdump\fixaelct3
-4=r=cge\model, gdx = gdxdump\fixaelct4
-5=r=cge\model, gdx = gdxdump\fixaelct2
-6=r=cge\model, gdx = gdxdump\fixaelct
-7=r=cge\model, gdx = fixaelct
-8=r=cge\model, gdx = fixaelct2
-9=r=cge\model
-10=gdx = test2
-11=r=cge\model, gdx = growthConTest
-12=r=cge\model, gdx = 75Gton3IterTest
-13=r=cge\model, gdx = 9Gton3IterTest
-14=r=cge\model, gdx = 9GtonTestAfx
-15=r=cge\model, gdx = 9GtonTestTraAdj
-16=r=cge\model, gdx = 9GtonTest
-17=r=cge\model, gdx = EBFix4
-18=r=cge\model, gdx = EBFix4, FW = 1
-19=r=cge\model, gdx = EBFix3
-20=r=cge\model, gdx = EBFix2
-
 [RP:2VARINIT]
 1=
 
@@ -2846,99 +2824,6 @@ PlaneRownr=-1
 
 [RP:2TIMESREPORT]
 1=
-
-[MRUFILES]
-1=C:\Models\SATIMGE_Veda\CGE\includes\EnergyGoodsBudgetAllocation.inc
-2=C:\Models\SATIMGE\KLEM\KLEM_Calc.inc
-3=C:\Models\SATIMGE\KLEM\KLEM_SAGE.inc
-4=C:\Models\SATIMGE\CGE\Reporting Templates\CGE_ReportingTemplate.gms
-5=C:\Models\SATIMGE_Veda\fixaelct.gdx
-6=C:\Models\SATIMGE_Veda\GDXDump\test9Gtonlocal3.gdx
-7=C:\Models\SATIMGE_Veda\SATIMGE.log
-8=C:\Models\SATIM-EL\Untitled_1.gms
-
-[OPENWINDOW_1]
-FILE0=C:\Models\SATIMGE_Veda\GDXDump\test9Gtonlocal3-fxImp.gdx
-FILE1=C:\Models\SATIMGE_Veda\GDXDump\test9Gtonlocal3-fxImp.gdx
-MAXIM=0
-TOP=9
-LEFT=1373
-HEIGHT=1209
-WIDTH=1152
-
-[OPENWINDOW_2]
-FILE0=C:\Models\SATIMGE_Veda\CGE\includes\CGE_Report.inc
-FILE1=C:\Models\SATIMGE_Veda\GDXDump\fixaelct.gdx
-FILE2=C:\Models\SATIMGE_Veda\GDXDump\fixaelct.gdx
-MAXIM=0
-TOP=8
-LEFT=1371
-HEIGHT=1288
-WIDTH=1174
-
-[OPENWINDOW_3]
-FILE0=C:\Models\SATIMGE_Veda\CGE\includes\3report_loop.inc
-FILE1=C:\Models\SATIMGE_Veda\CGE\includes\3report_loop.inc
-MAXIM=0
-TOP=348
-LEFT=124
-HEIGHT=880
-WIDTH=1155
-
-[OPENWINDOW_4]
-FILE0=C:\Models\SATIMGE_Veda\gdxdump\fixaelct2.gdx
-FILE1=C:\Models\SATIMGE_Veda\gdxdump\fixaelct2.gdx
-MAXIM=0
-TOP=10
-LEFT=1381
-HEIGHT=1267
-WIDTH=1165
-
-[OPENWINDOW_5]
-FILE0=C:\Models\SATIMGE_Veda\CGE\includes\2energychecks.inc
-FILE1=C:\Models\SATIMGE_Veda\CGE\Reporting Templates\DDP Reporting template\DDP Reporting Template.gms
-FILE2=C:\Models\SATIMGE_Veda\CGE\includes\2energychecks.inc
-MAXIM=0
-TOP=6
-LEFT=1360
-HEIGHT=1280
-WIDTH=1188
-
-[OPENWINDOW_6]
-FILE0=C:\Models\SATIMGE\CGE\includes\eSAGE_Report.inc
-FILE1=C:\Models\SATIMGE\KLEM\KLEM_Report.inc
-FILE2=C:\Models\SATIMGE_Veda\CGE\1model.gms
-FILE3=C:\Models\SATIMGE_Veda\CGE\includes\2capital.inc
-FILE4=C:\Models\SATIMGE_Veda\cge\includes\2closures.inc
-FILE5=C:\Models\SATIMGE_Veda\CGE\includes\2energychecks.inc
-FILE6=C:\Models\SATIMGE_Veda\CGE\includes\2energychecksinit.inc
-FILE7=C:\Models\SATIMGE_Veda\CGE\includes\2energyinit.inc
-FILE8=C:\Models\SATIMGE_Veda\CGE\includes\2initialize.inc
-FILE9=C:\Models\SATIMGE_Veda\CGE\includes\2simulation.inc
-FILE10=C:\Models\SATIMGE_Veda\CGE\includes\2simulation_loop.inc
-FILE11=C:\Models\SATIMGE_Veda\CGE\includes\2varinit.inc
-FILE12=C:\Models\SATIMGE_Veda\CGE\includes\3report_loop.inc
-FILE13=C:\Models\SATIMGE_Veda\CGE\includes\CGE_Report.inc
-FILE14=C:\Models\SATIMGE_Veda\CGE\Reporting Templates\DDP Reporting template\DDP Reporting Template.gms
-FILE15=C:\Models\SATIMGE_Veda\fixaelct2.gdx
-FILE16=C:\Models\SATIMGE_Veda\GDXDump\fixaelct.gdx
-FILE17=C:\Models\SATIMGE_Veda\gdxdump\fixaelct2.gdx
-FILE18=C:\Models\SATIMGE_Veda\gdxdump\fixaelct3.gdx
-FILE19=C:\Models\SATIMGE_Veda\gdxdump\fixaelct4.gdx
-FILE20=C:\Models\SATIMGE_Veda\GDXDump\test9Gtonlocal3-fxImp.gdx
-FILE21=C:\Models\SATIMGE_Veda\gdxdump\testLocal.gdx
-FILE22=C:\Models\SATIMGE_Veda\Includes\2TIMESReport.inc
-FILE23=C:\Models\SATIMGE_Veda\SATIMGE.gdx
-FILE24=C:\Models\SATIMGE_Veda\SATIMGE.gms
-FILE25=C:\Models\SATIMGE_Veda\SATIMGE.lst
-FILE26=C:\Models\SATIMGE_Veda\test99Gt3iter2-hr.gdx
-FILE27=C:\Models\SATIMGE_Veda\test9Gt3iter.gdx
-FILE28=C:\Models\SATIMGE_Veda\CGE\includes\2simulation_loop.inc
-MAXIM=0
-TOP=18
-LEFT=15
-HEIGHT=915
-WIDTH=1335
 
 [GDXDISP: inta Par 2]
 PlaneDim=0
@@ -2968,3 +2853,88 @@ Order=3,1,2
 Decim=0
 PlaneRownr=2
 PlaneFilter1=2055
+
+[RP:SATIMGE]
+1=r=cge\model
+2=r=cge\model, gdx = gdxdump\testLocal
+3=r=cge\model, gdx = gdxdump\fixaelct5
+4=r=cge\model, gdx = gdxdump\fixaelct3
+5=r=cge\model, gdx = gdxdump\fixaelct4
+6=r=cge\model, gdx = gdxdump\fixaelct2
+7=r=cge\model, gdx = gdxdump\fixaelct
+8=r=cge\model, gdx = fixaelct
+9=r=cge\model, gdx = fixaelct2
+10=gdx = test2
+11=r=cge\model, gdx = growthConTest
+12=r=cge\model, gdx = 75Gton3IterTest
+13=r=cge\model, gdx = 9Gton3IterTest
+14=r=cge\model, gdx = 9GtonTestAfx
+15=r=cge\model, gdx = 9GtonTestTraAdj
+16=r=cge\model, gdx = 9GtonTest
+17=r=cge\model, gdx = EBFix4
+18=r=cge\model, gdx = EBFix4, FW = 1
+19=r=cge\model, gdx = EBFix3
+20=r=cge\model, gdx = EBFix2
+
+[MRUFILES]
+1=C:\Models\SATIMGE_Veda\SATIMGE.log
+2=C:\Models\SATIMGE_Veda\CGE\includes\EnergyGoodsBudgetAllocation.inc
+3=C:\Models\SATIMGE\KLEM\KLEM_Calc.inc
+4=C:\Models\SATIMGE\KLEM\KLEM_SAGE.inc
+5=C:\Models\SATIMGE\CGE\Reporting Templates\CGE_ReportingTemplate.gms
+6=C:\Models\SATIMGE_Veda\fixaelct.gdx
+7=C:\Models\SATIMGE_Veda\GDXDump\test9Gtonlocal3.gdx
+8=C:\Models\SATIM-EL\Untitled_1.gms
+
+[OPENWINDOW_1]
+FILE0=C:\Models\SATIMGE_Veda\CGE\includes\CGE_Report.inc
+FILE1=C:\Models\SATIMGE_Veda\CGE\includes\CGE_Report.inc
+MAXIM=0
+TOP=8
+LEFT=1371
+HEIGHT=1288
+WIDTH=1174
+
+[OPENWINDOW_2]
+FILE0=C:\Models\SATIMGE_Veda\CGE\includes\2energychecks.inc
+FILE1=C:\Models\SATIMGE_Veda\CGE\includes\2energychecks.inc
+MAXIM=0
+TOP=6
+LEFT=1360
+HEIGHT=1280
+WIDTH=1188
+
+[OPENWINDOW_3]
+FILE0=C:\Models\SATIMGE_Veda\CGE\includes\3report_loop.inc
+FILE1=C:\Models\SATIMGE_Veda\CGE\includes\3report_loop.inc
+MAXIM=0
+TOP=348
+LEFT=124
+HEIGHT=880
+WIDTH=1155
+
+[OPENWINDOW_4]
+FILE0=C:\Models\SATIMGE\CGE\includes\eSAGE_Report.inc
+FILE1=C:\Models\SATIMGE\KLEM\KLEM_Report.inc
+FILE2=C:\Models\SATIMGE_Veda\CGE\1model.gms
+FILE3=C:\Models\SATIMGE_Veda\CGE\includes\2capital.inc
+FILE4=C:\Models\SATIMGE_Veda\cge\includes\2closures.inc
+FILE5=C:\Models\SATIMGE_Veda\CGE\includes\2energychecks.inc
+FILE6=C:\Models\SATIMGE_Veda\CGE\includes\2energychecksinit.inc
+FILE7=C:\Models\SATIMGE_Veda\CGE\includes\2energyinit.inc
+FILE8=C:\Models\SATIMGE_Veda\CGE\includes\2initialize.inc
+FILE9=C:\Models\SATIMGE_Veda\CGE\includes\2simulation.inc
+FILE10=C:\Models\SATIMGE_Veda\CGE\includes\2simulation_loop.inc
+FILE11=C:\Models\SATIMGE_Veda\CGE\includes\2varinit.inc
+FILE12=C:\Models\SATIMGE_Veda\CGE\includes\3report_loop.inc
+FILE13=C:\Models\SATIMGE_Veda\CGE\includes\CGE_Report.inc
+FILE14=C:\Models\SATIMGE_Veda\Includes\2TIMESReport.inc
+FILE15=C:\Models\SATIMGE_Veda\SATIMGE.gdx
+FILE16=C:\Models\SATIMGE_Veda\SATIMGE.gms
+FILE17=C:\Models\SATIMGE_Veda\SATIMGE.lst
+FILE18=C:\Models\SATIMGE_Veda\SATIMGE.lst
+MAXIM=0
+TOP=18
+LEFT=15
+HEIGHT=915
+WIDTH=1335
