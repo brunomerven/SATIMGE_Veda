@@ -180,12 +180,16 @@
 
  CMRES('cmach_e') = No;
  CMRES('cemch_e') = No;
+ CMRES('cmetp') = No;
 
  QM.LO('cmach_e','REST') = -inf;
  QM.UP('cmach_e','REST') = +inf;
 
  QM.LO('cemch_e','REST') = -inf;
  QM.UP('cemch_e','REST') = +inf;
+
+ QM.LO('cmetp','REST') = -inf;
+ QM.UP('cmetp','REST') = +inf;
 
 *@
 *@

@@ -556,6 +556,8 @@ $offtext
     CMRES('cemch_e') = YES;
     QM.FX('cemch_e','REST') = TVACT(TC,'IMPcemch_e')/(TVACT(TC,'IMPcemch_e')+TVACT(TC,'MINcemch_e'))*(QM.L('cemch_e','REST')+QA.L('aemch_e'));
 
+    CMRES('cmetp') = YES;
+    QM.FX('cmetp','REST') = TVACT(TC,'IMPcmetp')/(TVACT(TC,'IMPcmetp')+TVACT(TC,'MINcmetp'))*(QM.L('cmetp','REST')+QA.L('ametp'));
 
 * set ANFX
     ANFX(A,RD)=NO;
