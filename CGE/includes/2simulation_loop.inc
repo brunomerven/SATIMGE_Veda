@@ -279,6 +279,8 @@ $offtext
 * tmp fix until QA approach is done properly
     ica('chydr',A,'NAT')$(SUM(FSXEP$MFSA(FSXEP,A),EIntensity_FS(FSXEP,'chydr',TC-1)) LT 0.0001 and SUM(FSXEP$MFSA(FSXEP,A),EIntensity_FS(FSXEP,'chydr',TC)) GT 0.0001 AND ica0('chydr',A,'NAT'))
                          = ica('chydr',A,'NAT') * QVA.L(A,'nat')/QA.L(A);
+    icagr('chydr',A,TC)$(SUM(FSXEP$MFSA(FSXEP,A),EIntensity_FS(FSXEP,'chydr',TC-1)) LT 0.0001 and SUM(FSXEP$MFSA(FSXEP,A),EIntensity_FS(FSXEP,'chydr',TC)) GT 0.0001 AND ica0('chydr',A,'NAT'))
+                         = 1;
 
 * calculate ica change for private passenger. This needs to be generalised to other household end-uses
     EHIntensity(C,'aprtr',TC) = FLOW_IN_FSFuels('tppr',C,TC)/sum(TPPR,COM_PROJ('REGION1',TC,TPPR));
