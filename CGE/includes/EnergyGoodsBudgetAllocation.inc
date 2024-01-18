@@ -5,13 +5,25 @@
 
 PQest('cprtr',TC) = sum(C,ica(C,'aprtr','nat')*PQ.L(C));
 BudShareFullRebound('cprtr',H,TC) = BudShare0('cprtr',H,TC-1);
-BudShareNoRebound('cprtr',H,TC) = BudShare0('cprtr',H,TC-1)*PQest('cprtr',TC)/PQ.L('cprtr');
+*BudShareNoRebound('cprtr',H,TC) = BudShare0('cprtr',H,TC-1)*PQest('cprtr',TC)/PQ.L('cprtr');
+
+BudShareNoRebound('cprtr',H,TC) = BudShare0('cprtr',H,TC-1);
+BudShareNoRebound('cprtr',H,TC)$PQX('cprtr',XC,TC-2,TT) = BudShare0('cprtr',H,TC-1)*PQX('cprtr',XC,TC-1,TT)/PQX('cprtr',XC,TC-2,TT);
+
 
 BudShare0('cprtr',H,TC) = BudShareFullRebound('cprtr',H,TC)*Rebound(TC)+BudShareNoRebound('cprtr',H,TC)*(1-Rebound(TC));
 
 * Temporary fix for electricity and kerosene (paraffin) by households, which is adjusted to track SATIM, until a full end-use model in eSAGE is implemented
-BudShare0('celec',H,TC)$PQX('celec',XC,TC-2,TT) = BudShare0('celec',H,TC-1)*sum(FH,FLOW_IN_FSFuels(FH,'celec',TC-1))/sum(FH,FLOW_IN_FSFuels(FH,'celec',TC))*PQX('celec','base',TC-1,TT)/PQX('celec',XC,TC-2,TT);
-BudShare0('cpetr-k',H,TC)$PQX('cpetr-k',XC,TC-2,TT) = BudShare0('cpetr-k',H,TC-1)*sum(FH,FLOW_IN_FSFuels(FH,'cpetr-k',TC-1))/sum(FH,FLOW_IN_FSFuels(FH,'cpetr-k',TC))*PQX('cpetr-k','base',TC-1,TT)/PQX('cpetr-k',XC,TC-2,TT);
+* this one seems to work but not sure why
+BudShare0('celec',H,TC)$PQX('celec',XC,TC-2,TT) = BudShare0('celec',H,TC-1)*sum(FH,FLOW_IN_FSFuels(FH,'celec',TC-1))/sum(FH,FLOW_IN_FSFuels(FH,'celec',TC))*PQX('celec','base',TC-1,TT)/PQX('celec',XC,TC-2,TT)*.99;
+
+* this is not as good
+*BudShare0('celec',H,TC) = BudShare0('celec',H,TC-1)*sum(FH,FLOW_IN_FSFuels(FH,'celec',TC))/sum(FH,FLOW_IN_FSFuels(FH,'celec',TC-1));
+
+* This implementation is correct
+BudShare0('cpetr-k',H,TC)$PQX('cpetr-k',XC,TC-2,TT) = BudShare0('cpetr-k',H,TC-1)*sum(FH,FLOW_IN_FSFuels(FH,'cpetr-k',TC))/sum(FH,FLOW_IN_FSFuels(FH,'cpetr-k',TC-1))*PQX('cpetr-k','base',TC-1,TT)/PQX('cpetr-k',XC,TC-2,TT);
+
+
 
 BudShareNonEnergy(H,TC) =  1-sum(CHEnergy,BudShare0(CHEnergy,H,TC));
 

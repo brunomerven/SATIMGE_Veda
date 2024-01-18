@@ -90,7 +90,7 @@ T_COMBALEM('REGION1',TC,'PWRHGN')$SUM((V,S),F_OUT('REGION1',V,TC,'XPWRHGN','PWRH
 
 
 * calculate cge equivalent commodity import prices from TIMES
-ImpPrice(C,TC) = sum(COM$mCOMC(COM,C),sum(PRC,OBJ_IPRIC('REGION1',TC,PRC,COM,'ANNUAL','IMP','MZAR2022'))); 
+ImpPrice(C,TC) = sum(COM$mCOMC(COM,C),sum(PRC,OBJ_IPRIC('REGION1',TC,PRC,COM,'ANNUAL','IMP','MZAR2022')));
 
 
 * Calculate New Capacity from milestone year results
@@ -256,7 +256,7 @@ LOOP((PRC,TC)$TVNCAP(TC,PRC),
 
 
 *BM+FH 201218: SETTING STARTING POINT FOR HYDROGEN
- ICAFSGR(C,FS,T)$(EIntensity_FS(FS,C,T-1) GT 0.00001) = EIntensity_FS(FS,C,T)/EIntensity_FS(FS,C,T-1);
+ ICAFSGR(C,FS,T)$(EIntensity_FS(FS,C,T-1) GT 0.00001) = min(10,EIntensity_FS(FS,C,T)/EIntensity_FS(FS,C,T-1));
 
 
  ICAFSGR(C,'nf',T) = min(1,ICAFSGR(C,'nf',T));
