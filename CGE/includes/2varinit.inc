@@ -151,29 +151,33 @@
 * CERES('cochm') = YES;
 *@
 *@
- CERES('ciron') = YES;
- CEFIX('ciron') = YES;
- QE.FX('ciron','REST') = QE0('ciron','REST') ;
-*@*bm reason for fixing imports: without fixing it we seem to see an explosion in imports caused by an increase in PQ?
- CMRES('ciron')= YES;
- QM.FX('ciron','REST') = QM0('ciron','REST') ;
+* CERES('ciron') = YES;
+* CEFIX('ciron') = YES;
+* QE.FX('ciron','REST') = QE0('ciron','REST') ;
+*@*bm Dec2022: reason for fixing imports: without fixing it we seem to see an explosion in imports caused by an increase in PQ?
+*bm Jan2024: will now make exports dynamic based on whether green exports scenario is active so these exports are responsive to BTA
+*bm BTA is overwritten in big exports scenario
+
+* CMRES('ciron')= YES;
+* QM.FX('ciron','REST') = QM0('ciron','REST') ;
 *@
 *@
- CERES('cammo') = YES;
- CEFIX('cammo') = YES;
- QE.FX('cammo','REST') = QE0('cammo','REST') ;
- CMRES('cammo')= YES;
- QM.FX('cammo','REST') = QM0('cammo','REST') ;
+* CERES('cammo') = YES;
+* CEFIX('cammo') = YES;
+* QE.FX('cammo','REST') = QE0('cammo','REST') ;
+* CMRES('cammo')= YES;
+* QM.FX('cammo','REST') = QM0('cammo','REST') ;
 *@
 *@
  CERES('cpgm') = YES;
- CEFIX('cpgm') = YES;
- QE.FX('cpgm','REST') = QE0('cpgm','REST') ;
+* CEFIX('cpgm') = YES;
+* QE.FX('cpgm','REST') = QE0('cpgm','REST') ;
 *@
 *@
- CERES('cmore') = YES;
- CMRES('cmore')= YES;
- QM.FX('cmore','REST') = QM0('cmore','REST') ;
+
+* CERES('cmore') = YES;
+* CMRES('cmore')= YES;
+* QM.FX('cmore','REST') = QM0('cmore','REST') ;
 
 *!! CERES('cvehi') = YES;
 *!! QE.FX('cvehi','REST') = QE0('cvehi','REST');

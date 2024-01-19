@@ -194,9 +194,11 @@ SETS
 *FH*----------------------------------------------------------------------------
  MFHHT(FH,H,AY) reverse mapping (TIMES to CGE) for households
 
-  Indicators SATIM indicators /Activity, Capacity, NewCapacity, CapFac, FlowIn, FlowOut, AnnInvCost, FOM, VOM, OM, FuelCosts, Marginals, Levies, ExternalityCosts, CO2Tax, CO2, CO2CAPT, CH4, N2O, CF4, C2F6, CO2eq, FlowInMt, Investment,Price, pkm, tkm, GVA, EconIndicator, PopulationSATIM, GVASATIM, EmploymentSATIM/
+  Indicators SATIM indicators
+* now loaded from SATIMGE_Indicators.xlsx workbook
+*/Activity, Capacity, NewCapacity, CapFac, FlowIn, FlowOut, AnnInvCost, FOM, VOM, OM, FuelCosts, Marginals, Levies, ExternalityCosts, CO2Tax, CO2, CO2CAPT, CH4, N2O, CF4, C2F6, CO2eq, FlowInMt, Investment,Price, pkm, tkm, GVA, EconIndicator, PopulationSATIM, GVASATIM, EmploymentSATIM/
+  CGEIndicators CGE indicators
   IndicatorUnits Indicator Units /PJ, GW, PJa, kton, mR, bR, frac, bpkm, ptkm, RperGJ, 000person, 000veh, bRperPJ, RperTon, ktonperPJ, ktonperbR/
-  Emiss(Indicators) / CO2, CH4, N2O, CF4, C2F6, CO2eq/
   IndicatorsH SATIM Sub-annual indicators /FlowIn, FlowOut, Marginal, Price, Demand/
 
 
@@ -204,6 +206,10 @@ SETS
   XXX                            Needed for obj    / CUR, LEVCOST, INV,'-' /
 ;
 
+* Import Indicators -------------------------------
+$call   "gdxxrw i=SetsAndMaps\SATIMGE_Indicators.xlsx o=SetsAndMaps\SATIMGE_Indicators index=index!a6 checkdate"
+$gdxin  SetsAndMaps\SATIMGE_Indicators.gdx
+$loaddc Indicators CGEIndicators
 
 
 Sets
@@ -212,6 +218,7 @@ Sets
 * sets used in interpolation function (for linked model)
   RTP(REG,AY,PRC)                Technology valid years
   UNCD7(*,*,*,*,*,*,*)           Non-domain-controlled set of 7-tuples
+  Emiss(Indicators) / CO2, CH4, N2O, CF4, C2F6, CO2eq/
 
 ;
 VARIABLES
@@ -223,7 +230,8 @@ PARAMETERS
   REPORT(PRC,COM,AY,RUN,Indicators) REPORT of indicators by run and process and commodity
   REPORT_RUN(PRC,COM,AY,Indicators) REPORT of indicators by run and process and commodity for each run
 
-  Report2(*,*,*,AY,RUN)          More detailed reports from cge
+  Report2(CGEIndicators,AC,AC,AY,RUN)          More detailed reports from cge
+  Report2_RUN(CGEIndicators,AC,AC,AY)          More detailed reports from cge for each run
 
   REPORTH(PRC,COM,AY,TS_WEEKLY,TS_HOURLY,RUN,IndicatorsH) REPORT of indicators by daytype and each hour- run and process and commodity
   REPORTH_RUN(PRC,COM,AY,TS_WEEKLY,TS_HOURLY,IndicatorsH) REPORT of indicators by daytype and each hour- run and process and commodity
@@ -617,7 +625,6 @@ $include includes\2runTIMES.inc
 
 * Get Energy Model Results
 $include includes\2TIMESReport.inc
-REPORT(PRC,'ACTGRP',TC,RUN,'GVA') = SUM(FS$MPRCFS2(PRC,FS),GVA_FS(FS,TC));
 
 
 );
@@ -652,7 +659,11 @@ $include AFOLU\includes\GHGAfoluReport.inc
 * generate report for run, which can then be combined later
 REPORT_RUN(PRC,COM,TC,Indicators) = REPORT(PRC,COM,TC,RUN,Indicators);
 put_utilities Scen 'gdxout' / RUN.TL:30;
-execute_unload REPORT_RUN
+execute_unload REPORT_RUN;
+
+Report2_RUN(CGEIndicators,AC,AC,TC) = Report2(CGEIndicators,AC,AC,TC,RUN);
+put_utilities Scen 'gdxout' / "REP2_",RUN.TL:30;
+execute_unload REPORT2_RUN
 
 );
 *end RUN loop
