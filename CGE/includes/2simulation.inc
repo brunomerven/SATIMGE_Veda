@@ -59,6 +59,9 @@ SETS
 
   energy(c)       energy commodities     / ccoal-low, ccoal-hgh, ccoil, cngas, cpetr-p, cpetr-d, cpetr-h, cpetr-k, cpetr-l, celec, chydr /
   nonenergy(c)    non-energy commodities
+
+  RETALTAXC(C)    this is used to specify which commodities are to be included in the CBAM tax
+
 ;
 
 nonenergy(c)=YES;
@@ -87,6 +90,7 @@ PARAMETERS
 *New policy simulation parameters
  CARBONTAX(X,T)          RSA carbon tax (Rands per ton of CO2 equivalent from Paltsev)
  RETALTAX(X,T)           carbon tax by foreign countries on RSA exports (Rands per ton of CO2 equivalent)
+
  CLEANTECH(C,X,T)        carbon content adjustment factor
  EINVEST(X,T)            electricity sector build plan investment cost (billions of Rands)
  PWGR(C,RUN,T)           world price trajectories
@@ -113,8 +117,8 @@ CTA_EMRR(CTA)=0;
 
 $call    "gdxxrw i=cge\%basedata% o=basedata index=index!a6 checkdate"
 $gdxin   basedata.gdx
+$loaddc RETALTAXC
 $loaddc  CLOSURES PWGR CARBONTAX RETALTAX FL TCF AFX
-
 
 alias (TC,TCP), (TT, TTP);
 
@@ -165,13 +169,8 @@ $include cge\includes\2projection.inc
 *cbchm - fertiliser
 
 Sets
-*CBAM
-EUTAX(C)
-*  /ciron, ccmnt, celec, cbchm, cochm, chydr/
 
 TFSAV(T) /2024*2055/;
-
-**CBAM EUTAX(C)=yes;
 
 Parameter
  FSHOCK(X,T,TT)
@@ -274,7 +273,8 @@ PARAMETER
  TCO2MSIM(XC,TC)$(NOT T1(TC)) = CARBONTAX(XC,TC)/1000;
 
 *Retaliatory tax on RSA exports based on carbon content -----
- RTCO2ESIM(XC,TC)$(NOT T1(TC)) = RETALTAX(XC,TC)/1000/EXR0;
+* adjusted to 2019 rands from 2021 Euros (1.183: 2021 USD/EUR, 13.7 = 2019 ZAR/ 2021 USD)
+ RTCO2ESIM(XC,TC)$(NOT T1(TC)) = RETALTAX(XC,TC)/1000000*1.183*13.7;
 
 *Energy intensity elasticities ------
 * Intermediates

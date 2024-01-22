@@ -76,30 +76,9 @@ $include includes\2runTIMES.inc
 
 $include includes\2TIMESReport.inc
 
-* SIM_CO2Price assumed to be in the same units as SATIM: mR/ktonCO2
 * CGE requires bR and tracks ktonCO2 so dividing by 1000
 * setting it equal to marginal of CO2SF, which doesn't explode in the last 5 years
 *! SIM_CO2PRICE(TC,RUN) = REPORT('SATIMMarginals','CO2SF',TC,RUN,'Marginals')/1000 *(-1);
-
-* Set Retaliatory Tax according to https://www.tips.org.za/news/item/4399-eu-carbon-tax-move-cranks-up-heat-on-sa-exporters
-$ontext
- RTCO2ESIM(XC,RTTaxYears) = 85/5*17/1000000;
- RTCO2ESIM(XC,'2027') = 85/8*17/1000000;
- RTCO2ESIM(XC,'2028') = 85/7*17/1000000;
- RTCO2ESIM(XC,'2029') = 85/6*17/1000000;
-* RTCO2ESIM(XC,'2030') = 85/2*17/1000000;
-$offtext
-
-*CBAM
-* comment below to turn on retaliatory tax/CBAM
-*$ontext
- RTCO2ESIM(XC,RTTaxYears) = 85*17/1000000;
- RTCO2ESIM(XC,'2027') = 85/4*17/1000000;
- RTCO2ESIM(XC,'2028') = 85/2*17/1000000;
- RTCO2ESIM(XC,'2029') = 85*3/4*17/1000000;
-* RTCO2ESIM(XC,'2030') = 85/2*17/1000000;
-*$offtext
-
 
 
  EPRICE(T1,TT)=PQ0('CELEC');
@@ -170,11 +149,24 @@ $offtext
 
 *       ENERGY: Retaliatory carbon tax on RSA exports
 *CBAM main lever!!! uncomment line below to activate
+*CBAM turned on and off in SATIMGE.xlsm. SIM_CBAM: 1 = NZ projection applied across the board. 2 = 2034 value kept constant to 2055
+
+*old RTCO2ESIM(XC,RTTaxYears) = 85*17/1000000;
+
+
   if(SIM_CBAM(RUN) eq 1,
          rtco2e = RTCO2ESIM(XC,TC);
   else
-         rtco2e = 0;
-);
+         if(SIM_CBAM(RUN) eq 2,
+             if(ord(TC) lt 2035-2019,
+                 rtco2e = RTCO2ESIM(XC,TC);
+             else
+                 rtco2e = RTCO2ESIM(XC,'2034');
+             );
+         else
+             rtco2e = 0;
+         );
+  );
 
 *       ENERGY: Carbon content cofficient
 $include cge\includes\2carbon.inc
@@ -186,8 +178,8 @@ $include cge\includes\2carbon.inc
 *        co2m(C,RW) = 0;
 
 *CBAM
-***fh        co2e(C,RW)$EUTAX(C) = co2e(C,RW)*EUshr(C);
-***fh        co2e(C,RW)$(not EUTAX(C)) = 0;
+        co2e(C,RW)$RETALTAXC(C) = co2e(C,RW)*EUshr(C);
+        co2e(C,RW)$(not RETALTAXC(C)) = 0;
 
 *FH
 *    tabar(CTA,'NAT')=tabar(CTA,'NAT')+CTA_EMRR(CTA);
@@ -539,15 +531,16 @@ $offtext
 * Exogenous Exports can only be used in sectors that exist and active in the base year
 * the export level specification assumes a 1mton export in 2017 and that PEXGDRI is the green iron export in mtons
 ***fh
-    QE.FX('ciron','REST') = QE0('ciron','REST')*(1+VARACT('REGION1',TC,'PEXGDRI')*0.8);
+
+*    QE.FX('ciron','REST') = QE0('ciron','REST')*(1+VARACT('REGION1',TC,'PEXGDRI')*0.8);
 
 * ammonia
 ***fh
-    QE.FX('cammo','REST')$(FLOW_IN_FSFuels('exp','cammo',TC-1)) = QE.L('cammo','REST')*FLOW_IN_FSFuels('exp','cammo',TC)/FLOW_IN_FSFuels('exp','cammo',TC-1);
+*    QE.FX('cammo','REST')$(FLOW_IN_FSFuels('exp','cammo',TC-1)) = QE.L('cammo','REST')*FLOW_IN_FSFuels('exp','cammo',TC)/FLOW_IN_FSFuels('exp','cammo',TC-1);
 
 * PGM
 ***fh
-    QE.FX('cpgm','REST') = QE.L('cpgm','REST')*VARACT('REGION1',TC,'PEXPGM')/VARACT('REGION1',TC-1,'PEXPGM');
+*    QE.FX('cpgm','REST') = QE.L('cpgm','REST')*VARACT('REGION1',TC,'PEXPGM')/VARACT('REGION1',TC-1,'PEXPGM');
 
 * Coal
 

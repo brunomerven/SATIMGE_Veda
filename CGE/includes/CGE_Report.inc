@@ -97,7 +97,7 @@ Report('Econ_20-20Ratio','ACTGRP',TC,RUN,'EconIndicator')         = (YIX('hhd-9'
 
 *** Flows and Prices (Q, P, P*Q)
 *GVA
-Report2('GVA',A,'NA',TC,RUN)                  = PVA0(A,'nat')*(1-TVA0(A,'nat'))*QVAX(A,'nat',XC,TC,TT);
+Report2('GVA',A,'total',TC,RUN)                  = PVA0(A,'nat')*(1-TVA0(A,'nat'))*QVAX(A,'nat',XC,TC,TT);
 
 *Output
 Report2('Output',A,C,TC,RUN) = QXACX(A,C,XC,TC,TT);
@@ -118,42 +118,42 @@ QExptN(C,TC)$(QEX(C,'rest',XC,TC,TT) <0) = QEX(C,'rest',XC,TC,TT)*(-1);
 
 QImpt(C,TC) = QMX(C,'rest',XC,TC,TT);
 
-Report2('ImportsValueRands',C,'NA',TC,RUN) = QImpt(C,TC)*PMX(C,'rest',XC,TC,TT) + QExptN(C,TC)*PEX(C,'rest',XC,TC,TT);
-Report2('ImportsQuantities',C,'NA',TC,RUN) = QImpt(C,TC) + QExptN(C,TC);
+Report2('ImportsValueRands',C,'total',TC,RUN) = QImpt(C,TC)*PMX(C,'rest',XC,TC,TT) + QExptN(C,TC)*PEX(C,'rest',XC,TC,TT);
+Report2('ImportsQuantities',C,'total',TC,RUN) = QImpt(C,TC) + QExptN(C,TC);
 
-Report2('ExportsValueRands',C,'NA',TC,RUN) = QExptP(C,TC)*PEX(C,'rest',XC,TC,TT);
-Report2('ExportsQuantities',C,'NA',TC,RUN) = QExptP(C,TC);
+Report2('ExportsValueRands',C,'total',TC,RUN) = QExptP(C,TC)*PEX(C,'rest',XC,TC,TT);
+Report2('ExportsQuantities',C,'total',TC,RUN) = QExptP(C,TC);
 
 
-Report2('ExchangeRate','NA','NA',TC,RUN)          =EXRX(XC,TC,TT);
+Report2('ExchangeRate','total','total',TC,RUN)          =EXRX(XC,TC,TT);
 
 *Final Consumption by institution by commodity
 
 *Intermediate Consumption by activity
 
-Report2('CommodityPrices',C,'NA',TC,RUN)           = PQX(C,XC,TC,TT) ;
+Report2('CommodityPrices',C,'total',TC,RUN)           = PQX(C,XC,TC,TT) ;
 
 * Investment
-Report2('InvestmentDemandbyCommodity',C,'NA',TC,RUN)               = sum(IT,QINVX(C,IT,XC,TC,TT)*PQ0(C));
+Report2('InvestmentDemandbyCommodity',C,'total',TC,RUN)               = sum(IT,QINVX(C,IT,XC,TC,TT)*PQ0(C));
 
 
 * Capital formation or savings. INSDNG are households and enterprises.
 * Total CapitalFormation is the equal to TotalInvestment
-Report2('CapitalFormation','NA',INSDNG,TC,RUN) = MPSX(INSDNG,XC,TC,TT) * (1 - TINSX(INSDNG,XC,TC,TT)) * YIX(INSDNG,XC,TC,TT);
-Report2('CapitalFormation','NA','gov',TC,RUN) = GSAVX(XC,TC,TT);
-Report2('CapitalFormation','NA','row',TC,RUN) = (FSAVX(XC,TC,TT)-irate*DEBTX(XC,TC,TT))*EXRX(XC,TC,TT);
+Report2('CapitalFormation','total',INSDNG,TC,RUN) = MPSX(INSDNG,XC,TC,TT) * (1 - TINSX(INSDNG,XC,TC,TT)) * YIX(INSDNG,XC,TC,TT);
+Report2('CapitalFormation','total','gov',TC,RUN) = GSAVX(XC,TC,TT);
+Report2('CapitalFormation','total','row',TC,RUN) = (FSAVX(XC,TC,TT)-irate*DEBTX(XC,TC,TT))*EXRX(XC,TC,TT);
 
 
-Report2('CapitalAlloc',A,'NA',TC,RUN)$AFX(A,'nat') = QFX('fcap',A,'nat',XC,TC,TT)*(AFXGR(A,'nat',XC,TC) + natdrate)*SUM(C$PQ0(C), iwts(C,'S-I')*PQX(C,XC,TC,TT)/PQ0(C));
-TotalInvestmentFixed(TC,RUN) = sum(A,Report2('CapitalAlloc',A,'NA',TC,RUN));
+Report2('CapitalAlloc',A,'total',TC,RUN)$AFX(A,'nat') = QFX('fcap',A,'nat',XC,TC,TT)*(AFXGR(A,'nat',XC,TC) + natdrate)*SUM(C$PQ0(C), iwts(C,'S-I')*PQX(C,XC,TC,TT)/PQ0(C));
+TotalInvestmentFixed(TC,RUN) = sum(A,Report2('CapitalAlloc',A,'total',TC,RUN));
 
-Report2('CapitalAlloc','aelec','NA',TC,RUN) = EINVQINV(XC,TC,TT);
+Report2('CapitalAlloc','aelec','total',TC,RUN) = EINVQINV(XC,TC,TT);
 * aelec is part of AFX but not included in QFX('fcap'). INVSHR2 is share of ANFX sectors
-Report2('CapitalAlloc',A,'NA',TC,RUN)$ANFX(A,'nat') = INVSHR2X('fcap',A,'nat',XC,TC,TT)*(Report('Econ_TotalInvestEconomy','ACTGRP',TC,RUN,'EconIndicator')-TotalInvestmentFixed(TC,RUN));
+Report2('CapitalAlloc',A,'total',TC,RUN)$ANFX(A,'nat') = INVSHR2X('fcap',A,'nat',XC,TC,TT)*(Report('Econ_TotalInvestEconomy','ACTGRP',TC,RUN,'EconIndicator')-TotalInvestmentFixed(TC,RUN));
 
 * Carbon Content and BTA indicators
 * PX0 is used because CCON is calculated using ASAM, which gets constructed using PQ0
-Report2('CarbonContentCommodities',C,'NA',TC,RUN) = CCONX(C,TC)*PX0(C);
+Report2('CarbonContentCommodities',C,'total',TC,RUN) = CCONX(C,TC)*PX0(C);
 
 
 
@@ -161,13 +161,13 @@ Report2('CarbonContentCommodities',C,'NA',TC,RUN) = CCONX(C,TC)*PX0(C);
 
 $ontext
 * will do this under agent income/expenses
-Report2('GovDirTax',H,'NA',TC,RUN)                   =  SUM(INSDNG, TINSX(INSDNG,XC,TC,TT)*YIX(INSDNG,XC,TC,TT)) ;
-Report2('GovFacTax','NA',F,TC,RUN)                = tfx(F,XC,TC,TT)*YFX(F,XC,TC,TT) ;
+Report2('GovDirTax',H,'total',TC,RUN)                   =  SUM(INSDNG, TINSX(INSDNG,XC,TC,TT)*YIX(INSDNG,XC,TC,TT)) ;
+Report2('GovFacTax','total',F,TC,RUN)                = tfx(F,XC,TC,TT)*YFX(F,XC,TC,TT) ;
 Report2('GovFacInc',H,F,TC,RUN)                   =  SUM(INS, YIFX(INS,F,XC,TC,TT)) ;
 Report2('GovTrnsfr',AC,INS,TC,RUN)                =  trnsfrx(INS,AC,XC,TC,TT)*EXRX(XC,TC,TT);
-Report2('GovActTax',A,'NA',TC,RUN)                = TAX(A,'nat',XC,TC,TT)*PAX(A,XC,TC,TT)*QAX(A,XC,TC,TT)  ;
-Report2('GovVatTax',A,'NA',TC,RUN)                = TVAX(A,'nat',XC,TC,TT)*PVAX(A,'nat',XC,TC,TT)*QVAX(A,'nat',XC,TC,TT) ;
-Report2('GovImpTax',C,'NA',TC,RUN)                = TMX(C,'rest',XC,TC,TT)*QMX(C,'rest',XC,TC,TT)*PMX(C,'rest',XC,TC,TT)*EXRX(XC,TC,TT);
-Report2('GovExpTax',C,'NA',TC,RUN)                = te(C,'rest')*QEX(C,'rest',XC,TC,TT)*PEX(C,'rest',XC,TC,TT)*EXRX(XC,TC,TT);
-Report2('GovComTax',C,'NA',TC,RUN)                = TQX(C,XC,TC,TT)*PQX(C,XC,TC,TT)*QQX(C,XC,TC,TT)   ;
+Report2('GovActTax',A,'total',TC,RUN)                = TAX(A,'nat',XC,TC,TT)*PAX(A,XC,TC,TT)*QAX(A,XC,TC,TT)  ;
+Report2('GovVatTax',A,'total',TC,RUN)                = TVAX(A,'nat',XC,TC,TT)*PVAX(A,'nat',XC,TC,TT)*QVAX(A,'nat',XC,TC,TT) ;
+Report2('GovImpTax',C,'total',TC,RUN)                = TMX(C,'rest',XC,TC,TT)*QMX(C,'rest',XC,TC,TT)*PMX(C,'rest',XC,TC,TT)*EXRX(XC,TC,TT);
+Report2('GovExpTax',C,'total',TC,RUN)                = te(C,'rest')*QEX(C,'rest',XC,TC,TT)*PEX(C,'rest',XC,TC,TT)*EXRX(XC,TC,TT);
+Report2('GovComTax',C,'total',TC,RUN)                = TQX(C,XC,TC,TT)*PQX(C,XC,TC,TT)*QQX(C,XC,TC,TT)   ;
 $offtext
