@@ -151,22 +151,29 @@
 * CERES('cochm') = YES;
 *@
 *@
-* CERES('ciron') = YES;
+ CERES('ciron') = NO;
+ CEFIX('ciron') = no;
+ QE.up('ciron','REST') = inf;
+ QE.lo('ciron','REST') = -inf;
 * CEFIX('ciron') = YES;
 * QE.FX('ciron','REST') = QE0('ciron','REST') ;
 *@*bm Dec2022: reason for fixing imports: without fixing it we seem to see an explosion in imports caused by an increase in PQ?
 *bm Jan2024: will now make exports dynamic based on whether green exports scenario is active so these exports are responsive to BTA
 *bm BTA is overwritten in big exports scenario
 
+ CMRES('ciron') = NO;
+ QM.up('ciron','REST') = inf ;
+ QM.lo('ciron','REST') = -inf ;
+
 * CMRES('ciron')= YES;
 * QM.FX('ciron','REST') = QM0('ciron','REST') ;
 *@
 *@
-* CERES('cammo') = YES;
-* CEFIX('cammo') = YES;
-* QE.FX('cammo','REST') = QE0('cammo','REST') ;
-* CMRES('cammo')= YES;
-* QM.FX('cammo','REST') = QM0('cammo','REST') ;
+ CERES('cammo') = YES;
+ CEFIX('cammo') = YES;
+ QE.FX('cammo','REST') = QE0('cammo','REST') ;
+ CMRES('cammo')= YES;
+ QM.FX('cammo','REST') = QM0('cammo','REST') ;
 *@
 *@
  CERES('cpgm') = YES;
@@ -222,6 +229,10 @@
 *@
 *@*$offtext
 
+*bm resetting ice for cpetr-k. Need more elgant solution here!!!
+ ice('ctrad','cpetr-k') = 0.110830250152141;
+ ice('cftrp-l','cpetr-k') = 0.0111801722874545;
+ ice('cftrp-o','cpetr-k') = 0.000434565319761202;
 
 
 *bm setting acoal coal aggregate price
