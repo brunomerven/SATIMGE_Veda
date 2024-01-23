@@ -313,13 +313,13 @@ $offtext
 *$ontext
 
 * adjustments to hydrogen (set empirically)
-    ica('chydr','airon','NAT')$(EIntensity_FS('is','chydr',TC) gt 0.001) = EIntensity_FS('is','chydr',TC)*.039;
+    ica('chydr','airon','NAT')$(EIntensity_FS('is','chydr',TC) gt 0.001) = EIntensity_FS('is','chydr',TC)*.026;
 *.018;
     ica('chydr','anmet','NAT')$(EIntensity_FS('nm','chydr',TC) gt 0.001) = EIntensity_FS('nm','chydr',TC)*0.48;
 
     ica('chydr','apetr','NAT')$(EIntensity_FS('petr','chydr',TC) gt 0.001) = EIntensity_FS('petr','chydr',TC);
 
-    ica('chydr','aammo','NAT')$(EIntensity_FS('am','chydr',TC) gt 0.001) = EIntensity_FS('am','chydr',TC)*0.67;
+    ica('chydr','aammo','NAT')$(EIntensity_FS('am','chydr',TC) gt 0.001) = EIntensity_FS('am','chydr',TC)*0.167;
     ica('cngas','aammo','NAT')$(EIntensity_FS('am','cngas',TC) gt 0.001) = EIntensity_FS('am','cngas',TC)*0.67;
 
     ica('ccoal-low','aammo','NAT')$(EIntensity_FS('am','ccoal-low',TC) gt 0.001) = EIntensity_FS('am','ccoal-low',TC)*1/60;
@@ -454,6 +454,10 @@ $offtext
     QVA.L('apetr','nat')$AFXGR('APETR','NAT',XC,TC) = QVA.L('apetr','nat')*(1+AFXGR('APETR','NAT',XC,TC));
     QF.L(FLAB,'APETR',RD)$AFXGR('APETR','NAT',XC,TC) = QF.L(FLAB,'APETR',RD)*(1+AFXGR('APETR','NAT',XC,TC));
 
+*bm ice is shrunk. This brings pe closer to pwe. This is important for kerosene as it is consumed directly by households.
+    ice(CT,'cpetr-k') = ice(CT,'cpetr-k')*0.5;
+*bm we need to do this for other fuels with negative imports if pe is to be used for anything. Suggest we use pwe for imports expenses (nominal) for now.
+
 
 
 * Oil Sector
@@ -524,18 +528,43 @@ $offtext
 * Updating investment vector
 * currently only for power sector, but this could be extended to other sectors
  IWTST(TC) = sum(C,FLOW_IN_FSInvestment('elec',C,TC));
- IWTSX(C,'s-e',XC,TC,TT)$iwts(C,'s-e') = FLOW_IN_FSInvestment('elec',C,TC)/IWTST(TC);
+ IWTSX(C,'s-e',XC,TC,TT)$(iwts(C,'s-e') and IWTST(TC))  = FLOW_IN_FSInvestment('elec',C,TC)/IWTST(TC);
 
 
 
 * Exogenous Exports can only be used in sectors that exist and active in the base year
 * the export level specification assumes a 1mton export in 2017 and that PEXGDRI is the green iron export in mtons
-***fh
+*** green iron
+ If(VARACT('REGION1',TC,'PEXGDRI') gt 0,
+    CERES('ciron') = yes;
+    CEFIX('ciron') = yes;
+    QE.FX('ciron','REST') = QE0('ciron','REST')*(1+VARACT('REGION1',TC,'PEXGDRI')*0.8);
 
-*    QE.FX('ciron','REST') = QE0('ciron','REST')*(1+VARACT('REGION1',TC,'PEXGDRI')*0.8);
+    CMRES('ciron')= YES;
+    QM.FX('ciron','REST') = QM.L('ciron','REST') ;
 
-* ammonia
-***fh
+else
+
+    CERES('ciron') = no;
+    CEFIX('ciron') = no;
+    QE.up('ciron','REST') = inf;
+    QE.lo('ciron','REST') = -inf;
+
+    CMRES('ciron') = NO;
+    QM.up('ciron','REST') = inf ;
+    QM.lo('ciron','REST') = -inf ;
+
+ );
+
+* green ammonia
+* If(VARACT('REGION1',TC,'PEXGDRI') gt 0,
+*    CEFIX('ciron') = yes;
+    QE.FX('cammo','REST')$(FLOW_IN_FSFuels('exp','cammo',TC-1)) = QE.L('cammo','REST')*FLOW_IN_FSFuels('exp','cammo',TC)/FLOW_IN_FSFuels('exp','cammo',TC-1);
+* else
+*    CEFIX('ciron') = no;
+*    QE.up('ciron','REST') = inf;
+*    QE.lo('ciron','REST') = -inf;
+* );
 *    QE.FX('cammo','REST')$(FLOW_IN_FSFuels('exp','cammo',TC-1)) = QE.L('cammo','REST')*FLOW_IN_FSFuels('exp','cammo',TC)/FLOW_IN_FSFuels('exp','cammo',TC-1);
 
 * PGM
