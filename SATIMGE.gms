@@ -631,7 +631,7 @@ $include includes\2TIMESReport.inc
 *if(SIM_ESAGE(RUN) eq 1,
 
 * Sub-annual results
-*$include includes\2TIMESSubAnnualReport.inc
+$include includes\2TIMESSubAnnualReport.inc
 
 
 GDP_RUN(TC) = SUM(FSGDP,GVA_FS(FSGDP,TC));
@@ -658,11 +658,12 @@ $include AFOLU\includes\GHGAfoluReport.inc
 
 * generate report for run, which can then be combined later
 REPORT_RUN(PRC,COM,TC,Indicators) = REPORT(PRC,COM,TC,RUN,Indicators);
-put_utilities Scen 'gdxout' / RUN.TL:30;
+put_utilities Scen 'gdxout' / "GDXResults\",RUN.TL:30;
 execute_unload REPORT_RUN;
 
-Report2_RUN(CGEIndicators,AC,AC,TC) = Report2(CGEIndicators,AC,AC,TC,RUN);
-put_utilities Scen 'gdxout' / "REP2_",RUN.TL:30;
+Report2_RUN(CGEIndicators,AC,ACP,TC) = Report2(CGEIndicators,AC,ACP,TC,RUN);
+
+put_utilities Scen 'gdxout' / "GDXResults\REP2_",RUN.TL:30;
 execute_unload REPORT2_RUN
 
 );
@@ -673,7 +674,7 @@ execute_unload "REPORT.gdx" REPORT
 execute 'gdxdump REPORT.gdx output=REPORT_00.csv symb=REPORT format=csv header="Process,Commodity,Year,Scenario,Indicator,SATIMGE"';
 
 execute_unload "REPORT2.gdx" REPORT2
-execute 'gdxdump Tableau.gdx output=Report2_00.csv symb=Report2 format=csv header="Indicator,AC,AC,Year,Scenario,eSAGE"';
+execute 'gdxdump REPORT2.gdx output=Report2_00.csv symb=Report2 format=csv header="Indicator,AC,AC,Year,Scenario,eSAGE"';
 
 
 *execute 'gdxdump REPORT.gdx output=REPORT.csv symb=REPORT format=csv header="Process,Commodity,Year,Scenario,Activity,Capacity,NewCapacity,FlowIn,FlowOut,CO2,CH4,N2O,HFC,PFC,CO2eq,Investment,GVA,Employment" cDim=y';

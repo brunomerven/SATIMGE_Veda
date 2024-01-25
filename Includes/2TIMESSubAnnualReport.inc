@@ -81,6 +81,6 @@ REPORTH('ETRANS','ELC',TC,TS_WEEKLY,TS_HOURLY,RUN,'Marginal') =  Marginal_H('ELC
 
 REPORTH_RUN(PRC,COM,TC,TS_WEEKLY,TS_HOURLY,IndicatorsH) = REPORTH(PRC,COM,TC,TS_WEEKLY,TS_HOURLY,RUN,IndicatorsH);
 
-put_utilities Scen 'gdxout' / "H_",RUN.TL:30;
+put_utilities Scen 'gdxout' / "GDXResults\H_",RUN.TL:30;
 execute_unload REPORTH_RUN;
 
