@@ -54,12 +54,12 @@ $load CoalCV
 LOOP(RUN$INCLRUN(RUN),
 
 *put_utilities Scen 'gdxin' / "SARB_prelimruns\",RUN.TL:50;
-put_utilities Scen 'gdxin' / RUN.TL:50;
+put_utilities Scen 'gdxin' / "GDXResults\", RUN.TL:50;
 execute_load REPORT_RUN;
 
 REPORTM(PRC,COM,TC,RUN,Indicators) = REPORT_RUN(PRC,COM,TC,Indicators);
 
-put_utilities Scen 'gdxin' / "REP2_",RUN.TL:50;
+put_utilities Scen 'gdxin' / "GDXResults\REP2_",RUN.TL:50;
 execute_load REPORT2_RUN;
 
 REPORTM2(CGEIndicators,AC,AC,TC,RUN) = Report2_RUN(CGEIndicators,AC,AC,TC);

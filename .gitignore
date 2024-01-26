@@ -129,3 +129,6 @@ Exported_files/
 
 *.zip
 
+GAMS_WrkTIMES/
+
+!GAMS_WrkTIMES/AllScenario
