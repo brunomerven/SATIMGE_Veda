@@ -21,7 +21,7 @@ SETS
 $gdxin cge\modeldata.gdx
 
 $load AC
-
+Alias (AC,ACP);
 * Import Indicators -------------------------------
 $call   "gdxxrw i=SetsAndMaps\SATIMGE_Indicators.xlsx o=SetsAndMaps\SATIMGE_Indicators index=index!a6 checkdate"
 $gdxin  SetsAndMaps\SATIMGE_Indicators.gdx
@@ -62,7 +62,7 @@ REPORTM(PRC,COM,TC,RUN,Indicators) = REPORT_RUN(PRC,COM,TC,Indicators);
 put_utilities Scen 'gdxin' / "GDXResults\REP2_",RUN.TL:50;
 execute_load REPORT2_RUN;
 
-REPORTM2(CGEIndicators,AC,AC,TC,RUN) = Report2_RUN(CGEIndicators,AC,AC,TC);
+REPORTM2(CGEIndicators,AC,ACP,TC,RUN) = Report2_RUN(CGEIndicators,AC,ACP,TC);
 
 
 );
@@ -80,4 +80,4 @@ execute_unload "REPORTM.gdx" REPORTM
 execute 'gdxdump REPORTM.gdx output=REPORT_00.csv symb=REPORTM format=csv header="Process,Commodity,Year,Scenario,Indicator,SATIMGE"';
 
 execute_unload "REPORTM2.gdx" REPORTM2
-execute 'gdxdump Tableau.gdx output=Report2_00.csv symb=Report2 format=csv header="Indicator,AC,AC,Year,Scenario,eSAGE"';
+execute 'gdxdump REPORTM2.gdx output=Report2_00.csv symb=ReportM2 format=csv header="Indicator,AC,AC,Year,Scenario,eSAGE"';
