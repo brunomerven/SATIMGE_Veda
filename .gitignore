@@ -129,7 +129,10 @@ Exported_files/
 
 *.zip
 
-GAMS_WrkTIMES/
 
-!GAMS_WrkTIMES/AllScenario
+
 Veda2.0.exe - Shortcut.lnk
+
+GAMS_WrkTIMES/*
+
+!GAMS_WrkTIMES/AllScenarios/
