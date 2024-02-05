@@ -140,7 +140,7 @@ $offtext
 *  PAFXCAP(XC,TC,TT)$(EFX(TT,TC) AND ifa('FCAP','APETR','nat')) = ifa('FCAP','APETR','nat')*iva('APETR','nat')*sum(C,FLOW_OUT_FSFuels('petr',C,TC));
 
 
-  PAFXCAP(XC,TC,TT)$(EFX(TT,TC) AND ifa('FCAP','APETR','nat')) = ifa('FCAP','APETR','nat')*iva('APETR','nat')*OIL_FLOW(RUN,TC);
+  PAFXCAP(XC,TC,TT)$(EFX(TT,TC) AND ifa('FCAP','APETR','nat')) = max(ifa('FCAP','APETR','nat')*iva('APETR','nat')*OIL_FLOW(RUN,TC),0.001);
 
   IF(NOT T1(TC),
 
