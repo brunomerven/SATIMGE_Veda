@@ -110,7 +110,9 @@ $BATINCLUDE endogretirectl.dd
 $BATINCLUDE endogretireref.dd
 $BATINCLUDE elc_eaf_refit.dd
 $BATINCLUDE elc-otherinputs.dd
+$BATINCLUDE oilprice_nigemcp.dd
 $BATINCLUDE new_ind-is_h2_steel.dd
+$BATINCLUDE oilprice_nigemnz.dd
 $BATINCLUDE combustionemissions.dd
 $BATINCLUDE shape_tra.dd
 $BATINCLUDE uc_elc.dd
