@@ -291,7 +291,7 @@ LOOP((PRC,TC)$TVNCAP(TC,PRC),
 * bm!!! would need to expand fuel cost calc if fixed costs or lower limits on coal production for power plants are set
 
 *sum the components of elec costs calcs:
- TCST_ELE(RUN,TC) = sum(PRCPower,REPORT(PRCPower,'ACTGRP',TC,RUN,'AnnInvCost')+REPORT(PRCPower,'ACTGRP',TC,RUN,'FOM')+REPORT(PRCPower,'ACTGRP',TC,RUN,'VOM')+REPORT(PRCPower,'ACTGRP',TC,RUN,'FuelCosts')+REPORT(PRCPower,'ACTGRP',TC,RUN,'CO2Tax')+REPORT(PRCPower,'ACTGRP',TC,RUN,'Levies'));
+ TCST_ELE(RUN,TC) = sum(PRCPower,REPORT(PRCPower,'ACTGRP',TC,RUN,'AnnInvCost')+REPORT(PRCPower,'ACTGRP',TC,RUN,'FOM')+REPORT(PRCPower,'ACTGRP',TC,RUN,'VOM')+SUM(COM,REPORT(PRCPower,COM,TC,RUN,'FuelCosts'))+REPORT(PRCPower,'ACTGRP',TC,RUN,'CO2Tax')+REPORT(PRCPower,'ACTGRP',TC,RUN,'Levies'));
 
 
 * Elc Price
