@@ -7,10 +7,45 @@
 Report('Econ_Population','ACTGRP',TC,RUN,'EconIndicator')            =POP(TC);
 Report('Econ_PopulationActive','ACTGRP',TC,RUN,'EconIndicator')            =POPActive(TC);
 
-Report('Econ_GVA_NOM','ACTGRP',TC,RUN,'EconIndicator')               = SUM(A,PVAX(A,'nat',XC,TC,TT)*(1-TVAX(A,'nat',XC,TC,TT))*QVAX(A,'nat',XC,TC,TT));
+Report('Econ_GDPFactorCosts_NOM','ACTGRP',TC,RUN,'EconIndicator')               = SUM(A,PVAX(A,'nat',XC,TC,TT)*(1-TVAX(A,'nat',XC,TC,TT))*QVAX(A,'nat',XC,TC,TT));
 
 * GDP at factor costs is sum of GVA
 Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator')                  = SUM(A,PVA0(A,'nat')*(1-TVA0(A,'nat'))*QVAX(A,'nat',XC,TC,TT));
+
+* Net Tax/subsidy income
+Report('Econ_NetTaxes_NOM','ACTGRP',TC,RUN,'EconIndicator')
+         = SUM((RD,A), TAX(A,RD,XC,TC,TT)*PARX(A,RD,XC,TC,TT)*QARX(A,RD,XC,TC,TT))
+         + SUM((A,RD), TVAX(A,RD,XC,TC,TT)*PVAX(A,RD,XC,TC,TT)*QVAX(A,RD,XC,TC,TT))
+         + SUM((RW,CM), TMX(CM,RW,XC,TC,TT)*QMX(CM,RW,XC,TC,TT)*PWMX(CM,RW,XC,TC,TT))*EXRX(XC,TC,TT)
+         + SUM((RW,CE), te(CE,RW)*QEX(CE,RW,XC,TC,TT)*PWEX(CE,RW,XC,TC,TT))*EXRX(XC,TC,TT)
+         + SUM(C, TQX(C,XC,TC,TT)*PQX(C,XC,TC,TT)*QQX(C,XC,TC,TT))
+         + SUM(C, tco2dx(XC,TC,TT)*co2cx(C,XC,TC,TT)*QQX(C,XC,TC,TT))
+         + SUM((C,RW), tco2mx(XC,TC,TT)*co2mx(C,RW,XC,TC,TT)*QMX(C,RW,XC,TC,TT))
+         - SUM((C,RW), tco2ex(XC,TC,TT)*co2ex(C,RW,XC,TC,TT)*QEX(C,RW,XC,TC,TT))
+*utax code
+         + SUM((C,A,RD), tui(C,A,RD)*PQX(C,XC,TC,TT)*QINTAX(A,RD,XC,TC,TT)*icax(C,A,RD,XC,TC,TT))
+         + SUM((C,H), tuh(C,H)*PQX(C,XC,TC,TT)*QHX(C,H,XC,TC,TT))
+         ;
+
+Report('Econ_NetTaxes','ACTGRP',TC,RUN,'EconIndicator')
+         = SUM((RD,A), ta0(A,RD)*PAR0(A,RD)*QARX(A,RD,XC,TC,TT))
+         + SUM((A,RD), TVA0(A,RD)*PVA0(A,RD)*QVAX(A,RD,XC,TC,TT))
+         + SUM((RW,CM), tm0(CM,RW)*QMX(CM,RW,XC,TC,TT)*PWM0(CM,RW))*EXR0
+         + SUM((RW,CE), te0(CE,RW)*QEX(CE,RW,XC,TC,TT)*PWE0(CE,RW))*EXR0
+         + SUM(C, tq0(C)*PQ0(C)*QQX(C,XC,TC,TT))
+         + SUM(C, tco2d0*co2c0(C)*QQX(C,XC,TC,TT))
+         + SUM((C,RW), co2m0(C,RW)*tco2m0*QMX(C,RW,XC,TC,TT))
+         - SUM((C,RW), co2e0(C,RW)*tco2e0*QEX(C,RW,XC,TC,TT))
+*utax code
+         + SUM((C,A,RD), tui0(C,A,RD)*PQ0(C)*QINTAX(A,RD,XC,TC,TT)*icax(C,A,RD,XC,TC,TT))
+         + SUM((C,H), tuh0(C,H)*PQ0(C)*QHX(C,H,XC,TC,TT))
+         ;
+
+
+Report('Econ_GDPMarketPrices_NOM','ACTGRP',TC,RUN,'EconIndicator') = Report('Econ_GDPFactorCosts_NOM','ACTGRP',TC,RUN,'EconIndicator') + Report('Econ_NetTaxes_NOM','ACTGRP',TC,RUN,'EconIndicator');
+Report('Econ_GDPMarketPrices','ACTGRP',TC,RUN,'EconIndicator') = Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator') + Report('Econ_NetTaxes','ACTGRP',TC,RUN,'EconIndicator');
+
+
 Report('Econ_GDPperCapita','ACTGRP',TC,RUN,'EconIndicator')          = Report('Econ_GDPFactorCosts','ACTGRP',TC,RUN,'EconIndicator')/POP(TC);
 
 *INVESTMENT
