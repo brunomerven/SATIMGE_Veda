@@ -9,12 +9,13 @@ execute 'gdxxrw.exe i=DriversLAND.gdx o=AFOLU\Land_model_Linked.xlsx index=index
 
 * Read Results from Spreadsheet
 execute 'gdxxrw.exe i=AFOLU\Land_model_Linked.xlsx o=Land.gdx index=IndexE2G!a6';
-execute_load "Land.gdx" LandEmissions;
-
+execute_load "Land.gdx" LandEmissions LandOther;
 
 REPORT(PRC,'ACTGRP',TC,RUN,Emiss)$LandEmissions(PRC,Emiss,TC) = LandEmissions(PRC,Emiss,TC);
-
 REPORT(PRC,'ACTGRP',ENDYEARS,RUN,Emiss)$LandEmissions(PRC,Emiss,'2050') = LandEmissions(PRC,Emiss,'2050');
+
+REPORT(PRC,'ACTGRP',TC,RUN,'Activity')$LandOther(PRC,TC) = LandOther(PRC,TC);
+REPORT(PRC,'ACTGRP',ENDYEARS,RUN,'Activity')$LandOther(PRC,'2050') = LandOther(PRC,'2050');
 
 
 * Write Drivers to Spreadsheet
@@ -23,8 +24,11 @@ execute 'gdxxrw.exe i=DriversAGRI.gdx o=AFOLU\Agriculture_model_Linked.xlsx inde
 
 * Read Results from Spreadsheet
 execute 'gdxxrw.exe i=AFOLU\Agriculture_model_Linked.xlsx o=Agri.gdx index=IndexE2G!a6';
-execute_load "Agri.gdx" AgriEmissions;
+execute_load "Agri.gdx" AgriEmissions AgriOther;
 
 
 REPORT(PRC,'ACTGRP',TC,RUN,Emiss)$AgriEmissions(PRC,Emiss,TC) = AgriEmissions(PRC,Emiss,TC);
 REPORT(PRC,'ACTGRP',ENDYEARS,RUN,Emiss)$AgriEmissions(PRC,Emiss,'2050') = AgriEmissions(PRC,Emiss,'2050');
+
+REPORT(PRC,'ACTGRP',TC,RUN,'Activity')$AgriOther(PRC,TC) = AgriOther(PRC,TC);
+REPORT(PRC,'ACTGRP',ENDYEARS,RUN,'Activity')$AgriOther(PRC,'2050') = AgriOther(PRC,'2050');
