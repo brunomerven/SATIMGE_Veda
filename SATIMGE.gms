@@ -293,6 +293,8 @@ PARAMETERS
 
   LandEmissions(PRC,Emiss,AY) Land Emissions
   AgriEmissions(PRC,Emiss,AY) Agriculture Emissions
+  LandOther(PRC,AY) Land Other indicators
+  AgriOther(PRC,AY) Agriculture Other indicators
   WasteEmissions(PRC,Emiss,AY) Waste Emissions
   CoalAshCoal(AY)              Coal used to account for coal ash in waste model
 
